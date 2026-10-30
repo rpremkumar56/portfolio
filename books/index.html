@@ -35,6 +35,10 @@ body{background:var(--desk);color:var(--graphite);font-family:var(--body);overfl
 .fast{font-family:var(--hand);font-size:22px;color:var(--ink);text-decoration:none;transform:rotate(-2deg);white-space:nowrap;margin-top:4px}
 .fast u{text-decoration-thickness:1.5px;text-underline-offset:3px}
 .fast:focus-visible,.shelf button:focus-visible,.tbtn:focus-visible,.tool:focus-visible,.rfoot button:focus-visible{outline:2px solid var(--ink);outline-offset:3px;border-radius:4px}
+.jar{position:fixed;left:0;top:0;z-index:2;font-family:var(--hand);font-size:21px;line-height:1;color:var(--graphite);background:none;border:0;padding:4px 6px;cursor:pointer;white-space:nowrap;will-change:transform}
+.jar:hover,.jar.on{color:var(--ink)}
+.jar.on{text-decoration:underline;text-decoration-thickness:1.5px;text-underline-offset:4px}
+.jar:focus-visible{outline:2px solid var(--ink);outline-offset:2px;border-radius:4px}
 .hint{position:fixed;left:0;right:0;bottom:calc(58px + env(safe-area-inset-bottom,0px));text-align:center;font-family:var(--hand);font-size:22px;color:var(--graphite-soft);margin:0;pointer-events:none;z-index:2;padding-inline:16px}
 .shelf{position:fixed;left:0;right:0;bottom:calc(16px + env(safe-area-inset-bottom,0px));display:flex;justify-content:center;align-items:center;gap:6px;flex-wrap:wrap;z-index:2;
   font-family:var(--type);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--graphite-soft);padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
@@ -86,8 +90,20 @@ body{background:var(--desk);color:var(--graphite);font-family:var(--body);overfl
 .book.tool-ul{cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='26' height='26' viewBox='0 0 26 26'%3E%3Cpath d='M3 23l2-6 13-13 4 4-13 13z' fill='%23e9d9b0' stroke='%234a4741' stroke-width='1.4'/%3E%3Cpath d='M3 23l2-6 4 4z' fill='%234a4741'/%3E%3C/svg%3E") 2 24,text}
 .book.tool-erase .mark{cursor:pointer}
 .book.tool-erase .mark:hover{outline:1px dashed var(--terra);outline-offset:1px}
-.rfoot{display:flex;align-items:center;gap:18px;font-family:var(--type);font-size:12.5px;color:var(--graphite-soft);min-height:40px}
-.rfoot button{font:inherit;color:var(--graphite);background:none;border:0;cursor:pointer;padding:6px 4px}
+.rfoot{display:flex;align-items:flex-end;gap:14px;font-family:var(--type);font-size:12.5px;color:var(--graphite-soft);min-height:54px}
+.trail{position:relative;width:clamp(150px,40vw,440px);height:50px;flex:none}
+.tline{position:absolute;left:-6px;right:-6px;bottom:10px;height:6px;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='6' viewBox='0 0 60 6'%3E%3Cpath d='M0 3.4C9 2.4 15 4 24 3.2S40 2.2 48 3.5 56 3 60 3.2' fill='none' stroke='%234a4741' stroke-width='1.2' stroke-linecap='round' opacity='.7'/%3E%3C/svg%3E") repeat-x;background-size:60px 6px}
+.tick{position:absolute;bottom:8px;width:1.4px;height:9px;background:var(--graphite-soft);transform:translateX(-50%) rotate(5deg);opacity:.7}
+.tick.seen{background:var(--ink);opacity:.8}
+.tbone{position:absolute;bottom:18px;width:22px;height:11px;image-rendering:pixelated;transform:translateX(-50%);transition:opacity .4s,transform .4s}
+.tbone.gone{opacity:0;transform:translate(-50%,-10px) scale(.6)}
+.tdog{position:absolute;bottom:13px;left:0;transform:translateX(-50%);transition:left .85s cubic-bezier(.4,.1,.3,1)}
+.tdog img{width:42px;height:26px;image-rendering:pixelated;display:block}
+.tdog.right img{transform:scaleX(-1)}
+.tbub{position:absolute;bottom:30px;left:50%;transform:translateX(-50%) rotate(-2deg);font-family:var(--hand);font-size:18px;color:var(--ink);white-space:nowrap;opacity:0;transition:opacity .3s;pointer-events:none}
+.tbub.show{opacity:1}
+.pmeta{font-family:var(--type);font-size:11.5px;color:var(--graphite-soft);margin-top:2px}
+.rfoot button{font:inherit;color:var(--graphite);background:none;border:0;cursor:pointer;padding:6px 4px 12px}
 .rfoot button:disabled{opacity:.3;cursor:default}
 .tip{margin:0;font-family:var(--hand);font-size:19px;color:var(--graphite-soft);text-align:center;min-height:1.2em}
 
@@ -170,7 +186,8 @@ body{background:var(--desk);color:var(--graphite);font-family:var(--body);overfl
   <div class="who"><div class="name">Premkumar R</div><div class="role">AI Product · Strategy · Builder</div></div>
   <a class="fast" href="https://rpremkumar56.github.io/portfolio/work.html" target="_blank" rel="noopener">In a hurry? <u>Résumé edition</u> →</a>
 </header>
-<p class="hint" id="hint">drag the books around · tap one to open it</p>
+<button type="button" class="jar" id="jarBtn" aria-label="Treat jar: pick up a treat, then tap the desk to feed Idli">treats × 3</button>
+<p class="hint" id="hint" aria-live="polite">drag the books around · tap one to open it</p>
 <nav class="shelf" aria-label="Open a book">
   <span>Open</span>
   <button type="button" data-book="work">At Work</button><span>·</span>
@@ -190,7 +207,8 @@ body{background:var(--desk);color:var(--graphite);font-family:var(--body);overfl
     </div>
   </div>
   <div class="stage"><div class="book read" id="book"></div></div>
-  <div class="rfoot"><button type="button" id="prevBtn">‹ Previous</button><span id="pageNo"></span><button type="button" id="nextBtn">Next ›</button></div>
+  <div class="rfoot"><button type="button" id="prevBtn">‹ Previous</button><div class="trail" id="trail" aria-hidden="true"><div class="tline"></div><div id="tmarks"></div><div class="tdog" id="tdog"><img id="tdogImg" alt=""><span class="tbub" id="tbub"></span></div></div><button type="button" id="nextBtn">Next ›</button></div>
+  <div class="pmeta" id="pageNo"></div>
   <p class="tip" id="tip"></p>
 </section>
 
@@ -400,6 +418,10 @@ const store = {
 };
 const MARK_V = "prbooks.v1.";
 let R = null;            // current reader state
+let PURL = {};           // pixel frames as images, filled by the desk code
+function loadPD(){ try{ const d=JSON.parse(store.get(MARK_V+"pet")); if(d && typeof d.treats==="number") return {treats:d.treats, seen:d.seen||{}}; }catch(e){} return {treats:3, seen:{}}; }
+const PD = loadPD();
+function savePD(){ store.set(MARK_V+"pet", JSON.stringify(PD)); const j=document.getElementById("jarBtn"); if(j) j.textContent = PD.treats>0 ? `treats × ${PD.treats}` : "jar empty"; }
 let tool = "read";
 
 function buildReader(b){
@@ -431,8 +453,8 @@ function buildReader(b){
   leaves.forEach(l=>bookEl.appendChild(l));
   // restore marks
   bookEl.querySelectorAll(".face[data-key]").forEach(f=>{ const s=store.get(MARK_V+f.dataset.key); if(s) f.innerHTML=s; });
-  R = { b, single, leaves, f:0, n:pages.length, max: single ? pages.length-1 : leaves.length };
-  sizeBook(); layout(); setTool(tool);
+  R = { b, single, leaves, f:0, n:pages.length, max: single ? pages.length-1 : leaves.length, pos:-1 };
+  buildTrail(); sizeBook(); layout(); setTool(tool);
 }
 function sizeBook(){
   if(!R) return;
@@ -458,8 +480,46 @@ function layout(){
     bookEl.style.transform = `translateX(${shift}%)`;
   } else bookEl.style.transform = "";
   $("#prevBtn").disabled = f===0; $("#nextBtn").disabled = f>=R.max;
+  readProgress();
   if(R.single) pageNo.textContent = `p. ${f+1} of ${R.n}`;
   else { const L=2*f, Rt=2*f+1; pageNo.textContent = f===0 ? `p. 1 of ${R.n}` : (Rt<=R.n ? `pp. ${L}–${Math.min(Rt,R.n)} of ${R.n}` : `p. ${R.n} of ${R.n}`); }
+}
+/* the reading trail: Idli walks along it, one tick per page */
+function visiblePages(){ if(!R) return []; return R.single ? [R.f] : [2*R.f-1, 2*R.f].filter(i=>i>=0 && i<R.n); }
+function buildTrail(){
+  const m=$("#tmarks"); m.innerHTML="";
+  const seen = new Set(PD.seen[R.b.id]||[]);
+  R.b.pages.forEach((p,i)=>{
+    const x = R.n>1 ? i/(R.n-1)*100 : 0;
+    const t=document.createElement("span"); t.className="tick"+(seen.has(i)?" seen":""); t.style.left=x+"%"; t.dataset.i=i; m.appendChild(t);
+    if(p.type==="chap" && !seen.has(i)){ const im=document.createElement("img"); im.className="tbone"; im.src=PURL.bone; im.alt=""; im.style.left=x+"%"; im.dataset.i=i; m.appendChild(im); }
+  });
+  const dog=$("#tdog"); dog.style.transition="none"; dog.style.left="0%"; $("#tdogImg").src=PURL.walkA; void dog.offsetWidth; dog.style.transition="";
+}
+let trailAnim=0, bubT=0;
+function bubble(txt, ms=1800){ const b=$("#tbub"); b.textContent=txt; b.classList.add("show"); clearTimeout(bubT); bubT=setTimeout(()=>b.classList.remove("show"), ms); }
+function readProgress(){
+  const vis = visiblePages(); if(!vis.length) return;
+  const pos = Math.max(...vis);
+  const seen = new Set(PD.seen[R.b.id]||[]); let earned=0;
+  vis.forEach(i=>{ if(!seen.has(i)){ seen.add(i); if(R.b.pages[i].type==="chap") earned++; } });
+  PD.seen[R.b.id]=[...seen];
+  if(earned){ PD.treats=Math.min(9,PD.treats+earned); }
+  savePD();
+  document.querySelectorAll("#tmarks .tick").forEach(t=>t.classList.toggle("seen", seen.has(+t.dataset.i)));
+  const dog=$("#tdog"), img=$("#tdogImg");
+  const from=R.pos; R.pos=pos;
+  dog.style.left = (R.n>1 ? pos/(R.n-1)*100 : 0)+"%";
+  if(from>=0 && pos!==from) dog.classList.toggle("right", pos>from);
+  clearInterval(trailAnim);
+  const finish = () => {
+    document.querySelectorAll("#tmarks .tbone").forEach(b=>{ if(seen.has(+b.dataset.i)) b.classList.add("gone"); });
+    if(pos===R.n-1){ let k=0; trailAnim=setInterval(()=>{ img.src = (k++%2)?PURL.happyA:PURL.happyB; if(k>14){ clearInterval(trailAnim); img.src=PURL.sleep; } },160); bubble("the end · thanks for reading", 2600); }
+    else { img.src=PURL.walkA; if(earned) bubble(earned>1?`+${earned} treats for the jar`:"+1 treat for the jar"); }
+  };
+  if(REDUCED || from<0 || pos===from){ finish(); return; }
+  let k=0; trailAnim=setInterval(()=>{ img.src=(k++%2)?PURL.walkA:PURL.walkB; },130);
+  setTimeout(()=>{ clearInterval(trailAnim); finish(); }, 850);
 }
 function visibleLeaf(i){ const f=R.f; return R.single ? i===f : (i===f || i===f-1); }
 function markTurning(leaf){ leaf.classList.add("turning"); clearTimeout(leaf._t); leaf._t=setTimeout(()=>leaf.classList.remove("turning"), 900); }
@@ -537,7 +597,7 @@ bookEl.addEventListener("click", e=>{
 });
 
 /* tools */
-const TIPS = { read:"drag a page or scroll to turn it · arrow keys work too",
+const TIPS = { read:"drag a page or scroll to turn it · Idli walks along to keep your place",
   hl:"select any text to highlight it · your marks stay in this browser",
   ul:"select any text to underline it in pencil",
   erase:"tap a mark to rub it out" };
@@ -546,7 +606,7 @@ function setTool(t){
   document.querySelectorAll(".tool").forEach(b=>{ const on=b.dataset.tool===t; b.classList.toggle("on",on); b.setAttribute("aria-pressed",on); });
   bookEl.classList.toggle("read", t==="read");
   ["hl","ul","erase"].forEach(k=>bookEl.classList.toggle("tool-"+k, t===k));
-  tipEl.textContent = R && R.single && t==="read" ? "swipe a page to turn it" : TIPS[t];
+  tipEl.textContent = R && R.single && t==="read" ? "swipe a page to turn it · Idli keeps your place below" : TIPS[t];
 }
 document.querySelectorAll(".tool").forEach(b=>b.addEventListener("click",()=>setTool(b.dataset.tool)));
 
@@ -631,8 +691,19 @@ function pline(ctx, x1,y1,x2,y2, o={}){
 
 /* desk texture: 24 x 16 units at 100 px/unit */
 const DESK_W=24, DESK_D=16, PX=100, TABLE_W=20.5, TABLE_D=12.6;
+const BED={x:-3.1,z:4.5}, JAR={x:3.6,z:-4.45};
+const wx = x => (x+DESK_W/2)*PX, wz = z => (z+DESK_D/2)*PX;
+function sketchEllipse(g,cx,cy,rx,ry,o={}){ const {a=.7,w=1.5,passes=2,jit=1.2}=o;
+  for(let p=0;p<passes;p++){ g.beginPath(); const a0=rnd(6.28), steps=48;
+    for(let i=0;i<=steps+2;i++){ const t=a0+i/steps*6.28; const x=cx+Math.cos(t)*(rx+rnd(-jit,jit)), y=cy+Math.sin(t)*(ry+rnd(-jit,jit)); i?g.lineTo(x,y):g.moveTo(x,y); }
+    g.strokeStyle=GRAPHITE; g.lineWidth=w*rnd(.75,1.15); g.globalAlpha=a*rnd(.7,1); g.stroke(); } g.globalAlpha=1; }
+function pencilBone(g,x,y,r){ g.save(); g.translate(x,y); g.rotate(r);
+  sketchEllipse(g,-15,-5,6,6,{a:.55,w:1.1,passes:1}); sketchEllipse(g,-15,5,6,6,{a:.55,w:1.1,passes:1});
+  sketchEllipse(g,15,-5,6,6,{a:.55,w:1.1,passes:1}); sketchEllipse(g,15,5,6,6,{a:.55,w:1.1,passes:1});
+  pline(g,-12,-4,12,-4,{w:1.1,a:.55,passes:1}); pline(g,-12,4,12,4,{w:1.1,a:.55,passes:1}); g.restore(); }
+const deskCanvas = mkCanvas(DESK_W*PX, DESK_D*PX);
 function drawDesk(){
-  const c = mkCanvas(DESK_W*PX, DESK_D*PX), g=c.getContext("2d");
+  const c = deskCanvas, g=c.getContext("2d"); g.clearRect(0,0,c.width,c.height);
   g.fillStyle="#f3efe6"; g.fillRect(0,0,c.width,c.height);
   // paper tooth
   for(let i=0;i<42000;i++){ g.fillStyle = Math.random()<.5 ? "rgba(90,80,60,.05)" : "rgba(255,255,255,.35)"; g.fillRect(rnd(c.width),rnd(c.height),1.2,1.2); }
@@ -658,8 +729,8 @@ function drawDesk(){
     for(let y=T+H+band+6;y<T+H+band+110;y+=8) pline(g,lx+2,y,lx+38,y+6,{w:.8,a:.22,passes:1,jit:.5}); });
   // coffee ring
   g.strokeStyle="rgba(150,108,66,.22)"; g.lineWidth=7;
-  for(let s=0;s<3;s++){ g.beginPath(); const a0=rnd(6.28); g.arc(L+W-260+rnd(-3,3),T+170+rnd(-3,3),64,a0,a0+rnd(3.6,5.8)); g.stroke(); }
-  g.lineWidth=2; g.strokeStyle="rgba(150,108,66,.18)"; g.beginPath(); g.arc(L+W-262,T+172,56,0,6.28); g.stroke();
+  for(let s=0;s<3;s++){ g.beginPath(); const a0=rnd(6.28); g.arc(L+W-170+rnd(-3,3),T+150+rnd(-3,3),58,a0,a0+rnd(3.6,5.8)); g.stroke(); }
+  g.lineWidth=2; g.strokeStyle="rgba(150,108,66,.18)"; g.beginPath(); g.arc(L+W-172,T+152,50,0,6.28); g.stroke();
   // a pencil lying on the desk
   g.save(); g.translate(L+190, T+H-150); g.rotate(-.18);
   pline(g,0,0,300,0,{a:.7}); pline(g,0,18,300,18,{a:.7}); pline(g,0,9,300,9,{w:.8,a:.3,passes:1});
@@ -668,6 +739,27 @@ function drawDesk(){
   pline(g,-24,0,0,0,{a:.6}); pline(g,-24,18,0,18,{a:.6}); pline(g,-24,0,-24,18,{a:.6});
   for(let i=0;i<5;i++) pline(g,-20+i*4,1,-20+i*4,17,{w:.8,a:.3,passes:1});
   g.restore();
+  // dog bed
+  { const bx=wx(BED.x), by=wz(BED.z); g.save(); g.translate(bx,by);
+    g.fillStyle="rgba(70,50,30,.09)"; g.beginPath(); g.ellipse(14,16,98,62,0,0,6.28); g.fill();
+    g.fillStyle="rgba(196,102,63,.13)"; g.beginPath(); g.ellipse(0,0,92,58,0,0,6.28); g.fill();
+    sketchEllipse(g,0,0,92,58,{a:.75,w:1.8}); sketchEllipse(g,0,2,80,49,{a:.45});
+    g.fillStyle="rgba(196,102,63,.16)"; g.beginPath(); g.ellipse(0,6,60,34,0,0,6.28); g.fill(); sketchEllipse(g,0,6,60,34,{a:.5});
+    for(let a=0;a<6.28;a+=.085){ pline(g,Math.cos(a)*64,Math.sin(a)*38+5,Math.cos(a)*84,Math.sin(a)*51+1,{w:.8,a:.2,passes:1,jit:.5}); }
+    g.font="600 32px Caveat, cursive"; g.fillStyle=GRAPHITE; g.globalAlpha=.75; g.fillText("Idli",-24,100); g.globalAlpha=1; g.restore(); }
+  // treat jar, open glass, seen from above
+  { const jx=wx(JAR.x), jy=wz(JAR.z); g.save(); g.translate(jx,jy);
+    g.fillStyle="rgba(70,50,30,.10)"; g.beginPath(); g.ellipse(16,18,66,62,0,0,6.28); g.fill();
+    g.fillStyle="rgba(169,188,211,.22)"; g.beginPath(); g.arc(0,0,64,0,6.28); g.fill();
+    sketchEllipse(g,0,0,64,64,{a:.8,w:1.8}); sketchEllipse(g,0,0,54,54,{a:.45});
+    g.strokeStyle="rgba(255,255,255,.8)"; g.lineWidth=4; g.beginPath(); g.arc(0,0,58,3.6,4.4); g.stroke();
+    pencilBone(g,-14,-10,.5); pencilBone(g,16,8,-.4); pencilBone(g,-6,22,1.4);
+    g.restore(); }
+  // warm lamp light from the top left, darker toward the edges
+  g.globalCompositeOperation="multiply";
+  const lg=g.createRadialGradient(c.width*.36,c.height*.34,120,c.width*.5,c.height*.5,c.width*.62);
+  lg.addColorStop(0,"#fffaf0"); lg.addColorStop(.55,"#f6efe2"); lg.addColorStop(1,"#d9cfbd");
+  g.fillStyle=lg; g.fillRect(0,0,c.width,c.height); g.globalCompositeOperation="source-over";
   return c;
 }
 
@@ -740,21 +832,35 @@ BOOKS.forEach((b,i)=>{
   books.push({id:b.id, data:b, group, mesh, shadow, coverC, coverT, tx:0, tz:0, baseY:BH/2, lift:0, hover:0, tiltX:0, tiltZ:0, force:null, order:i});
 });
 
-/* pixel pet: a small dachshund */
-const PET = {
+/* pixel art: Idli the dachshund, a treat and a heart */
+const PIX = {
   walkA:["................","..BKBB..........",".KBBBBBEE......T","BBBBBBBEE.....T.","....BBBEEBBBBBB.","....BBBEEBBBBBBB","....BBBBBBBBBBBB","....BB.......BB.","....BB.......BB.","................"],
   walkB:["................","..BKBB..........",".KBBBBBEE......T","BBBBBBBEE.....T.","....BBBEEBBBBBB.","....BBBEEBBBBBBB","....BBBBBBBBBBBB",".....BB.....BB..","......B......B..","................"],
-  sleep:["............ZZZ.",".............Z..","............ZZZ.","................","..BBBB..........",".KBBBBBEE.......","BBBBBBBEEBBBBBBT","....BBBEEBBBBBBT","....BBBBBBBBBBBB","................"]
+  sleep:["............ZZZ.",".............Z..","............ZZZ.","................","..BBBB..........",".KBBBBBEE.......","BBBBBBBEEBBBBBBT","....BBBEEBBBBBBT","....BBBBBBBBBBBB","................"],
+  eatA: ["................","................","...............T","..BKBB........T.",".KBBBBBEEBBBBBB.","BBBBBBBEEBBBBBBB","....BBBBBBBBBBBB","....BB.......BB.","....BB.......BB.","................"],
+  eatB: ["................","................","...............T","..BKBB........T.",".KBBBBBEEBBBBBB.","BB.BBBBEEBBBBBBB","....BBBBBBBBBBBB","....BB.......BB.","....BB.......BB.","................"],
+  happyA:["...............T","..BBBB........T.",".KBBBBBEE.....T.","BBBBBBBEE.......","....BBBEEBBBBBB.","....BBBEEBBBBBBB","....BBBBBBBBBBBB","....BB.......BB.","....BB.......BB.","................"],
+  happyB:["................","..BBBB..........",".KBBBBBEE.......","BBBBBBBEE......T","....BBBEEBBBBBBT","....BBBEEBBBBBBB","....BBBBBBBBBBBB","....BB.......BB.","....BB.......BB.","................"],
+  heart:[".HH.HH.","HHHHHHH","HHHHHHH",".HHHHH.","..HHH..","...H..."],
+  bone: [".OO....OO.","OWWOOOOWWO",".OWWWWWWO.","OWWOOOOWWO",".OO....OO."]
 };
-const PCOL = {B:"#94513a", K:"#222222", E:"#222222", T:"#94513a", Z:"#8a857b"};
-function petTex(rows){ const c=mkCanvas(16,10), g=c.getContext("2d");
-  rows.forEach((r,y)=>[...r].forEach((ch,x)=>{ if(PCOL[ch]){ g.fillStyle=PCOL[ch]; g.fillRect(x,y,1,1);} }));
-  const t=new THREE.CanvasTexture(c); t.magFilter=THREE.NearestFilter; t.minFilter=THREE.NearestFilter; return t; }
-const petTexs = {walkA:petTex(PET.walkA), walkB:petTex(PET.walkB), sleep:petTex(PET.sleep)};
-const petMat = new THREE.MeshBasicMaterial({map:petTexs.walkA, transparent:true, alphaTest:.5});
+const PCOL = {B:"#94513a", K:"#222222", E:"#222222", T:"#94513a", Z:"#8a857b", H:"#d24b3c", W:"#f3e7cc", O:"#4a4741"};
+function pixCanvas(rows, sc=1){ const w=rows[0].length, h=rows.length, c=mkCanvas(w*sc,h*sc), g=c.getContext("2d");
+  rows.forEach((r,y)=>[...r].forEach((ch,x)=>{ if(PCOL[ch]){ g.fillStyle=PCOL[ch]; g.fillRect(x*sc,y*sc,sc,sc);} })); return c; }
+function pixTex(rows){ const t=new THREE.CanvasTexture(pixCanvas(rows)); t.magFilter=THREE.NearestFilter; t.minFilter=THREE.NearestFilter; t.generateMipmaps=false; return t; }
+const PT={}; ["walkA","walkB","sleep","eatA","eatB","happyA","happyB"].forEach(k=>PT[k]=pixTex(PIX[k]));
+PURL = {}; ["walkA","walkB","sleep","happyA","happyB","bone","heart"].forEach(k=>PURL[k]=pixCanvas(PIX[k],4).toDataURL());
+const BONE_CURSOR = `url(${pixCanvas(PIX.bone,3).toDataURL()}) 15 7, crosshair`;
+
+const petMat = new THREE.MeshBasicMaterial({map:PT.sleep, transparent:true, alphaTest:.5});
 const pet = new THREE.Mesh(new THREE.PlaneGeometry(1.36,.85), petMat);
-pet.rotation.x=-Math.PI/2; pet.position.set(4,.03,3.2); scene.add(pet);
-const P = {state: REDUCED?"sleep":"walk", tx:2, tz:2, timer:0, dir:-1, hop:0};
+pet.rotation.x=-Math.PI/2; pet.position.set(BED.x,.03,BED.z+.05); scene.add(pet);
+const boneMesh = new THREE.Mesh(new THREE.PlaneGeometry(.62,.31), new THREE.MeshBasicMaterial({map:pixTex(PIX.bone), transparent:true, alphaTest:.5}));
+boneMesh.rotation.x=-Math.PI/2; boneMesh.visible=false; scene.add(boneMesh);
+const heartTex = pixTex(PIX.heart), hearts=[];
+function spawnHeart(){ const m=new THREE.Mesh(new THREE.PlaneGeometry(.36,.31), new THREE.MeshBasicMaterial({map:heartTex, transparent:true, depthWrite:false, alphaTest:.05}));
+  m.rotation.x=-Math.PI/2; m.position.set(pet.position.x+rnd(-.35,.35), .6, pet.position.z-.35); scene.add(m); hearts.push({m,life:1}); }
+const P = {state:"bed", tx:BED.x, tz:BED.z, timer:6, dir:-1, hop:0, held:false, heartT:0};
 
 /* desk mesh */
 const deskT = new THREE.CanvasTexture(drawDesk()); deskT.anisotropy = 8;
@@ -796,15 +902,35 @@ function restack(){
 
 /* interaction */
 const ray=new THREE.Raycaster(), ndc=new THREE.Vector2(), plane=new THREE.Plane(new THREE.Vector3(0,1,0),0), hit=new THREE.Vector3();
-let drag=null, hovered=null;
+let drag=null, hovered=null; const mouse={x:0,y:0}, par={x:0,y:0};
 function pick(e){ ndc.set(e.clientX/innerWidth*2-1, -(e.clientY/innerHeight)*2+1); ray.setFromCamera(ndc,camera); }
 function bookHit(){ const hs=ray.intersectObjects(books.map(b=>b.mesh)); return hs.length ? books.find(b=>b.mesh===hs[0].object) : null; }
+const jarBtn=$("#jarBtn"), hintEl=$("#hint");
+let treatMode=false;
+const HINTS=["drag the books around · tap one to open it","press and hold Idli to pet her","tap the treat jar, then the desk, to feed Idli"];
+let hintI=0, hintHold=0;
+setInterval(()=>{ if(reading || performance.now()<hintHold) return; hintI=(hintI+1)%HINTS.length; hintEl.textContent=HINTS[hintI]; }, 5600);
+function say(m, ms=4200){ if(!m){ hintHold=0; hintEl.textContent=HINTS[hintI]; return; } hintEl.textContent=m; hintHold=performance.now()+ms; }
+function setTreatMode(on){
+  if(on && PD.treats<=0){ say("the jar is empty · each new chapter you read adds a treat"); return; }
+  treatMode=on; jarBtn.classList.toggle("on",on); canvas.style.cursor = on ? BONE_CURSOR : "default";
+  say(on ? "now tap anywhere on the desk to drop the treat" : null, 60000);
+}
+jarBtn.addEventListener("click", ()=>setTreatMode(!treatMode));
+function dropTreat(x,z){
+  const [cx,cz]=clampB(x,z); boneMesh.position.set(cx,.025,cz); boneMesh.scale.setScalar(1); boneMesh.visible=true;
+  PD.treats--; savePD(); setTreatMode(false); say("Idli has spotted it", 2500);
+  P.held=false; P.hop=1; const side = pet.position.x > cx ? .5 : -.5; P.tx=cx+side; P.tz=cz; P.state="fetch";
+}
 canvas.addEventListener("pointerdown", e=>{
   if(reading) return; pick(e);
+  if(ray.ray.intersectPlane(plane,hit) && Math.hypot(hit.x-JAR.x, hit.z-JAR.z) < .8){ setTreatMode(!treatMode); return; }
+  const onPet = ray.intersectObject(pet).length>0;
   const B=bookHit();
+  if(treatMode && !B){ dropTreat(hit.x, hit.z); return; }
+  if(onPet && !B && P.state!=="eat"){ P.held=true; P.state="happy"; P.heartT=0; canvas.setPointerCapture(e.pointerId); say("she likes that", 2500); return; }
   if(B){ ray.ray.intersectPlane(plane,hit); drag={B, ox:hit.x-B.group.position.x, oz:hit.z-B.group.position.z, sx:e.clientX, sy:e.clientY, t:performance.now(), moved:false, lx:hit.x, lz:hit.z};
     B.order = Math.max(...books.map(b=>b.order))+1; canvas.setPointerCapture(e.pointerId); canvas.style.cursor="grabbing"; return; }
-  if(ray.intersectObject(pet).length){ P.hop=1; P.state="walk"; P.timer=0; newPetTarget(); }
 });
 canvas.addEventListener("pointermove", e=>{
   if(reading) return; pick(e);
@@ -819,9 +945,12 @@ canvas.addEventListener("pointermove", e=>{
   }
   const B=bookHit(); const overPet = !B && ray.intersectObject(pet).length>0;
   if(B!==hovered){ hovered=B; needRender=true; }
-  canvas.style.cursor = B ? "grab" : overPet ? "pointer" : "default";
+  mouse.x = e.clientX/innerWidth*2-1; mouse.y = e.clientY/innerHeight*2-1;
+  const overJar = ray.ray.intersectPlane(plane,hit) && Math.hypot(hit.x-JAR.x, hit.z-JAR.z) < .8;
+  canvas.style.cursor = treatMode ? BONE_CURSOR : B ? "grab" : (overPet||overJar) ? "pointer" : "default";
 });
 function dropDrag(e){
+  if(P.held){ P.held=false; P.state="sit"; P.timer=1.4; }
   if(!drag) return;
   const d=drag; drag=null; canvas.style.cursor="grab";
   if(!d.moved && performance.now()-d.t < 450){ openBook(d.B.id); return; }
@@ -861,23 +990,45 @@ function closeBook(){
 /* pet behaviour */
 function newPetTarget(){ P.tx=rnd(-bounds.x,bounds.x); P.tz=rnd(-bounds.z,bounds.z); }
 function updatePet(dt,time){
-  if(REDUCED){ petMat.map=petTexs.sleep; return; }
-  if(drag && drag.moved){
+  if(REDUCED){ petMat.map = PT.sleep; return; }
+  if(drag && drag.moved && !P.held && P.state!=="eat"){
     const bx=drag.B.group.position.x, bz=drag.B.group.position.z, dx=pet.position.x-bx, dz=pet.position.z-bz, dd=Math.hypot(dx,dz)||1;
     if(dd < 2.8*S && P.state!=="run"){ P.state="run"; P.hop=1; const [x,z]=clampB(pet.position.x+dx/dd*4.5, pet.position.z+dz/dd*4.5); P.tx=x; P.tz=z; }
   }
-  if(P.state==="walk"||P.state==="run"){
-    const dx=P.tx-pet.position.x, dz=P.tz-pet.position.z, d=Math.hypot(dx,dz), sp=(P.state==="run"?4.2:1.25)*dt;
-    if(d<.08){ if(P.state==="run"){ P.state="sit"; P.timer=1.4; } else if(Math.random()<.45){ P.state="sleep"; P.timer=rnd(5,9); } else { P.state="sit"; P.timer=rnd(1,2.4); } }
-    else { pet.position.x+=dx/d*Math.min(sp,d); pet.position.z+=dz/d*Math.min(sp,d); if(Math.abs(dx)>.02) P.dir = dx>0?1:-1; }
-    petMat.map = (Math.floor(time*(P.state==="run"?12:6))%2) ? petTexs.walkA : petTexs.walkB;
+  const moving = P.state==="walk"||P.state==="run"||P.state==="fetch"||P.state==="tobed";
+  if(moving){
+    const dx=P.tx-pet.position.x, dz=P.tz-pet.position.z, d=Math.hypot(dx,dz);
+    const sp=(P.state==="run"?4.2:P.state==="fetch"?3.0:1.25)*dt;
+    if(d<.08){
+      if(P.state==="run"){ P.state="sit"; P.timer=1.4; }
+      else if(P.state==="fetch"){ P.state="eat"; P.timer=1.8; P.dir = boneMesh.position.x>pet.position.x ? 1 : -1; }
+      else if(P.state==="tobed"){ P.state="sleep"; P.timer=rnd(7,12); P.dir=-1; }
+      else { const r=Math.random(); if(r<.3){ P.state="tobed"; P.tx=BED.x; P.tz=BED.z+.05; } else if(r<.6){ P.state="sit"; P.timer=rnd(1,2.6); } else newPetTarget(); }
+    } else { pet.position.x+=dx/d*Math.min(sp,d); pet.position.z+=dz/d*Math.min(sp,d); if(Math.abs(dx)>.02) P.dir = dx>0?1:-1; }
+    petMat.map = (Math.floor(time*(P.state==="walk"||P.state==="tobed"?6:12))%2) ? PT.walkA : PT.walkB;
+  } else if(P.state==="eat"){
+    P.timer-=dt; petMat.map = (Math.floor(time*7)%2) ? PT.eatA : PT.eatB;
+    boneMesh.scale.setScalar(Math.max(.15, P.timer/1.8));
+    if(P.timer<=0){ boneMesh.visible=false; P.state="happy"; P.timer=2; P.hop=1; P.heartT=0; say("Idli says thank you", 2600); }
+  } else if(P.state==="happy"){
+    petMat.map = (Math.floor(time*9)%2) ? PT.happyA : PT.happyB;
+    P.heartT-=dt; if(P.heartT<=0){ spawnHeart(); P.heartT=.34; }
+    if(!P.held){ P.timer-=dt; if(P.timer<=0){ P.state="sit"; P.timer=1.5; } }
   } else {
-    P.timer-=dt; petMat.map = P.state==="sleep" ? petTexs.sleep : petTexs.walkA;
+    P.timer-=dt; petMat.map = (P.state==="sleep"||P.state==="bed") ? PT.sleep : PT.walkA;
     if(P.timer<=0){ P.state="walk"; newPetTarget(); }
   }
   pet.scale.x = Math.abs(pet.scale.x) * (P.dir>0 ? -1 : 1);
   P.hop = Math.max(0,P.hop-dt*2.2);
   pet.position.y = .03 + Math.abs(Math.sin(time*16))*.18*P.hop;
+  for(let i=hearts.length-1;i>=0;i--){ const h=hearts[i]; h.life-=dt*.8; h.m.position.z-=dt*.9; h.m.position.y+=dt*.5; h.m.material.opacity=Math.max(0,h.life);
+    if(h.life<=0){ scene.remove(h.m); h.m.material.dispose(); hearts.splice(i,1); } }
+}
+function placeJarLabel(){
+  if(reading){ jarBtn.hidden=true; return; }
+  jarBtn.hidden=false;
+  const v=new THREE.Vector3(JAR.x+.85*S, 0, JAR.z-.15).project(camera);
+  jarBtn.style.transform=`translate(${(v.x*.5+.5)*innerWidth}px, ${(-v.y*.5+.5)*innerHeight - 12}px) rotate(-4deg)`;
 }
 
 /* frame loop */
@@ -901,6 +1052,11 @@ function frame(now){
       B.group.renderOrder = B.order;
     });
     updatePet(dt, now/1000);
+    if(!reading && !tweening && !REDUCED){
+      par.x += (mouse.x-par.x)*.04; par.y += (mouse.y-par.y)*.04;
+      camera.position.copy(target).addScaledVector(DIR,camDist); camera.position.x += par.x*.55; camera.position.z += par.y*.35; camera.lookAt(target);
+    }
+    placeJarLabel();
     renderer.render(scene,camera);
   }
   requestAnimationFrame(frame);
@@ -914,11 +1070,12 @@ async function boot(){
   const fontsReady = Promise.all(["600 104px Caveat","700 112px Caveat","36px 'Instrument Serif'","16px 'Courier Prime'"].map(f=>document.fonts.load(f).catch(()=>{})));
   await Promise.race([fontsReady, new Promise(r=>setTimeout(r,2500))]);
   for(const B of books){ await drawCover(B.data, B.coverC); B.coverT.needsUpdate=true; }
+  drawDesk(); deskT.needsUpdate=true; savePD();
   needRender=true;
   const h=location.hash.slice(1);
   if(BOOKS.some(b=>b.id===h)) setTimeout(()=>openBook(h), 300);
 }
-if(!renderer){ canvas.style.display="none"; $("#hint").textContent="open a book below"; }
+if(!renderer){ canvas.style.display="none"; $("#hint").textContent="open a book below"; $("#jarBtn").hidden=true; }
 boot();
 })();
 </script>
