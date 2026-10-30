@@ -44,19 +44,32 @@ a{color:inherit}
 .nav{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;font-family:var(--type);font-size:12px;letter-spacing:.06em;color:var(--muted);border-bottom:1px solid var(--line);padding-bottom:12px}
 .mono{display:flex;align-items:center;gap:10px;color:var(--ink-on-dark)}
 .mono .seal{width:34px;height:34px;border-radius:50%;border:1.5px solid currentColor;display:grid;place-items:center;font-family:var(--display);font-style:italic;font-size:17px}
-.chips{display:flex;gap:4px;flex-wrap:wrap}
+.chips{display:flex;gap:4px;flex-wrap:wrap;min-width:0}
 .chip{background:none;border:1px solid transparent;border-radius:999px;padding:6px 11px;cursor:pointer;color:var(--muted);font-family:var(--type);font-size:12px;letter-spacing:.06em}
 .chip:hover{color:var(--ink-on-dark)}
 .chip[aria-pressed="true"]{border-color:var(--line);color:var(--ink-on-dark);background:var(--bg-2)}
 .resume{color:var(--ink-on-dark);text-decoration:none;border-bottom:1px solid var(--muted);padding-bottom:1px}
-.hero{display:flex;justify-content:space-between;align-items:flex-end;gap:20px 28px;flex-wrap:wrap;margin-top:26px}
+.hero{display:flex;justify-content:space-between;align-items:flex-end;gap:24px 32px;flex-wrap:wrap;margin-top:30px}
+.hero-main{min-width:0;flex:1 1 420px}
 .crumb{font-family:var(--type);font-size:12px;letter-spacing:.06em;color:var(--muted)}
-.hero h1{font-family:var(--display);font-weight:400;font-size:clamp(46px,7vw,84px);line-height:.95;margin:.12em 0 .14em;letter-spacing:-.01em}
-.hero p{margin:0;max-width:44ch;font-size:clamp(15px,1.7vw,18px);line-height:1.45;color:#d5cfc4}
-.hero p b{font-weight:500;color:var(--ink-on-dark)}
+.hero h1{font-family:var(--display);font-weight:400;font-size:clamp(48px,7.4vw,92px);line-height:.92;margin:0;letter-spacing:-.01em}
+.role{margin:.55em 0 0;font-family:var(--type);font-size:12.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--receipt)}
+.thesis{margin:.7em 0 0;max-width:40ch;font-size:clamp(17px,2vw,21px);line-height:1.4;color:#e4ded3}
+.proof{display:flex;gap:12px;flex-wrap:wrap;margin-top:20px}
+.pf{background:var(--paper-2);color:#26231f;padding:10px 14px 12px;min-width:112px;box-shadow:0 8px 18px -10px rgba(0,0,0,.6);transform:rotate(-1.2deg)}
+.pf:nth-child(2){transform:rotate(1deg)}
+.pf:nth-child(3){transform:rotate(-.4deg)}
+.pf-num{display:block;font-family:var(--display);font-size:clamp(40px,4.6vw,54px);line-height:.95}
+.pf-lbl{display:block;font-size:14px;line-height:1.25;color:#3a3731;max-width:15ch}
+.ctas{display:flex;gap:10px 20px;flex-wrap:wrap;margin-top:22px;font-family:var(--type);font-size:13px;letter-spacing:.04em}
+.ctas a,.ctas button{color:var(--ink-on-dark);text-decoration:none;border:0;background:none;cursor:pointer;padding:6px 0;border-bottom:1.5px solid var(--receipt)}
+.drawer-head{display:flex;align-items:baseline;justify-content:space-between;gap:8px 20px;flex-wrap:wrap;margin-top:72px;border-top:1px solid var(--line);padding-top:16px}
+.drawer-head h2{font-family:var(--display);font-weight:400;font-size:clamp(28px,3.4vw,38px);margin:0}
+.drawer-line{margin:6px 0 0;max-width:60ch;font-size:15.5px;line-height:1.45;color:#cfc9be}
+.drawer-line b{font-weight:500;color:var(--ink-on-dark)}
 
 /* ---------- Idli's rack ---------- */
-.rack{position:relative;width:min(460px,100%);height:150px;flex:none;margin-bottom:48px}
+.rack{position:relative;width:min(440px,100%);height:150px;flex:none;margin-bottom:40px}
 .rack-back{position:absolute;left:10px;right:10px;top:10px;bottom:16px;background:#2c2924;border-radius:3px 3px 0 0;box-shadow:inset 0 8px 12px -8px rgba(0,0,0,.6)}
 .rack-wall{position:absolute;bottom:0;top:0;width:14px;background:var(--wood);box-shadow:inset -3px 0 0 var(--wood-dark)}
 .rack-wall.l{left:0;border-radius:3px 0 0 0}
@@ -65,12 +78,12 @@ a{color:inherit}
 .cushion{position:absolute;left:22px;bottom:14px;width:136px;height:22px;border-radius:50%;background:#77716a;box-shadow:inset 0 -5px 0 #625d57,inset 0 4px 0 #8d877f}
 .idli{position:absolute;left:0;bottom:22px;width:144px;height:90px;padding:0;border:0;background:none;cursor:pointer;touch-action:manipulation}
 .idli canvas{width:100%;height:100%;image-rendering:pixelated;image-rendering:crisp-edges;display:block}
-.rail{position:absolute;left:14px;right:14px;bottom:16px;height:26px;pointer-events:none;
+.rail{position:absolute;left:14px;right:14px;bottom:16px;height:17px;pointer-events:none;
   background:repeating-linear-gradient(90deg,transparent 0 30px,var(--wood) 30px 35px,var(--wood-dark) 35px 37px,transparent 37px 52px)}
 .rail::after{content:"";position:absolute;left:0;right:0;top:0;height:7px;background:var(--wood);border-bottom:2px solid var(--wood-dark);border-radius:2px}
 .bowl{position:absolute;bottom:16px;image-rendering:pixelated;image-rendering:crisp-edges;pointer-events:none}
 .bowltag{position:absolute;bottom:58px;font-family:var(--type);font-weight:700;font-size:11px;color:var(--receipt);pointer-events:none}
-.treatline{position:absolute;left:0;right:0;top:calc(100% + 26px);font-family:var(--hand);font-size:19px;line-height:1.15;color:var(--muted);text-align:left}
+.treatline{position:absolute;left:0;right:0;top:calc(100% + 22px);margin:0;font-family:var(--hand);font-size:19px;line-height:1.15;color:var(--muted);text-align:left}
 .treatline b{color:var(--receipt);font-weight:600}
 .tab .tb{width:16px;height:8px;image-rendering:pixelated;flex:none;opacity:.95}
 .treat{position:absolute;top:-46px;right:56px;z-index:2;display:flex;align-items:center;gap:10px;background:var(--paper-2);color:var(--graphite);border:0;cursor:pointer;
@@ -88,7 +101,7 @@ a{color:inherit}
 @keyframes zz{0%{transform:translate(0,0);opacity:0}30%{opacity:1}100%{transform:translate(14px,-26px);opacity:0}}
 
 /* ---------- the drawer of folders ---------- */
-.drawer{position:relative;isolation:isolate;z-index:0;margin-top:44px;--step:50px;--tabh:36px;--peek:104px;--bh:230px}
+.drawer{position:relative;isolation:isolate;z-index:0;margin-top:56px;--step:50px;--tabh:36px;--peek:104px;--bh:230px}
 .folder{position:absolute;left:0;right:0;top:0;height:var(--bh);transform:translateY(calc(var(--y,0)*1px));transition:transform .42s cubic-bezier(.2,.75,.2,1),opacity .3s;will-change:transform}
 .folder .fb{position:absolute;inset:0;background:var(--c);border-radius:0 8px 0 0;box-shadow:0 -3px 10px rgba(0,0,0,.35);overflow:hidden}
 .folder .tab{position:absolute;bottom:100%;left:var(--tx);width:var(--tw);height:var(--tabh);background:var(--c);color:var(--fg);border:0;cursor:pointer;
@@ -222,6 +235,19 @@ a{color:inherit}
   .tip{display:none}
 }
 @media (max-width:640px){
+  .nav{flex-wrap:nowrap;gap:10px}
+  .mono{flex:none}
+  .mono .name{display:none}
+  .chips{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;-webkit-mask-image:linear-gradient(90deg,#000 85%,transparent)}
+  .chips::-webkit-scrollbar{display:none}
+  .chip{flex:none}
+  .hero{margin-top:20px}
+  .rack{height:108px;margin-bottom:34px}
+  .cushion{width:100px}
+  .proof{gap:10px}
+  .pf{min-width:0;flex:1 1 0;padding:9px 10px 10px}
+  .pf-lbl{font-size:12.5px}
+  .drawer-head{margin-top:52px}
   .treat{position:static;margin:0 0 14px;transform:none}
   .treat:hover{transform:none}
   .drawer{--step:54px;--peek:0px;--bh:150px}
@@ -242,7 +268,7 @@ a{color:inherit}
 <body>
 <main class="room" id="room">
   <nav class="nav" aria-label="Archive">
-    <span class="mono"><span class="seal">pr</span>Premkumar R</span>
+    <span class="mono"><span class="seal">pr</span><span class="name">Premkumar R</span></span>
     <span class="chips" role="group" aria-label="Show files">
       <button type="button" class="chip" data-col="all" aria-pressed="true">All</button>
       <button type="button" class="chip" data-col="work" aria-pressed="false">At work</button>
@@ -250,13 +276,18 @@ a{color:inherit}
       <button type="button" class="chip" data-col="fun" aria-pressed="false">For fun</button>
       <button type="button" class="chip" data-col="ref" aria-pressed="false">Reference</button>
     </span>
-    <a class="resume" href="https://rpremkumar56.github.io/portfolio/work.html">In a hurry? Résumé →</a>
   </nav>
   <div class="hero">
-    <div>
-      <div class="crumb" id="crumb">The archive / All files</div>
-      <h1 id="heroTitle">Files 01–20</h1>
-      <p id="heroText"></p>
+    <div class="hero-main">
+      <h1>Premkumar R</h1>
+      <p class="role">AI Product &amp; Strategy · Senior Consultant, AI CoE, Infosys BPM</p>
+      <p class="thesis">I turn messy business problems into working AI prototypes, and the strong ones into products.</p>
+      <div class="proof" aria-label="In numbers">
+        <div class="pf"><span class="pf-num">20</span><span class="pf-lbl">AI prototypes built</span></div>
+        <div class="pf"><span class="pf-num">4</span><span class="pf-lbl">use cases live in client operations</span></div>
+        <div class="pf"><span class="pf-num">9</span><span class="pf-lbl">client accounts</span></div>
+      </div>
+      <div class="ctas"><a href="https://rpremkumar56.github.io/portfolio/work.html">Résumé →</a><button type="button" data-open="f-20" id="contactCta">Contact →</button></div>
     </div>
     <div class="rack" id="rack">
       <div class="rack-back"></div><div class="cushion"></div>
@@ -267,6 +298,7 @@ a{color:inherit}
       <p class="treatline" id="treatLine" aria-live="polite"></p>
     </div>
   </div>
+  <div class="drawer-head"><div><div class="crumb" id="crumb">The archive / All files</div><h2 id="heroTitle">Files 01–20</h2><p class="drawer-line" id="heroText"></p></div></div>
   <section class="drawer" id="drawer" aria-label="Files"></section>
   <p class="hint" id="hint">open any folder · tap Idli to say hello</p>
   <p class="foot">Built with Claude Code · hosted on GitHub Pages</p>
@@ -316,7 +348,7 @@ const COLS = {
   fun: {name:"For fun", line:"Reels, puzzles, motion and kitchen ideas. Mostly for fun."},
   ref: {name:"Reference", line:"What I work with, and how to reach me."}
 };
-const ALL_LINE = "I take messy business problems to working AI prototypes, and I build small apps after hours. <b>One folder per project.</b>";
+const ALL_LINE = "Work, home builds and side experiments. <b>One folder per project</b>, so open any of them.";
 const F = [
  {col:"work", title:"AI Reconciliation", tab:"AI Reconciliation", one:"A reusable product that reconciles finance documents with AI and auditable rules.", when:"AI CoE · 2026", status:["Live","live"], c:"#d9dfe8", fg:"#1f2a44", pic:"recon", cap:"two ledgers, one rulebook",
   margin:[["Role","Co-creator"],["Team","AI CoE"],["Used in","Finance operations"]],
@@ -515,12 +547,12 @@ document.querySelectorAll(".chip").forEach(c=>c.addEventListener("click",()=>{ c
 const rack=$("#rack"), idliBtn=$("#idli"), idliCv=$("#idliCanvas");
 const I={x:18,dir:1,state:"sleep",t:5,frame:"",heartT:0,hop:0};
 let idliScale=9;
-function idliSize(){ idliScale = innerWidth<760 ? 7 : 9; idliBtn.style.width=16*idliScale+"px"; idliBtn.style.height=10*idliScale+"px"; }
+function idliSize(){ idliScale = innerWidth<=640 ? 6 : innerWidth<760 ? 7 : 9; idliBtn.style.width=16*idliScale+"px"; idliBtn.style.height=10*idliScale+"px"; }
 function drawIdli(f){ if(I.frame===f) return; I.frame=f; pixCanvas(PIX[f],1,idliCv); }
 const bowlFood=$("#bowlFood"), bowlWater=$("#bowlWater"), bowlTag=$("#bowlTag");
 let bowlScale=7, bowlLeft=0;
 function placeBowls(){
-  bowlScale = idliScale>=9 ? 7 : 5; const bw=12*bowlScale, w=rack.clientWidth;
+  bowlScale = idliScale>=9 ? 7 : idliScale>=7 ? 5 : 4; const bw=12*bowlScale, w=rack.clientWidth;
   [bowlWater,bowlFood].forEach((b,i)=>{ b.style.width=bw+"px"; b.style.height=6*bowlScale+"px"; b.style.left=(w-18-bw*(i+1)-6*i)+"px"; });
   bowlLeft = w-18-bw*2-6; bowlTag.style.left=(bowlLeft+bw-8)+"px"; drawBowls();
 }
@@ -564,7 +596,7 @@ function baseHint(){ return FOUND.size>=F.length ? "you found every treat · Idl
 function say(m,ms){ treatLine.textContent=m; clearTimeout(hintT); hintT=setTimeout(updateTreatUI, ms||3000); }
 function updateTreatUI(){
   const n=FOUND.size, all=F.length;
-  treatLine.innerHTML = n>=all ? "You found all <b>20 treats</b>. Idli is very full." : n===0 ? "Idli is hungry. <b>Each file hides one treat</b> for her." : `Idli is hungry. <b>${n} of ${all}</b> treats found · open more files.`;
+  treatLine.innerHTML = n>=all ? "Idli is full · <b>all 20 treats</b> found" : `Idli is hungry · <b>${n} of ${all}</b> treats found`;
   hintEl.textContent = baseHint();
   F.forEach(f=>{ const g=f.el.querySelector(".tb"); if(g) g.hidden=FOUND.has(f.id); });
 }
@@ -709,7 +741,8 @@ function closeFile(fromHistory){
   fv.classList.remove("show");
   a.onfinish=()=>{ fl.remove(); finish(); }; a.oncancel=a.onfinish;
 }
-$("#closeBtn").onclick=()=>closeFile(); $("#closeBtn2").onclick=()=>closeFile();
+$("#closeBtn").onclick=()=>closeFile();
+$("#contactCta").onclick=()=>{ const f=F.find(x=>x.id==="f-20"); openFile(f.id, f.el); }; $("#closeBtn2").onclick=()=>closeFile();
 addEventListener("keydown", e=>{
   if(fv.hidden) return;
   if(e.key==="Escape"){ closeFile(); return; }
