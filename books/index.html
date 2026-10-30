@@ -35,9 +35,10 @@ body{background:var(--desk);color:var(--graphite);font-family:var(--body);overfl
 .fast{font-family:var(--hand);font-size:22px;color:var(--ink);text-decoration:none;transform:rotate(-2deg);white-space:nowrap;margin-top:4px}
 .fast u{text-decoration-thickness:1.5px;text-underline-offset:3px}
 .fast:focus-visible,.shelf button:focus-visible,.tbtn:focus-visible,.tool:focus-visible,.rfoot button:focus-visible{outline:2px solid var(--ink);outline-offset:3px;border-radius:4px}
-.jar{position:fixed;left:0;top:0;z-index:2;font-family:var(--hand);font-size:21px;line-height:1;color:var(--graphite);background:none;border:0;padding:4px 6px;cursor:pointer;white-space:nowrap;will-change:transform}
+.jar{position:fixed;left:0;top:0;z-index:2;font-family:var(--type);font-size:11px;letter-spacing:.12em;text-transform:uppercase;line-height:1;color:var(--graphite);background:#fbf8f1;border:0;padding:6px 9px 6px 14px;cursor:pointer;white-space:nowrap;will-change:transform;
+  clip-path:polygon(9px 0,100% 0,100% 100%,9px 100%,0 50%);box-shadow:0 2px 4px rgba(0,0,0,.18)}
 .jar:hover,.jar.on{color:var(--ink)}
-.jar.on{text-decoration:underline;text-decoration-thickness:1.5px;text-underline-offset:4px}
+.jar.on{background:var(--ink);color:#fbf8f1}
 .jar:focus-visible{outline:2px solid var(--ink);outline-offset:2px;border-radius:4px}
 .hint{position:fixed;left:0;right:0;bottom:calc(58px + env(safe-area-inset-bottom,0px));text-align:center;font-family:var(--hand);font-size:22px;color:var(--graphite-soft);margin:0;pointer-events:none;z-index:2;padding-inline:16px}
 .shelf{position:fixed;left:0;right:0;bottom:calc(16px + env(safe-area-inset-bottom,0px));display:flex;justify-content:center;align-items:center;gap:6px;flex-wrap:wrap;z-index:2;
@@ -658,22 +659,35 @@ addEventListener("resize", ()=>{
 
 /* ================= THREE.JS DESK ================= */
 const canvas = $("#scene");
-let renderer;
-try { renderer = new THREE.WebGLRenderer({canvas, antialias:true}); }
-catch(e){ renderer = null; }
-const PAPER = 0xf3efe6;
-let reading = false, needRender = true;
-
+let renderer = null;
+try { renderer = new THREE.WebGLRenderer({canvas, antialias:true}); } catch(e){ renderer = null; }
+let reading = false, petScale = 1;
 const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera(32, 1, .1, 200);
+const camera = new THREE.PerspectiveCamera(32, 1, .1, 300);
 const DIR = new THREE.Vector3(0, 1, .56).normalize();
 const target = new THREE.Vector3(0, 0, .35);
 let camDist = 20, portrait = false, bounds = {x:8, z:4.5}, S = 1;
-scene.add(new THREE.AmbientLight(0xffffff, .76));
-const sun = new THREE.DirectionalLight(0xffffff, .3); sun.position.set(-3,10,5); scene.add(sun);
+const lin = hex => new THREE.Color(hex).convertSRGBToLinear();
+if(renderer){
+  renderer.outputEncoding = THREE.sRGBEncoding;
+  renderer.toneMapping = THREE.NoToneMapping;
+  renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+}
+scene.background = lin("#cfcac2");
+
+/* daylight from a window at the top left, warm bounce from the room */
+scene.add(new THREE.HemisphereLight(lin("#fff7ec"), lin("#8c7b66"), .5));
+const sun = new THREE.DirectionalLight(lin("#fff1dc"), .66);
+sun.position.set(-7, 17, 5); sun.castShadow = true;
+sun.shadow.mapSize.set(2048,2048);
+Object.assign(sun.shadow.camera, {left:-15, right:15, top:12, bottom:-12, near:1, far:60});
+sun.shadow.bias = -.0005; sun.shadow.normalBias = .025;
+scene.add(sun); scene.add(sun.target);
+const fill = new THREE.DirectionalLight(lin("#dde6ff"), .12); fill.position.set(9, 9, -7); scene.add(fill);
 
 const rnd = (a=1,b) => b===undefined ? Math.random()*a : a+Math.random()*(b-a);
 function mkCanvas(w,h){ const c=document.createElement("canvas"); c.width=w; c.height=h; return c; }
+const srgb = t => { t.encoding = THREE.sRGBEncoding; return t; };
 
 /* pencil helpers */
 function pline(ctx, x1,y1,x2,y2, o={}){
@@ -689,92 +703,139 @@ function pline(ctx, x1,y1,x2,y2, o={}){
   ctx.globalAlpha=1;
 }
 
-/* desk texture: 24 x 16 units at 100 px/unit */
-const DESK_W=24, DESK_D=16, PX=100, TABLE_W=20.5, TABLE_D=12.6;
-const BED={x:-3.1,z:4.5}, JAR={x:3.6,z:-4.45};
-const wx = x => (x+DESK_W/2)*PX, wz = z => (z+DESK_D/2)*PX;
-function sketchEllipse(g,cx,cy,rx,ry,o={}){ const {a=.7,w=1.5,passes=2,jit=1.2}=o;
-  for(let p=0;p<passes;p++){ g.beginPath(); const a0=rnd(6.28), steps=48;
-    for(let i=0;i<=steps+2;i++){ const t=a0+i/steps*6.28; const x=cx+Math.cos(t)*(rx+rnd(-jit,jit)), y=cy+Math.sin(t)*(ry+rnd(-jit,jit)); i?g.lineTo(x,y):g.moveTo(x,y); }
-    g.strokeStyle=GRAPHITE; g.lineWidth=w*rnd(.75,1.15); g.globalAlpha=a*rnd(.7,1); g.stroke(); } g.globalAlpha=1; }
-function pencilBone(g,x,y,r){ g.save(); g.translate(x,y); g.rotate(r);
-  sketchEllipse(g,-15,-5,6,6,{a:.55,w:1.1,passes:1}); sketchEllipse(g,-15,5,6,6,{a:.55,w:1.1,passes:1});
-  sketchEllipse(g,15,-5,6,6,{a:.55,w:1.1,passes:1}); sketchEllipse(g,15,5,6,6,{a:.55,w:1.1,passes:1});
-  pline(g,-12,-4,12,-4,{w:1.1,a:.55,passes:1}); pline(g,-12,4,12,4,{w:1.1,a:.55,passes:1}); g.restore(); }
-const deskCanvas = mkCanvas(DESK_W*PX, DESK_D*PX);
-function drawDesk(){
-  const c = deskCanvas, g=c.getContext("2d"); g.clearRect(0,0,c.width,c.height);
-  g.fillStyle="#f3efe6"; g.fillRect(0,0,c.width,c.height);
-  // paper tooth
-  for(let i=0;i<42000;i++){ g.fillStyle = Math.random()<.5 ? "rgba(90,80,60,.05)" : "rgba(255,255,255,.35)"; g.fillRect(rnd(c.width),rnd(c.height),1.2,1.2); }
-  const L=(DESK_W-TABLE_W)/2*PX, T=(DESK_D-TABLE_D)/2*PX, W=TABLE_W*PX, H=TABLE_D*PX;
-  // wood grain
-  g.save(); g.beginPath(); g.rect(L+6,T+6,W-12,H-12); g.clip();
-  for(let y=T+8; y<T+H; y+=rnd(11,19)){
-    g.beginPath(); const ph=rnd(6.28), f=rnd(.002,.005), amp=rnd(2,7);
-    for(let x=L; x<=L+W; x+=14){ const yy=y+Math.sin(x*f+ph)*amp+Math.sin(x*.013+ph*2)*1.2; x===L?g.moveTo(x,yy):g.lineTo(x,yy); }
-    g.strokeStyle=GRAPHITE; g.globalAlpha=rnd(.05,.13); g.lineWidth=rnd(.8,1.5); g.stroke();
-  }
-  for(let k=0;k<5;k++){ const kx=rnd(L+200,L+W-200), ky=rnd(T+120,T+H-120); for(let r=0;r<4;r++){ g.beginPath(); g.ellipse(kx,ky,18+r*16,5+r*6,0,0,6.28); g.globalAlpha=.12-r*.02; g.lineWidth=1.1; g.stroke(); } }
-  g.restore(); g.globalAlpha=1;
-  // outline + front edge band
-  const ov=10;
-  pline(g,L-ov,T,L+W+ov,T,{w:1.8,a:.75}); pline(g,L-ov,T+H,L+W+ov,T+H,{w:2,a:.8});
-  pline(g,L,T-ov,L,T+H+ov,{w:1.8,a:.75}); pline(g,L+W,T-ov,L+W,T+H+ov,{w:1.8,a:.75});
-  const band=42; pline(g,L-4,T+H+band,L+W+4,T+H+band,{w:1.6,a:.6});
-  pline(g,L,T+H,L,T+H+band,{a:.6}); pline(g,L+W,T+H,L+W,T+H+band,{a:.6});
-  for(let x=L+6;x<L+W;x+=7) pline(g,x,T+H+4,x-10,T+H+band-3,{w:.9,a:.28,passes:1,jit:.6});
-  // legs, just their tops below the front band
-  [[L+40],[L+W-80]].forEach(([lx])=>{ pline(g,lx,T+H+band,lx,T+H+band+120,{a:.55}); pline(g,lx+40,T+H+band,lx+40,T+H+band+110,{a:.55});
-    for(let y=T+H+band+6;y<T+H+band+110;y+=8) pline(g,lx+2,y,lx+38,y+6,{w:.8,a:.22,passes:1,jit:.5}); });
-  // coffee ring
-  g.strokeStyle="rgba(150,108,66,.22)"; g.lineWidth=7;
-  for(let s=0;s<3;s++){ g.beginPath(); const a0=rnd(6.28); g.arc(L+W-170+rnd(-3,3),T+150+rnd(-3,3),58,a0,a0+rnd(3.6,5.8)); g.stroke(); }
-  g.lineWidth=2; g.strokeStyle="rgba(150,108,66,.18)"; g.beginPath(); g.arc(L+W-172,T+152,50,0,6.28); g.stroke();
-  // a pencil lying on the desk
-  g.save(); g.translate(L+190, T+H-150); g.rotate(-.18);
-  pline(g,0,0,300,0,{a:.7}); pline(g,0,18,300,18,{a:.7}); pline(g,0,9,300,9,{w:.8,a:.3,passes:1});
-  pline(g,300,0,345,9,{a:.7}); pline(g,300,18,345,9,{a:.7}); for(let i=0;i<6;i++) pline(g,305+i*6,3+i,305+i*6,15-i,{w:.8,a:.35,passes:1});
-  g.fillStyle=GRAPHITE; g.globalAlpha=.7; g.beginPath(); g.moveTo(334,6.5); g.lineTo(345,9); g.lineTo(334,11.5); g.fill(); g.globalAlpha=1;
-  pline(g,-24,0,0,0,{a:.6}); pline(g,-24,18,0,18,{a:.6}); pline(g,-24,0,-24,18,{a:.6});
-  for(let i=0;i<5;i++) pline(g,-20+i*4,1,-20+i*4,17,{w:.8,a:.3,passes:1});
-  g.restore();
-  // dog bed
-  { const bx=wx(BED.x), by=wz(BED.z); g.save(); g.translate(bx,by);
-    g.fillStyle="rgba(70,50,30,.09)"; g.beginPath(); g.ellipse(14,16,98,62,0,0,6.28); g.fill();
-    g.fillStyle="rgba(196,102,63,.13)"; g.beginPath(); g.ellipse(0,0,92,58,0,0,6.28); g.fill();
-    sketchEllipse(g,0,0,92,58,{a:.75,w:1.8}); sketchEllipse(g,0,2,80,49,{a:.45});
-    g.fillStyle="rgba(196,102,63,.16)"; g.beginPath(); g.ellipse(0,6,60,34,0,0,6.28); g.fill(); sketchEllipse(g,0,6,60,34,{a:.5});
-    for(let a=0;a<6.28;a+=.085){ pline(g,Math.cos(a)*64,Math.sin(a)*38+5,Math.cos(a)*84,Math.sin(a)*51+1,{w:.8,a:.2,passes:1,jit:.5}); }
-    g.font="600 32px Caveat, cursive"; g.fillStyle=GRAPHITE; g.globalAlpha=.75; g.fillText("Idli",-24,100); g.globalAlpha=1; g.restore(); }
-  // treat jar, open glass, seen from above
-  { const jx=wx(JAR.x), jy=wz(JAR.z); g.save(); g.translate(jx,jy);
-    g.fillStyle="rgba(70,50,30,.10)"; g.beginPath(); g.ellipse(16,18,66,62,0,0,6.28); g.fill();
-    g.fillStyle="rgba(169,188,211,.22)"; g.beginPath(); g.arc(0,0,64,0,6.28); g.fill();
-    sketchEllipse(g,0,0,64,64,{a:.8,w:1.8}); sketchEllipse(g,0,0,54,54,{a:.45});
-    g.strokeStyle="rgba(255,255,255,.8)"; g.lineWidth=4; g.beginPath(); g.arc(0,0,58,3.6,4.4); g.stroke();
-    pencilBone(g,-14,-10,.5); pencilBone(g,16,8,-.4); pencilBone(g,-6,22,1.4);
-    g.restore(); }
-  // warm lamp light from the top left, darker toward the edges
-  g.globalCompositeOperation="multiply";
-  const lg=g.createRadialGradient(c.width*.36,c.height*.34,120,c.width*.5,c.height*.5,c.width*.62);
-  lg.addColorStop(0,"#fffaf0"); lg.addColorStop(.55,"#f6efe2"); lg.addColorStop(1,"#d9cfbd");
-  g.fillStyle=lg; g.fillRect(0,0,c.width,c.height); g.globalCompositeOperation="source-over";
-  return c;
+
+/* ---------- procedural ash veneer ---------- */
+const PERM = new Uint8Array(512); { const a=[...Array(256).keys()]; for(let i=255;i>0;i--){ const j=Math.random()*(i+1)|0; [a[i],a[j]]=[a[j],a[i]]; } for(let i=0;i<512;i++) PERM[i]=a[i&255]; }
+function vnoise(x,y){ const xi=Math.floor(x), yi=Math.floor(y), xf=x-xi, yf=y-yi;
+  const h=(a,b)=>PERM[(PERM[a&255]+b)&255]/255, u=xf*xf*(3-2*xf), v=yf*yf*(3-2*yf);
+  const a=h(xi,yi), b=h(xi+1,yi), c=h(xi,yi+1), d=h(xi+1,yi+1); return a+(b-a)*u+(c-a)*v+(a-b-c+d)*u*v; }
+const fbm = (x,y) => vnoise(x,y)*.55 + vnoise(x*2.1,y*2.1)*.28 + vnoise(x*4.3,y*4.3)*.17;
+function woodCanvas(W,H){
+  // a solid-wood stave top: long strips glued side by side, each with its own tone and grain
+  const c=mkCanvas(W,H), g=c.getContext("2d"), img=g.createImageData(W,H), d=img.data;
+  const bump=mkCanvas(W,H), bg=bump.getContext("2d"), bimg=bg.createImageData(W,H), bd=bimg.data;
+  const STR=8, base=[216,186,146], dark=[166,124,82], light=[230,206,170];
+  const SP=[...Array(STR)].map(()=>({tone:rnd(-.12,.12), ph:rnd(10), f:rnd(5,9), warp:rnd(.6,1.6), cx:rnd(.1,.9), arc:rnd(0,1.4), len:rnd(.5,.9)}));
+  const offs=[...Array(STR)].map(()=>rnd(0,1)); // stave end joints along the length
+  for(let y=0;y<H;y++){ const ny=y/H, sy=ny*STR, si=Math.min(STR-1,Math.floor(sy)), loc=sy-si, P=SP[si];
+    for(let x=0;x<W;x++){ const nx=x/W;
+      const cath = P.arc*Math.exp(-Math.pow((nx-P.cx)/.18,2))*(1-Math.abs(loc-.5)*1.6);
+      const t = loc*P.f + fbm(nx*1.1+si*7.3, loc*1.4+si)*P.warp + cath + P.ph;
+      const ring = t - Math.floor(t);
+      const late = Math.exp(-ring*8)*.75 + Math.exp(-(1-ring)*26)*.2;
+      const fiber = (vnoise(nx*2.2+si*5, loc*90+si*13)-.5)*.34 + (vnoise(nx*9+si, loc*240)-.5)*.16;
+      const cloud = (fbm(nx*2+si, loc*1.2+si*2)-.5)*.3;
+      let k = late*.5 + fiber + cloud*.5 + .14 + P.tone;
+      const seam = loc<.004||loc>.996 ? .55 : 0;
+      k = Math.max(0, Math.min(1, k + seam));
+      const lk = Math.max(0, -P.tone)*1.2 + Math.max(0,-cloud)*.3;
+      const i=(y*W+x)*4;
+      for(let ch=0;ch<3;ch++) d[i+ch] = Math.max(0, Math.min(255, base[ch] + (dark[ch]-base[ch])*k + (light[ch]-base[ch])*lk));
+      d[i+3]=255;
+      const bv = 150 - k*100 + fiber*50 - (seam?90:0); bd[i]=bd[i+1]=bd[i+2]=bv; bd[i+3]=255;
+    }}
+  g.putImageData(img,0,0); bg.putImageData(bimg,0,0);
+  return {c, bump};
+}
+function concreteCanvas(){ const c=mkCanvas(512,512), g=c.getContext("2d"), img=g.createImageData(512,512), d=img.data;
+  for(let y=0;y<512;y++) for(let x=0;x<512;x++){ const v=206 + (fbm(x/90,y/90)-.5)*22 + (Math.random()-.5)*8; const i=(y*512+x)*4; d[i]=v; d[i+1]=v-3; d[i+2]=v-8; d[i+3]=255; }
+  g.putImageData(img,0,0); return c; }
+
+/* ---------- the room ---------- */
+const TABLE_W=20.5, TABLE_D=12.6, TOP_T=.5, LEG_H=12;
+const BED={x:-3.1,z:4.5}, JAR={x:3.6,z:-4.45}, MUG={x:8.1,z:-4.1};
+const wood = woodCanvas(1500, 920);
+const woodMap = srgb(new THREE.CanvasTexture(wood.c)); woodMap.anisotropy = 8;
+const woodBump = new THREE.CanvasTexture(wood.bump);
+const woodMat = new THREE.MeshStandardMaterial({map:woodMap, bumpMap:woodBump, bumpScale:.012, roughness:.62, metalness:0});
+const edgeWood = new THREE.MeshStandardMaterial({color:lin("#c9a576"), roughness:.7});
+const top = new THREE.Mesh(new THREE.BoxGeometry(TABLE_W, TOP_T, TABLE_D), [edgeWood, edgeWood, woodMat, edgeWood, edgeWood, edgeWood]);
+top.position.y = -TOP_T/2; top.receiveShadow = true; top.castShadow = true; scene.add(top);
+const legMat = new THREE.MeshStandardMaterial({color:lin("#cfae80"), roughness:.65});
+[[-1,-1],[1,-1],[-1,1],[1,1]].forEach(([sx,sz])=>{
+  const leg = new THREE.Mesh(new THREE.CylinderGeometry(.36,.3,LEG_H,24), legMat);
+  leg.position.set(sx*(TABLE_W/2-1.1), -TOP_T-LEG_H/2, sz*(TABLE_D/2-1.1)); leg.castShadow=true; scene.add(leg); });
+const floorTex = srgb(new THREE.CanvasTexture(concreteCanvas())); floorTex.wrapS=floorTex.wrapT=THREE.RepeatWrapping; floorTex.repeat.set(14,14);
+const floor = new THREE.Mesh(new THREE.PlaneGeometry(240,240), new THREE.MeshStandardMaterial({map:floorTex, roughness:.95}));
+floor.rotation.x=-Math.PI/2; floor.position.y=-TOP_T-LEG_H; floor.receiveShadow=true; scene.add(floor);
+
+/* pixel art: Idli the dachshund, a treat and a heart */
+const PIX = {
+  walkA:["................","..BKBB..........",".KBBBBBEE......T","BBBBBBBEE.....T.","....BBBEEBBBBBB.","....BBBEEBBBBBBB","....BBBBBBBBBBBB","....BB.......BB.","....BB.......BB.","................"],
+  walkB:["................","..BKBB..........",".KBBBBBEE......T","BBBBBBBEE.....T.","....BBBEEBBBBBB.","....BBBEEBBBBBBB","....BBBBBBBBBBBB",".....BB.....BB..","......B......B..","................"],
+  sleep:["............ZZZ.",".............Z..","............ZZZ.","................","..BBBB..........",".KBBBBBEE.......","BBBBBBBEEBBBBBBT","....BBBEEBBBBBBT","....BBBBBBBBBBBB","................"],
+  eatA: ["................","................","...............T","..BKBB........T.",".KBBBBBEEBBBBBB.","BBBBBBBEEBBBBBBB","....BBBBBBBBBBBB","....BB.......BB.","....BB.......BB.","................"],
+  eatB: ["................","................","...............T","..BKBB........T.",".KBBBBBEEBBBBBB.","BB.BBBBEEBBBBBBB","....BBBBBBBBBBBB","....BB.......BB.","....BB.......BB.","................"],
+  happyA:["...............T","..BBBB........T.",".KBBBBBEE.....T.","BBBBBBBEE.......","....BBBEEBBBBBB.","....BBBEEBBBBBBB","....BBBBBBBBBBBB","....BB.......BB.","....BB.......BB.","................"],
+  happyB:["................","..BBBB..........",".KBBBBBEE.......","BBBBBBBEE......T","....BBBEEBBBBBBT","....BBBEEBBBBBBB","....BBBBBBBBBBBB","....BB.......BB.","....BB.......BB.","................"],
+  heart:[".HH.HH.","HHHHHHH","HHHHHHH",".HHHHH.","..HHH..","...H..."],
+  bone: [".OO....OO.","OWWOOOOWWO",".OWWWWWWO.","OWWOOOOWWO",".OO....OO."]
+};
+const PCOL = {B:"#94513a", K:"#222222", E:"#222222", T:"#94513a", Z:"#8a857b", H:"#d24b3c", W:"#f3e7cc", O:"#4a4741"};
+function pixCanvas(rows, sc=1){ const w=rows[0].length, h=rows.length, c=mkCanvas(w*sc,h*sc), g=c.getContext("2d");
+  rows.forEach((r,y)=>[...r].forEach((ch,x)=>{ if(PCOL[ch]){ g.fillStyle=PCOL[ch]; g.fillRect(x*sc,y*sc,sc,sc);} })); return c; }
+function pixTex(rows){ const t=new THREE.CanvasTexture(pixCanvas(rows)); t.magFilter=THREE.NearestFilter; t.minFilter=THREE.NearestFilter; t.generateMipmaps=false; return t; }
+const PT={}; ["walkA","walkB","sleep","eatA","eatB","happyA","happyB"].forEach(k=>PT[k]=pixTex(PIX[k]));
+PURL = {}; ["walkA","walkB","sleep","happyA","happyB","bone","heart"].forEach(k=>PURL[k]=pixCanvas(PIX[k],4).toDataURL());
+const BONE_CURSOR = `url(${pixCanvas(PIX.bone,3).toDataURL()}) 15 7, crosshair`;
+
+
+/* ---------- voxels from pixel art ---------- */
+const VOX = new THREE.BoxGeometry(1,1,1);
+function voxelStanding(rows, v=.085, depth=4){
+  const cells=[]; rows.forEach((r,y)=>[...r].forEach((ch,x)=>{ if(PCOL[ch]) cells.push([x,y,ch]); }));
+  const feet = Math.max(...cells.filter(c=>c[2]!=="Z").map(c=>c[1]));
+  const W = rows[0].length;
+  const im = new THREE.InstancedMesh(VOX, new THREE.MeshStandardMaterial({roughness:.72}), cells.length*depth);
+  const m=new THREE.Matrix4(), col=new THREE.Color(); let k=0;
+  cells.forEach(([x,y,ch])=>{ for(let dz=0; dz<depth; dz++){
+    m.makeScale(v,v,v).setPosition((x-W/2+.5)*v, (feet-y)*v+v/2, (dz-(depth-1)/2)*v);
+    im.setMatrixAt(k,m);
+    const outer = dz===0 || dz===depth-1;
+    const c = (ch==="K"||ch==="E") && !outer ? PCOL.B : PCOL[ch];
+    im.setColorAt(k, col.set(c).convertSRGBToLinear()); k++; } });
+  im.castShadow=true; im.receiveShadow=true; return im;
+}
+function voxelFlat(rows, v=.065, layers=2, colour="#ecdcbc"){
+  const cells=[]; rows.forEach((r,z)=>[...r].forEach((ch,x)=>{ if(PCOL[ch]) cells.push([x,z]); }));
+  const W=rows[0].length, H=rows.length;
+  const im = new THREE.InstancedMesh(VOX, new THREE.MeshStandardMaterial({color:lin(colour), roughness:.6}), cells.length*layers);
+  const m=new THREE.Matrix4(); let k=0;
+  cells.forEach(([x,z])=>{ for(let ly=0;ly<layers;ly++){ m.makeScale(v,v,v).setPosition((x-W/2+.5)*v, ly*v+v/2, (z-H/2+.5)*v); im.setMatrixAt(k++,m); } });
+  im.castShadow=true; im.receiveShadow=true; return im;
 }
 
-/* page edges and pencil shadow */
-function edgeTex(){ const c=mkCanvas(256,64), g=c.getContext("2d"); g.fillStyle="#efe8d8"; g.fillRect(0,0,256,64);
-  for(let y=4;y<64;y+=2.2){ g.fillStyle=`rgba(120,105,80,${rnd(.08,.2)})`; g.fillRect(0,y,256,.8); } return new THREE.CanvasTexture(c); }
-function shadowTex(){
-  const c=mkCanvas(256,320), g=c.getContext("2d");
-  for(let i=-320;i<320;i+=6) pline(g,i,320,i+320,0,{w:1.6,a:.55,passes:1,jit:1});
-  g.globalCompositeOperation="destination-in";
-  const gr=g.createRadialGradient(128,160,40,128,160,170); gr.addColorStop(0,"rgba(0,0,0,.6)"); gr.addColorStop(.6,"rgba(0,0,0,.4)"); gr.addColorStop(1,"rgba(0,0,0,0)");
-  g.fillStyle=gr; g.fillRect(0,0,256,320);
-  return new THREE.CanvasTexture(c);
-}
+/* ---------- props: dog bed, treat jar, mug, pencil ---------- */
+{ const g=new THREE.Group(); g.position.set(BED.x,0,BED.z);
+  const felt = new THREE.MeshStandardMaterial({color:lin("#8f8a84"), roughness:1});
+  const bol = new THREE.Mesh(new THREE.TorusGeometry(.95,.25,20,56), felt); bol.rotation.x=Math.PI/2; bol.scale.set(1,.74,1); bol.position.y=.25;
+  const cush = new THREE.Mesh(new THREE.CylinderGeometry(.92,.95,.16,48), new THREE.MeshStandardMaterial({color:lin("#cdbb9e"), roughness:1})); cush.scale.z=.74; cush.position.y=.08;
+  [bol,cush].forEach(o=>{ o.castShadow=true; o.receiveShadow=true; g.add(o); }); scene.add(g); }
+{ const g=new THREE.Group(); g.position.set(JAR.x,0,JAR.z);
+  const glass = new THREE.MeshStandardMaterial({color:lin("#e4edf0"), roughness:.06, metalness:0, transparent:true, opacity:.24, side:THREE.DoubleSide, depthWrite:false});
+  const wall = new THREE.Mesh(new THREE.CylinderGeometry(.56,.56,1.2,48,1,true), glass); wall.position.y=.6; wall.renderOrder=5;
+  const base = new THREE.Mesh(new THREE.CylinderGeometry(.56,.56,.07,48), new THREE.MeshStandardMaterial({color:lin("#dfe8ea"), roughness:.1, transparent:true, opacity:.5})); base.position.y=.035;
+  const rim = new THREE.Mesh(new THREE.TorusGeometry(.56,.028,10,48), new THREE.MeshStandardMaterial({color:lin("#eef4f5"), roughness:.05, transparent:true, opacity:.7})); rim.rotation.x=Math.PI/2; rim.position.y=1.2;
+  g.add(wall, base, rim);
+  [[-.12,.08,.1,.4],[.14,.14,-.08,-.5],[0,.26,.04,1.3]].forEach(([x,y,z,r])=>{ const b=voxelFlat(PIX.bone,.05,2); b.position.set(x,y,z); b.rotation.set(rnd(-.4,.4),r,rnd(-.3,.3)); g.add(b); });
+  scene.add(g); }
+{ const g=new THREE.Group(); g.position.set(MUG.x,0,MUG.z);
+  const ceramic = new THREE.MeshStandardMaterial({color:lin("#f2efe9"), roughness:.32});
+  const body = new THREE.Mesh(new THREE.CylinderGeometry(.5,.46,1,40), ceramic); body.position.y=.5;
+  const coffee = new THREE.Mesh(new THREE.CircleGeometry(.44,40), new THREE.MeshStandardMaterial({color:lin("#4a2c1b"), roughness:.15})); coffee.rotation.x=-Math.PI/2; coffee.position.y=1.006;
+  const handle = new THREE.Mesh(new THREE.TorusGeometry(.24,.07,12,24,Math.PI*1.2), ceramic); handle.position.set(.55,.52,0); handle.rotation.z=-Math.PI*.6;
+  [body,handle].forEach(o=>{ o.castShadow=true; o.receiveShadow=true; }); g.add(body,coffee,handle); g.rotation.y=.6; scene.add(g); }
+{ const g=new THREE.Group(); g.position.set(-7.3,.09,4.6); g.rotation.y=.25;
+  const hexa = new THREE.Mesh(new THREE.CylinderGeometry(.09,.09,3,6), new THREE.MeshStandardMaterial({color:lin("#e3b32a"), roughness:.45}));
+  const tipW = new THREE.Mesh(new THREE.ConeGeometry(.09,.34,6), new THREE.MeshStandardMaterial({color:lin("#e6cda4"), roughness:.8})); tipW.position.y=1.67;
+  const lead = new THREE.Mesh(new THREE.ConeGeometry(.03,.1,8), new THREE.MeshStandardMaterial({color:lin("#2b2b2b"), roughness:.4})); lead.position.y=1.8;
+  const ferr = new THREE.Mesh(new THREE.CylinderGeometry(.095,.095,.16,16), new THREE.MeshStandardMaterial({color:lin("#b9b6ae"), roughness:.25, metalness:.8})); ferr.position.y=-1.58;
+  const eras = new THREE.Mesh(new THREE.CylinderGeometry(.09,.09,.16,16), new THREE.MeshStandardMaterial({color:lin("#e48a86"), roughness:.9})); eras.position.y=-1.74;
+  const p=new THREE.Group(); p.add(hexa,tipW,lead,ferr,eras); p.rotation.z=Math.PI/2; p.children.forEach(o=>o.castShadow=true); g.add(p); scene.add(g); }
 
+/* ---------- books ---------- */
+function edgeTex(){ const c=mkCanvas(256,64), g=c.getContext("2d"); g.fillStyle="#f1eadb"; g.fillRect(0,0,256,64);
+  for(let y=3;y<64;y+=2.1){ g.fillStyle=`rgba(120,105,80,${rnd(.08,.22)})`; g.fillRect(0,y,256,.8); } return srgb(new THREE.CanvasTexture(c)); }
 /* covers: 640 x 880, matching a 3.2 x 4.4 board */
 function cloth(g,col){
   g.fillStyle=col; g.fillRect(0,0,640,880);
@@ -814,63 +875,39 @@ async function drawCover(b, c){
   }
 }
 
-/* books */
 const books = [];
-const edgeT = edgeTex(), shT = shadowTex();
+const edgeT = edgeTex();
 const BW=3.2, BH=.32, BD=4.4;
 BOOKS.forEach((b,i)=>{
   const coverC = mkCanvas(640,880); const cg=coverC.getContext("2d"); cg.fillStyle=b.color; cg.fillRect(0,0,640,880);
-  const coverT = new THREE.CanvasTexture(coverC); coverT.anisotropy = 4;
-  const spine = new THREE.MeshLambertMaterial({color:new THREE.Color(b.color).multiplyScalar(.82)});
-  const edge = new THREE.MeshLambertMaterial({map:edgeT});
-  const mats=[edge, spine, new THREE.MeshLambertMaterial({map:coverT}), spine, edge, edge];
-  const mesh=new THREE.Mesh(new THREE.BoxGeometry(BW,BH,BD), mats);
+  const coverT = srgb(new THREE.CanvasTexture(coverC)); coverT.anisotropy = 8;
+  const board = new THREE.MeshStandardMaterial({color:lin(b.color).multiplyScalar(.86), roughness:.85});
+  const edge = new THREE.MeshStandardMaterial({map:edgeT, roughness:.9});
+  const mats=[edge, board, new THREE.MeshStandardMaterial({map:coverT, roughness:.82}), board, edge, edge];
+  const mesh=new THREE.Mesh(new THREE.BoxGeometry(BW,BH,BD), mats); mesh.castShadow=true; mesh.receiveShadow=true;
   const group=new THREE.Group(); group.add(mesh); scene.add(group);
-  const shadow=new THREE.Mesh(new THREE.PlaneGeometry(BW*1.25,BD*1.18), new THREE.MeshBasicMaterial({map:shT, transparent:true, depthWrite:false, opacity:.55}));
-  shadow.rotation.x=-Math.PI/2; scene.add(shadow);
-  mesh.userData.book = b.id;
-  books.push({id:b.id, data:b, group, mesh, shadow, coverC, coverT, tx:0, tz:0, baseY:BH/2, lift:0, hover:0, tiltX:0, tiltZ:0, force:null, order:i});
+  books.push({id:b.id, data:b, group, mesh, coverC, coverT, tx:0, tz:0, baseY:BH/2, tiltX:0, tiltZ:0, force:null, order:i});
 });
 
-/* pixel art: Idli the dachshund, a treat and a heart */
-const PIX = {
-  walkA:["................","..BKBB..........",".KBBBBBEE......T","BBBBBBBEE.....T.","....BBBEEBBBBBB.","....BBBEEBBBBBBB","....BBBBBBBBBBBB","....BB.......BB.","....BB.......BB.","................"],
-  walkB:["................","..BKBB..........",".KBBBBBEE......T","BBBBBBBEE.....T.","....BBBEEBBBBBB.","....BBBEEBBBBBBB","....BBBBBBBBBBBB",".....BB.....BB..","......B......B..","................"],
-  sleep:["............ZZZ.",".............Z..","............ZZZ.","................","..BBBB..........",".KBBBBBEE.......","BBBBBBBEEBBBBBBT","....BBBEEBBBBBBT","....BBBBBBBBBBBB","................"],
-  eatA: ["................","................","...............T","..BKBB........T.",".KBBBBBEEBBBBBB.","BBBBBBBEEBBBBBBB","....BBBBBBBBBBBB","....BB.......BB.","....BB.......BB.","................"],
-  eatB: ["................","................","...............T","..BKBB........T.",".KBBBBBEEBBBBBB.","BB.BBBBEEBBBBBBB","....BBBBBBBBBBBB","....BB.......BB.","....BB.......BB.","................"],
-  happyA:["...............T","..BBBB........T.",".KBBBBBEE.....T.","BBBBBBBEE.......","....BBBEEBBBBBB.","....BBBEEBBBBBBB","....BBBBBBBBBBBB","....BB.......BB.","....BB.......BB.","................"],
-  happyB:["................","..BBBB..........",".KBBBBBEE.......","BBBBBBBEE......T","....BBBEEBBBBBBT","....BBBEEBBBBBBB","....BBBBBBBBBBBB","....BB.......BB.","....BB.......BB.","................"],
-  heart:[".HH.HH.","HHHHHHH","HHHHHHH",".HHHHH.","..HHH..","...H..."],
-  bone: [".OO....OO.","OWWOOOOWWO",".OWWWWWWO.","OWWOOOOWWO",".OO....OO."]
-};
-const PCOL = {B:"#94513a", K:"#222222", E:"#222222", T:"#94513a", Z:"#8a857b", H:"#d24b3c", W:"#f3e7cc", O:"#4a4741"};
-function pixCanvas(rows, sc=1){ const w=rows[0].length, h=rows.length, c=mkCanvas(w*sc,h*sc), g=c.getContext("2d");
-  rows.forEach((r,y)=>[...r].forEach((ch,x)=>{ if(PCOL[ch]){ g.fillStyle=PCOL[ch]; g.fillRect(x*sc,y*sc,sc,sc);} })); return c; }
-function pixTex(rows){ const t=new THREE.CanvasTexture(pixCanvas(rows)); t.magFilter=THREE.NearestFilter; t.minFilter=THREE.NearestFilter; t.generateMipmaps=false; return t; }
-const PT={}; ["walkA","walkB","sleep","eatA","eatB","happyA","happyB"].forEach(k=>PT[k]=pixTex(PIX[k]));
-PURL = {}; ["walkA","walkB","sleep","happyA","happyB","bone","heart"].forEach(k=>PURL[k]=pixCanvas(PIX[k],4).toDataURL());
-const BONE_CURSOR = `url(${pixCanvas(PIX.bone,3).toDataURL()}) 15 7, crosshair`;
-
-const petMat = new THREE.MeshBasicMaterial({map:PT.sleep, transparent:true, alphaTest:.5});
-const pet = new THREE.Mesh(new THREE.PlaneGeometry(1.36,.85), petMat);
-pet.rotation.x=-Math.PI/2; pet.position.set(BED.x,.03,BED.z+.05); scene.add(pet);
-const boneMesh = new THREE.Mesh(new THREE.PlaneGeometry(.62,.31), new THREE.MeshBasicMaterial({map:pixTex(PIX.bone), transparent:true, alphaTest:.5}));
-boneMesh.rotation.x=-Math.PI/2; boneMesh.visible=false; scene.add(boneMesh);
-const heartTex = pixTex(PIX.heart), hearts=[];
-function spawnHeart(){ const m=new THREE.Mesh(new THREE.PlaneGeometry(.36,.31), new THREE.MeshBasicMaterial({map:heartTex, transparent:true, depthWrite:false, alphaTest:.05}));
-  m.rotation.x=-Math.PI/2; m.position.set(pet.position.x+rnd(-.35,.35), .6, pet.position.z-.35); scene.add(m); hearts.push({m,life:1}); }
+/* ---------- Idli, as a little voxel toy ---------- */
+const pet = new THREE.Group(); scene.add(pet);
+const FRAMES = {}; ["walkA","walkB","sleep","eatA","eatB","happyA","happyB"].forEach(k=>{ FRAMES[k]=voxelStanding(PIX[k]); FRAMES[k].visible=false; pet.add(FRAMES[k]); });
+let shown = null; function show(k){ if(shown===k) return; if(shown) FRAMES[shown].visible=false; FRAMES[k].visible=true; shown=k; }
+show("sleep");
+const petHit = new THREE.Mesh(new THREE.BoxGeometry(1.5,.95,.7), new THREE.MeshBasicMaterial({transparent:true, opacity:0, depthWrite:false}));
+petHit.position.y=.45; pet.add(petHit);
+pet.position.set(BED.x,.16,BED.z);
+const boneMesh = voxelFlat(PIX.bone,.07,2); boneMesh.visible=false; scene.add(boneMesh);
+const heartTex = new THREE.CanvasTexture(pixCanvas(PIX.heart,8)); heartTex.magFilter=THREE.NearestFilter; srgb(heartTex);
+const hearts=[];
+function spawnHeart(){ const s=new THREE.Sprite(new THREE.SpriteMaterial({map:heartTex, transparent:true, depthWrite:false}));
+  s.scale.set(.34,.29,1); s.position.set(pet.position.x+rnd(-.35,.35), pet.position.y+.95, pet.position.z+rnd(-.1,.1)); scene.add(s); hearts.push({s,life:1}); }
 const P = {state:"bed", tx:BED.x, tz:BED.z, timer:6, dir:-1, hop:0, held:false, heartT:0};
-
-/* desk mesh */
-const deskT = new THREE.CanvasTexture(drawDesk()); deskT.anisotropy = 8;
-const desk = new THREE.Mesh(new THREE.PlaneGeometry(DESK_W,DESK_D), new THREE.MeshBasicMaterial({map:deskT}));
-desk.rotation.x=-Math.PI/2; scene.add(desk);
 
 /* layout & camera fit */
 function fit(){
   const w=innerWidth, h=innerHeight;
-  if(renderer){ renderer.setPixelRatio(Math.min(devicePixelRatio||1,2)); renderer.setSize(w,h,false); renderer.setClearColor(PAPER,1); }
+  if(renderer){ renderer.setPixelRatio(Math.min(devicePixelRatio||1,2)); renderer.setSize(w,h,false);  }
   camera.aspect=w/h; portrait = w/h < .9; S = portrait ? .78 : 1;
   const need = portrait ? {W:9.6,H:16.2} : {W:21,H:13.6};
   const t=Math.tan(camera.fov*Math.PI/360);
@@ -879,9 +916,8 @@ function fit(){
   bounds = { x: Math.min(TABLE_W/2-1.5*S, visW/2-1.3*S), z: Math.min(TABLE_D/2-1.7*S, visH/2-2.0*S) };
   if(!reading){ camera.position.copy(target).addScaledVector(DIR,camDist); camera.lookAt(target); }
   camera.updateProjectionMatrix();
-  books.forEach(B=>{ B.group.scale.setScalar(S); B.shadow.scale.setScalar(S); });
-  pet.scale.setScalar(portrait?.85:1);
-  needRender=true;
+  books.forEach(B=>B.group.scale.setScalar(S));
+  petScale = portrait ? .85 : 1;
 }
 function place(){
   const L = portrait
@@ -918,14 +954,14 @@ function setTreatMode(on){
 }
 jarBtn.addEventListener("click", ()=>setTreatMode(!treatMode));
 function dropTreat(x,z){
-  const [cx,cz]=clampB(x,z); boneMesh.position.set(cx,.025,cz); boneMesh.scale.setScalar(1); boneMesh.visible=true;
+  const [cx,cz]=clampB(x,z); boneMesh.position.set(cx,0,cz); boneMesh.rotation.y=rnd(6.28); boneMesh.scale.setScalar(1); boneMesh.visible=true;
   PD.treats--; savePD(); setTreatMode(false); say("Idli has spotted it", 2500);
   P.held=false; P.hop=1; const side = pet.position.x > cx ? .5 : -.5; P.tx=cx+side; P.tz=cz; P.state="fetch";
 }
 canvas.addEventListener("pointerdown", e=>{
   if(reading) return; pick(e);
-  if(ray.ray.intersectPlane(plane,hit) && Math.hypot(hit.x-JAR.x, hit.z-JAR.z) < .8){ setTreatMode(!treatMode); return; }
-  const onPet = ray.intersectObject(pet).length>0;
+  if(ray.ray.intersectPlane(plane,hit) && Math.hypot(hit.x-JAR.x, hit.z-JAR.z) < .75){ setTreatMode(!treatMode); return; }
+  const onPet = ray.intersectObject(petHit).length>0;
   const B=bookHit();
   if(treatMode && !B){ dropTreat(hit.x, hit.z); return; }
   if(onPet && !B && P.state!=="eat"){ P.held=true; P.state="happy"; P.heartT=0; canvas.setPointerCapture(e.pointerId); say("she likes that", 2500); return; }
@@ -941,12 +977,12 @@ canvas.addEventListener("pointermove", e=>{
       drag.B.tiltZ = Math.max(-.12,Math.min(.12,(hit.x-drag.lx)*-.5)); drag.B.tiltX = Math.max(-.12,Math.min(.12,(hit.z-drag.lz)*.5));
       drag.lx=hit.x; drag.lz=hit.z; drag.B.tx=x; drag.B.tz=z;
     }
-    needRender=true; return;
+     return;
   }
-  const B=bookHit(); const overPet = !B && ray.intersectObject(pet).length>0;
-  if(B!==hovered){ hovered=B; needRender=true; }
+  const B=bookHit(); const overPet = !B && ray.intersectObject(petHit).length>0;
+  if(B!==hovered){ hovered=B;  }
   mouse.x = e.clientX/innerWidth*2-1; mouse.y = e.clientY/innerHeight*2-1;
-  const overJar = ray.ray.intersectPlane(plane,hit) && Math.hypot(hit.x-JAR.x, hit.z-JAR.z) < .8;
+  const overJar = ray.ray.intersectPlane(plane,hit) && Math.hypot(hit.x-JAR.x, hit.z-JAR.z) < .75;
   canvas.style.cursor = treatMode ? BONE_CURSOR : B ? "grab" : (overPet||overJar) ? "pointer" : "default";
 });
 function dropDrag(e){
@@ -954,14 +990,14 @@ function dropDrag(e){
   if(!drag) return;
   const d=drag; drag=null; canvas.style.cursor="grab";
   if(!d.moved && performance.now()-d.t < 450){ openBook(d.B.id); return; }
-  restack(); needRender=true;
+  restack(); 
 }
 canvas.addEventListener("pointerup", dropDrag); canvas.addEventListener("pointercancel", dropDrag);
 document.querySelectorAll(".shelf button").forEach(b=>b.addEventListener("click",()=>openBook(b.dataset.book)));
 
 /* tween helper */
 function tween(ms, fn, done){ if(REDUCED||ms<=0){ fn(1); done&&done(); return; } const t0=performance.now();
-  const step=now=>{ const t=Math.min(1,(now-t0)/ms), e=t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2; fn(e); needRender=true; t<1?requestAnimationFrame(step):(done&&done()); }; requestAnimationFrame(step); }
+  const step=now=>{ const t=Math.min(1,(now-t0)/ms), e=t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2; fn(e);  t<1?requestAnimationFrame(step):(done&&done()); }; requestAnimationFrame(step); }
 let tweening=false;
 function openBook(id){
   if(reading) return; reading=true;
@@ -984,16 +1020,28 @@ function closeBook(){
   const p0=camera.position.clone(), p1=target.clone().addScaledVector(DIR,camDist);
   const look0=new THREE.Vector3(B.tx,0,B.tz), look=new THREE.Vector3(); const f0=B.force ?? B.baseY;
   tween(620, e=>{ camera.position.lerpVectors(p0,p1,e); look.lerpVectors(look0,target,e); camera.lookAt(look); B.force = f0+(B.baseY-f0)*e; },
-    ()=>{ B.force=null; tweening=false; reading=false; camera.lookAt(target); needRender=true; });
+    ()=>{ B.force=null; tweening=false; reading=false; camera.lookAt(target);  });
 }
 
 /* pet behaviour */
-function newPetTarget(){ P.tx=rnd(-bounds.x,bounds.x); P.tz=rnd(-bounds.z,bounds.z); }
+function inBook(x,z,pad=.6){ return books.some(B=>{ const g=B.group.position, th=B.group.rotation.y, dx=x-g.x, dz=z-g.z;
+  const lx=dx*Math.cos(th)-dz*Math.sin(th), lz=dx*Math.sin(th)+dz*Math.cos(th); return Math.abs(lx)<BW/2*S+pad && Math.abs(lz)<BD/2*S+pad; }); }
+function newPetTarget(){ for(let i=0;i<16;i++){ const x=rnd(-bounds.x,bounds.x), z=rnd(-bounds.z,bounds.z);
+  if(!inBook(x,z,.9) && Math.hypot(x-JAR.x,z-JAR.z)>1.3 && Math.hypot(x-MUG.x,z-MUG.z)>1.2){ P.tx=x; P.tz=z; return; } } P.tx=BED.x; P.tz=BED.z; }
+function keepOut(){
+  const p=pet.position;
+  books.forEach(B=>{ const g=B.group.position, th=B.group.rotation.y, dx=p.x-g.x, dz=p.z-g.z;
+    let lx=dx*Math.cos(th)-dz*Math.sin(th), lz=dx*Math.sin(th)+dz*Math.cos(th);
+    const hx=BW/2*S+.72, hz=BD/2*S+.4;
+    if(Math.abs(lx)<hx && Math.abs(lz)<hz){ if(hx-Math.abs(lx) < hz-Math.abs(lz)) lx=Math.sign(lx||1)*hx; else lz=Math.sign(lz||1)*hz;
+      p.x = g.x + lx*Math.cos(th) + lz*Math.sin(th); p.z = g.z - lx*Math.sin(th) + lz*Math.cos(th); } });
+  [[JAR,1.05],[MUG,.95]].forEach(([o,r])=>{ const dx=p.x-o.x, dz=p.z-o.z, d=Math.hypot(dx,dz); if(d<r && d>0){ p.x=o.x+dx/d*r; p.z=o.z+dz/d*r; } });
+}
 function updatePet(dt,time){
-  if(REDUCED){ petMat.map = PT.sleep; return; }
+  if(REDUCED){ show("sleep"); return; }
   if(drag && drag.moved && !P.held && P.state!=="eat"){
     const bx=drag.B.group.position.x, bz=drag.B.group.position.z, dx=pet.position.x-bx, dz=pet.position.z-bz, dd=Math.hypot(dx,dz)||1;
-    if(dd < 2.8*S && P.state!=="run"){ P.state="run"; P.hop=1; const [x,z]=clampB(pet.position.x+dx/dd*4.5, pet.position.z+dz/dd*4.5); P.tx=x; P.tz=z; }
+    if(dd < 3*S && P.state!=="run"){ P.state="run"; P.hop=1; const [x,z]=clampB(pet.position.x+dx/dd*4.5, pet.position.z+dz/dd*4.5); P.tx=x; P.tz=z; }
   }
   const moving = P.state==="walk"||P.state==="run"||P.state==="fetch"||P.state==="tobed";
   if(moving){
@@ -1003,32 +1051,34 @@ function updatePet(dt,time){
       if(P.state==="run"){ P.state="sit"; P.timer=1.4; }
       else if(P.state==="fetch"){ P.state="eat"; P.timer=1.8; P.dir = boneMesh.position.x>pet.position.x ? 1 : -1; }
       else if(P.state==="tobed"){ P.state="sleep"; P.timer=rnd(7,12); P.dir=-1; }
-      else { const r=Math.random(); if(r<.3){ P.state="tobed"; P.tx=BED.x; P.tz=BED.z+.05; } else if(r<.6){ P.state="sit"; P.timer=rnd(1,2.6); } else newPetTarget(); }
+      else { const r=Math.random(); if(r<.3){ P.state="tobed"; P.tx=BED.x; P.tz=BED.z; } else if(r<.6){ P.state="sit"; P.timer=rnd(1,2.6); } else newPetTarget(); }
     } else { pet.position.x+=dx/d*Math.min(sp,d); pet.position.z+=dz/d*Math.min(sp,d); if(Math.abs(dx)>.02) P.dir = dx>0?1:-1; }
-    petMat.map = (Math.floor(time*(P.state==="walk"||P.state==="tobed"?6:12))%2) ? PT.walkA : PT.walkB;
+    show((Math.floor(time*(P.state==="walk"||P.state==="tobed"?6:12))%2) ? "walkA" : "walkB");
   } else if(P.state==="eat"){
-    P.timer-=dt; petMat.map = (Math.floor(time*7)%2) ? PT.eatA : PT.eatB;
+    P.timer-=dt; show((Math.floor(time*7)%2) ? "eatA" : "eatB");
     boneMesh.scale.setScalar(Math.max(.15, P.timer/1.8));
     if(P.timer<=0){ boneMesh.visible=false; P.state="happy"; P.timer=2; P.hop=1; P.heartT=0; say("Idli says thank you", 2600); }
   } else if(P.state==="happy"){
-    petMat.map = (Math.floor(time*9)%2) ? PT.happyA : PT.happyB;
+    show((Math.floor(time*9)%2) ? "happyA" : "happyB");
     P.heartT-=dt; if(P.heartT<=0){ spawnHeart(); P.heartT=.34; }
     if(!P.held){ P.timer-=dt; if(P.timer<=0){ P.state="sit"; P.timer=1.5; } }
   } else {
-    P.timer-=dt; petMat.map = (P.state==="sleep"||P.state==="bed") ? PT.sleep : PT.walkA;
+    P.timer-=dt; show((P.state==="sleep"||P.state==="bed") ? "sleep" : "walkA");
     if(P.timer<=0){ P.state="walk"; newPetTarget(); }
   }
-  pet.scale.x = Math.abs(pet.scale.x) * (P.dir>0 ? -1 : 1);
+  if(P.state!=="fetch" && P.state!=="eat") keepOut();
+  const nearBed = Math.hypot(pet.position.x-BED.x, pet.position.z-BED.z) < .75;
+  pet.scale.set(petScale*(P.dir>0?-1:1), petScale, petScale);
   P.hop = Math.max(0,P.hop-dt*2.2);
-  pet.position.y = .03 + Math.abs(Math.sin(time*16))*.18*P.hop;
-  for(let i=hearts.length-1;i>=0;i--){ const h=hearts[i]; h.life-=dt*.8; h.m.position.z-=dt*.9; h.m.position.y+=dt*.5; h.m.material.opacity=Math.max(0,h.life);
-    if(h.life<=0){ scene.remove(h.m); h.m.material.dispose(); hearts.splice(i,1); } }
+  pet.position.y = (nearBed ? .16 : 0) + Math.abs(Math.sin(time*16))*.2*P.hop;
+  for(let i=hearts.length-1;i>=0;i--){ const h=hearts[i]; h.life-=dt*.75; h.s.position.y+=dt*.8; h.s.material.opacity=Math.max(0,h.life);
+    if(h.life<=0){ scene.remove(h.s); h.s.material.dispose(); hearts.splice(i,1); } }
 }
 function placeJarLabel(){
   if(reading){ jarBtn.hidden=true; return; }
   jarBtn.hidden=false;
-  const v=new THREE.Vector3(JAR.x+.85*S, 0, JAR.z-.15).project(camera);
-  jarBtn.style.transform=`translate(${(v.x*.5+.5)*innerWidth}px, ${(-v.y*.5+.5)*innerHeight - 12}px) rotate(-4deg)`;
+  const v=new THREE.Vector3(JAR.x+.75, .2, JAR.z+.2).project(camera);
+  jarBtn.style.transform=`translate(${(v.x*.5+.5)*innerWidth}px, ${(-v.y*.5+.5)*innerHeight}px) rotate(-5deg)`;
 }
 
 /* frame loop */
@@ -1038,18 +1088,11 @@ function frame(now){
   if(renderer && (!reading || tweening)){
     books.forEach(B=>{
       const dragging = drag && drag.B===B && drag.moved;
-      const k = dragging ? .35 : .18;
-      const gp=B.group.position;
+      const k = dragging ? .35 : .18, gp=B.group.position;
       gp.x += (B.tx-gp.x)*k; gp.z += (B.tz-gp.z)*k;
       const yT = B.force!==null ? B.force : B.baseY + (dragging ? .9 : (hovered===B && !drag ? .14 : 0));
       gp.y += (yT-gp.y)*(B.force!==null?1:.2);
       B.tiltX*=.88; B.tiltZ*=.88; B.group.rotation.x=B.tiltX; B.group.rotation.z=B.tiltZ;
-      const lift = Math.max(0, gp.y - B.baseY);
-      const under = B.baseY - BH/2*S;
-      B.shadow.position.set(gp.x+(.22+lift*.5)*S, under+.006+B.order*.0004, gp.z+(.3+lift*.5)*S);
-      B.shadow.rotation.z = B.group.rotation.y;
-      B.shadow.material.opacity = Math.max(.12,.55-lift*.18);
-      B.group.renderOrder = B.order;
     });
     updatePet(dt, now/1000);
     if(!reading && !tweening && !REDUCED){
@@ -1066,12 +1109,11 @@ function frame(now){
 async function boot(){
   fit(); place();
   addEventListener("resize", ()=>{ fit(); books.forEach(B=>{ const [x,z]=clampB(B.tx,B.tz); B.tx=x; B.tz=z; }); restack(); });
+  savePD();
   requestAnimationFrame(frame);
   const fontsReady = Promise.all(["600 104px Caveat","700 112px Caveat","36px 'Instrument Serif'","16px 'Courier Prime'"].map(f=>document.fonts.load(f).catch(()=>{})));
   await Promise.race([fontsReady, new Promise(r=>setTimeout(r,2500))]);
   for(const B of books){ await drawCover(B.data, B.coverC); B.coverT.needsUpdate=true; }
-  drawDesk(); deskT.needsUpdate=true; savePD();
-  needRender=true;
   const h=location.hash.slice(1);
   if(BOOKS.some(b=>b.id===h)) setTimeout(()=>openBook(h), 300);
 }
