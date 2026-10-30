@@ -27,11 +27,11 @@ with sync_playwright() as p:
         ctx,pg,errs=page(b,w,h); pg.goto(URL); pg.wait_for_timeout(500)
         L=pg.evaluate(LAYOUT)
         check(f"[{w}x{h}] no sideways scroll", L['sw']<=L['W'], L)
-        check(f"[{w}x{h}] all 16 folder tabs inside the screen", L['n']==16 and not L['out'], L['out'])
+        check(f"[{w}x{h}] all 15 folder tabs inside the screen", L['n']==15 and not L['out'], L['out'])
         check(f"[{w}x{h}] no clipped tab labels", not L['clipped'], L['clipped'])
         if w in (1440,390): pg.screenshot(path=f"{SP}/drawer-{w}.png", full_page=True)
         bad=[]; colour=[]
-        for i in range(16):
+        for i in range(15):
             fid=f"f-{i+1:02d}"
             pg.evaluate(f"()=>document.querySelector('.folder[data-id=\"{fid}\"] .tab').click()"); pg.wait_for_timeout(950)
             d=pg.evaluate(DOC); fc=pg.evaluate(f"()=>getComputedStyle(document.querySelector('.folder[data-id=\"{fid}\"] .fb')).backgroundColor")
@@ -61,29 +61,33 @@ with sync_playwright() as p:
 
     # treats: one per file, collected in the file, eaten from the bowl on the rack
     ctx,pg,errs=page(b,1440,900); pg.goto(URL); pg.wait_for_timeout(500)
-    check("every folder tab shows a treat at the start", pg.evaluate("()=>[...document.querySelectorAll('.tab .tb')].filter(g=>!g.hidden).length")==16)
+    check("every folder tab shows a treat at the start", pg.evaluate("()=>[...document.querySelectorAll('.tab .tb')].filter(g=>!g.hidden).length")==15)
     check("the rack says Idli is hungry", "hungry" in pg.inner_text('#treatLine'))
     pg.goto(URL+'#f-05'); pg.wait_for_timeout(1100)
     check("deep link #f-05 opens Ramp-down Radar", pg.inner_text('#fvTitle')=="Ramp-down Radar")
     check("the file offers a treat", pg.is_visible('#treatBtn') and "tap to keep" in pg.inner_text('#treatBtn'))
     pg.click('#treatBtn'); pg.wait_for_timeout(1200)
-    check("keeping the treat counts it (1 of 16)", "1 of 16" in pg.inner_text('#tip') and pg.evaluate("()=>document.getElementById('treatBtn').disabled"), pg.inner_text('#tip'))
+    check("keeping the treat counts it (1 of 15)", "1 of 15" in pg.inner_text('#tip') and pg.evaluate("()=>document.getElementById('treatBtn').disabled"), pg.inner_text('#tip'))
     pg.evaluate("()=>document.getElementById('treatBtn').click()"); pg.wait_for_timeout(300)
-    check("a second tap does not count twice", "1 of 16" in pg.inner_text('#tip'))
+    check("a second tap does not count twice", "1 of 15" in pg.inner_text('#tip'))
     pg.click('#nextBtn'); pg.wait_for_timeout(500); pg.click('#treatBtn'); pg.wait_for_timeout(1000)
     pg.click('#closeBtn'); pg.wait_for_timeout(900)
-    check("those two folders no longer show a treat", pg.evaluate("()=>[...document.querySelectorAll('.tab .tb')].filter(g=>!g.hidden).length")==14)
+    check("those two folders no longer show a treat", pg.evaluate("()=>[...document.querySelectorAll('.tab .tb')].filter(g=>!g.hidden).length")==13)
     eaten=False
     for _ in range(40):
         pg.wait_for_timeout(250)
         if pg.evaluate("()=>localStorage.getItem('prfiles.v1.eaten')")=="2": eaten=True; break
     check("Idli walks to her bowl and eats the treats", eaten)
     pg.reload(); pg.wait_for_timeout(600)
-    check("found treats survive a reload", "2 of 16" in pg.inner_text('#treatLine'), pg.inner_text('#treatLine'))
-    pg.evaluate("()=>{ localStorage.setItem('prfiles.v1.treats', JSON.stringify(Array.from({length:16},(_,i)=>'f-'+String(i+1).padStart(2,'0')))); localStorage.setItem('prfiles.v1.eaten','16'); }")
+    check("found treats survive a reload", "2 of 15" in pg.inner_text('#treatLine'), pg.inner_text('#treatLine'))
+    pg.evaluate("()=>{ localStorage.setItem('prfiles.v1.treats', JSON.stringify(Array.from({length:15},(_,i)=>'f-'+String(i+1).padStart(2,'0')))); localStorage.setItem('prfiles.v1.eaten','15'); }")
     pg.reload(); pg.wait_for_timeout(600)
-    check("all 16 found: the rack says so", "all" in pg.inner_text('#treatLine'))
-    check("the For Fun drawer is gone", pg.evaluate("()=>!document.querySelector('.chip[data-col=fun]') && document.querySelectorAll('.folder').length===16"))
+    check("all 15 found: the rack says so", "all" in pg.inner_text('#treatLine'))
+    check("the For Fun drawer is gone", pg.evaluate("()=>!document.querySelector('.chip[data-col=fun]') && document.querySelectorAll('.folder').length===15"))
+    pg.click('#contactCta'); pg.wait_for_timeout(1200)
+    check("Contact scrolls to the footer", pg.evaluate("()=>{const r=document.getElementById('contact').getBoundingClientRect(); return r.top<innerHeight && r.bottom>0}") and pg.evaluate("()=>document.getElementById('fv').hidden"))
+    check("the footer shows the email as text", "r.premkumar96@gmail.com" in pg.inner_text('#contact'))
+    check("no Contact file is left", pg.evaluate("()=>![...document.querySelectorAll('.tab')].some(t=>/Contact/.test(t.textContent))"))
     check("no marking tools are left", pg.evaluate("()=>!document.querySelector('.tools,#markChip')"))
     check("no script errors (treats)", not errs, errs[:3]); ctx.close()
 
@@ -95,7 +99,7 @@ with sync_playwright() as p:
     ctx=b.new_context(viewport={'width':1280,'height':800}); ctx.add_init_script("Object.defineProperty(window,'localStorage',{get(){throw new Error('blocked')}})")
     pg=ctx.new_page(); errs=[]; pg.on('pageerror', lambda e: errs.append(str(e))); pg.goto(URL); pg.wait_for_timeout(400)
     pg.click('.folder[data-id="f-02"] .tab'); pg.wait_for_timeout(950); pg.click('#treatBtn'); pg.wait_for_timeout(900); pg.click('#nextBtn'); pg.wait_for_timeout(500)
-    check("works with browser storage blocked (treats too)", not errs and pg.inner_text('#fvTitle')=="Finance Ops AI-Assist" and "1 of 16" in pg.inner_text('#tip'), errs[:2]); ctx.close()
+    check("works with browser storage blocked (treats too)", not errs and pg.inner_text('#fvTitle')=="Finance Ops AI-Assist" and "1 of 15" in pg.inner_text('#tip'), errs[:2]); ctx.close()
 
     ctx=b.new_context(java_script_enabled=False); pg=ctx.new_page(); pg.goto(URL)
     check("content readable with JavaScript off", "Ramp-down Radar" in pg.inner_text('body')); ctx.close()
