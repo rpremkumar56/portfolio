@@ -16,7 +16,7 @@ LAYOUT="""()=>{ const W=document.documentElement.clientWidth, sw=document.docume
   const out=tabs.filter(t=>{const r=t.getBoundingClientRect(); return r.left<-1||r.right>W+1}).map(t=>t.textContent);
   return {W,sw,clipped,out,n:tabs.length}; }"""
 DOC="""()=>{ const W=document.documentElement.clientWidth; const fv=document.getElementById('fv');
-  const wide=[...fv.querySelectorAll('.sheet,.receipt,.figure,.card-note,.panel')].filter(e=>{const r=e.getBoundingClientRect(); return r.right>W+1||r.left<-1}).map(e=>e.className);
+  const wide=[...fv.querySelectorAll('.sheet,.exhibit,.figure,.card-note,.panel')].filter(e=>{const r=e.getBoundingClientRect(); return r.right>W+1||r.left<-1}).map(e=>e.className);
   const sw=fv.scrollWidth>fv.clientWidth+1;
   const pc=getComputedStyle(document.getElementById('panel')).backgroundColor;
   const top=document.elementFromPoint(innerWidth/2, innerHeight-70); const covered = top && top.closest('.drawer') ? 1 : 0;
@@ -97,6 +97,30 @@ with sync_playwright() as p:
             if r[0]<12 or r[1]<12: out.append(r)
         check(f"[{w}] Idli stays inside her rack for 10 s", not out, out[:3]); check(f"[{w}] tapping Idli makes hearts", hearts>0)
         ctx.close()
+
+
+    # back navigation and big numbers
+    ctx,pg,errs=page(b,1440,900); pg.goto(URL); pg.wait_for_timeout(400)
+    pg.click('.folder[data-id="f-09"] .tab'); pg.wait_for_timeout(950)
+    sizes=pg.evaluate("()=>[...document.querySelectorAll('.ex-num')].map(e=>parseFloat(getComputedStyle(e).fontSize))")
+    check(f"exhibit numbers are large on desktop ({sizes})", sizes and min(sizes)>=44, sizes)
+    pg.evaluate("()=>{const f=document.getElementById('fv'); f.scrollTop=f.scrollHeight}"); pg.wait_for_timeout(300)
+    vis=pg.evaluate("()=>{const r=document.getElementById('closeBtn').getBoundingClientRect(); return r.top>=0 && r.bottom<=innerHeight}")
+    check("the back button stays in view after scrolling to the end", vis)
+    pg.go_back(); pg.wait_for_timeout(900)
+    check("the browser Back button closes the file", pg.evaluate("()=>document.getElementById('fv').hidden"))
+    pg.go_forward(); pg.wait_for_timeout(1100)
+    check("the browser Forward button reopens it", pg.evaluate("()=>!document.getElementById('fv').hidden") and pg.inner_text('#fvTitle')=="Enterprise transformation", pg.inner_text('#fvTitle'))
+    pg.click('#closeBtn2'); pg.wait_for_timeout(900)
+    check("the bottom back button closes the file", pg.evaluate("()=>document.getElementById('fv').hidden"))
+    check("no script errors (back navigation)", not errs, errs[:3]); ctx.close()
+    ctx,pg,errs=page(b,390,844,has_touch=True,is_mobile=True); pg.goto(URL); pg.wait_for_timeout(400)
+    pg.click('.folder[data-id="f-01"] .tab'); pg.wait_for_timeout(950)
+    sizes=pg.evaluate("()=>[...document.querySelectorAll('.ex-num')].map(e=>parseFloat(getComputedStyle(e).fontSize))")
+    check(f"exhibit numbers are large on a phone ({sizes})", sizes and min(sizes)>=40, sizes)
+    pg.screenshot(path=f"{SP}/exhibits-390.png", full_page=False)
+    pg.evaluate("()=>{const f=document.getElementById('fv'); f.scrollTop=700}"); pg.wait_for_timeout(300); pg.screenshot(path=f"{SP}/exhibits-390b.png")
+    ctx.close()
 
     # smoothness of the open flight
     ctx,pg,errs=page(b,1440,900); pg.goto(URL); pg.wait_for_timeout(500); gaps=[]; block=[]

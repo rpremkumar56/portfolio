@@ -107,7 +107,11 @@ a{color:inherit}
 .fv-wrap{max-width:1160px;margin:0 auto;padding-top:calc(14px + env(safe-area-inset-top,0px));padding-bottom:calc(120px + env(safe-area-inset-bottom,0px));
   padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
 .fv-bar{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;font-family:var(--type);font-size:12px;color:var(--muted);border-bottom:1px solid var(--line);padding-bottom:10px}
-.back{background:none;border:0;cursor:pointer;color:var(--ink-on-dark);font-family:var(--type);font-size:12.5px;letter-spacing:.06em;padding:8px 2px}
+.back{display:inline-flex;align-items:center;gap:8px;background:var(--ink-on-dark);color:var(--bg);border:0;border-radius:999px;cursor:pointer;font-family:var(--type);font-weight:700;font-size:13.5px;letter-spacing:.04em;padding:10px 16px 10px 12px;box-shadow:0 4px 14px rgba(0,0,0,.35)}
+.back:hover{background:#fff}
+.back svg{width:18px;height:18px}
+.fv-bar{position:sticky;top:0;z-index:3;background:var(--bg);padding-top:calc(10px + env(safe-area-inset-top,0px));margin-top:calc(-10px - env(safe-area-inset-top,0px))}
+.backlow{margin:40px auto 0;display:flex}
 .fv-crumb{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .tools{display:flex;gap:4px;background:var(--bg-2);border:1px solid var(--line);border-radius:999px;padding:3px}
 .tool{display:flex;align-items:center;gap:6px;font-family:var(--type);font-size:12px;color:var(--muted);background:none;border:0;border-radius:999px;padding:7px 10px;cursor:pointer}
@@ -136,6 +140,18 @@ a{color:inherit}
 .attach{display:grid;gap:26px;align-content:start;padding-top:28px}
 .clipwrap{position:relative}
 .clipwrap > svg.clip{position:absolute;top:-16px;left:28px;width:18px;height:50px;z-index:2}
+.exhibits{display:grid;gap:18px}
+.exhibit{position:relative;display:block;background:var(--paper-2);color:#26231f;padding:16px 18px 18px;box-shadow:0 8px 18px -8px rgba(0,0,0,.5);transform:rotate(-1.4deg)}
+.exhibit:nth-child(2){transform:rotate(1.2deg)}
+.exhibit:nth-child(3){transform:rotate(-.6deg)}
+.exhibit.lead{margin-left:-46px;padding:20px 20px 22px}
+.exhibit > svg.clip{position:absolute;top:-16px;right:26px;width:18px;height:50px}
+.ex-tag{display:block;font-family:var(--type);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--terra)}
+.ex-num{display:block;font-family:var(--display);font-size:clamp(46px,5.4vw,66px);line-height:.95;margin:.12em 0 .08em;letter-spacing:-.01em;font-variant-numeric:lining-nums}
+.exhibit.lead .ex-num{font-size:clamp(54px,6.6vw,84px)}
+.ex-lbl{display:block;font-size:16px;line-height:1.3;color:#3a3731;text-wrap:balance}
+.also{margin:0;font-family:var(--type);font-size:12.5px;line-height:1.55;color:var(--fg)}
+.also b{display:block;font-weight:700;letter-spacing:.14em;text-transform:uppercase;font-size:10.5px;opacity:.7;margin-bottom:2px}
 .receipt{position:relative;background:var(--receipt);color:#2f2a1c;padding:16px 16px 18px;font-family:var(--type);font-size:12px;line-height:1.45;transform:rotate(1.6deg);box-shadow:0 6px 14px -6px rgba(0,0,0,.45);margin-left:-44px}
 .receipt::after{content:"";position:absolute;left:0;right:0;bottom:-7px;height:7px;background:linear-gradient(-45deg,transparent 5px,var(--receipt) 0) 0 0/10px 10px repeat-x,linear-gradient(45deg,transparent 5px,var(--receipt) 0) 0 0/10px 10px repeat-x}
 .receipt .rh{display:flex;justify-content:space-between;font-weight:700;letter-spacing:.14em;border-bottom:1px dashed rgba(47,42,28,.5);padding-bottom:6px;margin-bottom:6px}
@@ -191,6 +207,8 @@ a{color:inherit}
   .doc{grid-template-columns:minmax(0,1fr)}
   .attach{grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));padding-top:0}
   .receipt{margin-left:0}
+  .exhibit.lead{margin-left:0}
+  .exhibits{grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr))}
   .sheet-grid{grid-template-columns:minmax(0,1fr);gap:14px}
   .margin{grid-template-columns:repeat(auto-fit,minmax(130px,1fr));padding-top:0}
   .panel-wrap{padding-right:0}
@@ -251,7 +269,7 @@ a{color:inherit}
 <section id="fv" hidden aria-label="File">
   <div class="fv-wrap">
     <div class="fv-bar">
-      <button type="button" class="back" id="closeBtn">← All files</button>
+      <button type="button" class="back" id="closeBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>All files</button>
       <span class="fv-crumb" id="fvCrumb"></span>
       <div class="tools" role="toolbar" aria-label="Marking tools">
         <button type="button" class="tool on" data-tool="read" aria-pressed="true" title="Read"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 5.5c3-1.3 6-1.3 9 .5 3-1.8 6-1.8 9-.5v13c-3-1.3-6-1.3-9 .5-3-1.8-6-1.8-9-.5z"/><path d="M12 6v13"/></svg><span class="lbl">Read</span></button>
@@ -263,6 +281,7 @@ a{color:inherit}
     <div class="fv-head"><h1 id="fvTitle"></h1><div class="fv-side" id="fvSide"></div></div>
     <div class="panel-wrap"><div class="panel" id="panel"><div class="doc" id="doc"></div></div><nav class="sidetabs" id="sidetabs" aria-label="Other files in this drawer"></nav></div>
     <div class="fv-nav"><button type="button" id="prevBtn"></button><button type="button" id="nextBtn"></button></div>
+    <button type="button" class="back backlow" id="closeBtn2"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>Back to all files</button>
   </div>
   <div class="trailbar" aria-hidden="true">
     <div class="trail"><div class="tline"></div><div id="tmarks"></div><div class="tdog" id="tdog"><img id="tdogImg" alt=""></div></div>
@@ -304,22 +323,22 @@ const F = [
   margin:[["Role","Co-creator"],["Team","AI CoE"],["Used in","Finance operations"]],
   body:["I co-created a reusable product for finance operations. AI extracts the data from documents. Configurable rules then reconcile it, and every decision leaves an audit trail.",
         "The same product now runs across many workflows. Each team changes the rules, not the code. Four use cases are live in client operations."],
-  facts:[["~16","workflows"],["9","accounts"],["6+","POCs delivered"],["4","use cases live"],["30–50%","target effort cut"]]},
+  facts:[["4","use cases live in client operations"],["~16","workflows across 9 accounts"],["30–50%","target effort reduction"]], also:["6+ POCs delivered"]},
  {col:"work", title:"Marine Claims AI", tab:"Marine Claims AI", one:"Human-in-the-loop agents that calculate and explain contract deadlines.", when:"AI CoE · 2026", status:["Prototype","proto"], c:"#2b3a9e", fg:"#f3efe6", pic:"agents", cap:"the agent drafts, a person decides",
   margin:[["Role","Prototyped and pitched"],["Process","Marine claims"]],
   body:["A marine claims team handles more than 300 cases a month. Each case carries contract deadlines, and a missed deadline costs money.",
         "I prototyped and pitched human-in-the-loop AI agents. They calculate each contract deadline and explain how they got it. They also organise the correspondence for every case. A person reviews and decides."],
-  facts:[["300+","cases a month"],["~$0.8M","annual time-bar exposure"]], note:"the agent drafts, a person decides"},
+  facts:[["300+","claims cases a month"],["~$0.8M","annual time-bar exposure"]], note:"the agent drafts, a person decides"},
  {col:"work", title:"Finance Ops AI-Assist", tab:"Finance Ops AI-Assist", one:"Two AI-assist products for invoice processing and vendor queries.", when:"AI CoE · 2026", status:["Prototype","proto"], c:"#5c7fa8", fg:"#f6f3ec", pic:"recon", cap:"invoice in, answer out",
   margin:[["Role","Defined and pitched"],["Process","Invoices, vendor queries"]],
   body:["I defined and pitched two AI-assist products: one for invoice processing and one for vendor queries.",
         "They validate documents, classify cases and rank them by SLA. They retrieve answers from the ERP and draft replies in several languages."],
-  facts:[["2","products"],["~41%","projected time saving"],["~20","FTE"]]},
+  facts:[["~41%","projected time saving"],["~20","FTE of effort"]], also:["2 products: invoices and vendor queries"]},
  {col:"work", title:"Testing AI in five languages", tab:"AI Evaluation", one:"An evaluation design for a live HR AI solution across five European languages.", when:"AI CoE · 2026", status:["Live","live"], c:"#1f2a44", fg:"#e9e4da", pic:"langs", cap:"same question, five languages",
   margin:[["Role","Designed the evaluation"],["Channels","Email, documents, tickets, calls"]],
   body:["A live HR AI solution handled emails, documents, tickets and live calls in five European languages. I designed how we evaluate it.",
         "I built risk-based test sets and graded each error by severity. I added human-validation controls and rollout gates. Each gate links to a real operational decision: go, hold or roll back."],
-  facts:[["5","European languages"],["4","channels"]], note:"a metric is only useful if it changes a decision"},
+  facts:[["5","European languages"],["4","channels: email, documents, tickets, calls"]], note:"a metric is only useful if it changes a decision"},
  {col:"work", title:"Ramp-down Radar", tab:"Ramp-down Radar", one:"An AI prototype that flags client accounts at risk of ramping down.", when:"AI CoE · 2026", status:["Pending sponsor","wait"], c:"#c9a84a", fg:"#2d2a25", pic:"radar", cap:"signals before the numbers move",
   margin:[["Role","Built the prototype"],["Data","Synthetic only, by design"],["Next","Real-data pilot"]],
   body:["Some client accounts ramp down even when delivery looks smooth. Leadership wanted to see this earlier.",
@@ -329,26 +348,26 @@ const F = [
  {col:"work", title:"CEO briefers", tab:"CEO briefers", one:"Quarterly CEO briefers, board decks and investor narratives.", when:"Corporate Strategy · 2022–26", status:["Done","idea"], c:"#6b2f4a", fg:"#f3e6ea", pic:"strategy", cap:"eight quarters in a row",
   margin:[["Role","Prepared the briefers"],["With","CXO office, business heads"]],
   body:["For eight quarters in a row, I worked with the CXO office and the business heads. Each quarter I prepared the CEO briefers, the board presentations and investor-ready narratives."],
-  facts:[["8","consecutive quarters"]]},
+  facts:[["8","consecutive quarters of CEO briefers"]]},
  {col:"work", title:"Business planning", tab:"Business planning", one:"Business planning and financial modelling for $1.5B+ of revenue.", when:"Corporate Strategy · 2022–26", status:["Done","idea"], c:"#3d4f7a", fg:"#efe9dc", pic:"strategy", cap:"the plan behind the plan",
   margin:[["Role","Led the planning"],["With","40+ global stakeholders"]],
   body:["I led business planning and financial modelling for revenue projections of more than $1.5B. The work involved more than 40 stakeholders across the globe."],
-  facts:[["$1.5B+","revenue projections"],["40+","stakeholders"]]},
+  facts:[["$1.5B+","in revenue projections"],["40+","global stakeholders"]]},
  {col:"work", title:"Market intelligence", tab:"Market intelligence", one:"An automated intelligence system that feeds CXO newsletters.", when:"Corporate Strategy · 2022–26", status:["Done","idea"], c:"#a9bcd3", fg:"#1f2a44", pic:"radar", cap:"accounts and industries, every day",
   margin:[["Role","Built the system"],["Readers","CXOs"]],
   body:["I built an automated intelligence system that covers more than 20 key accounts and their industries. It powers daily and monthly newsletters for the CXOs."],
-  facts:[["20+","key accounts"],["2","newsletters: daily, monthly"]]},
+  facts:[["20+","key accounts covered"]], also:["Daily and monthly CXO newsletters"]},
  {col:"work", title:"Enterprise transformation", tab:"Transformation", one:"A $10M+ cost programme and two organisational redesigns.", when:"Corporate Strategy · 2022–26", status:["Done","idea"], c:"#d24b3c", fg:"#fbeee8", pic:"strategy", cap:"cost down, margin up",
   margin:[["Role","Directed the programme"],["Scope","20,000+ employees"]],
   body:["I directed a cost optimisation programme of more than $10M and two organisational redesigns. Together they affected more than 20,000 employees.",
         "The results were about 16% savings year on year, faster financial reporting and a 100% margin improvement in the targeted units."],
-  facts:[["$10M+","programme"],["~16%","YoY savings"],["~$450K","saved"],["100%","margin gain, targeted units"]]},
+  facts:[["$10M+","cost optimisation programme"],["20,000+","employees affected"],["~16%","savings year on year"]], also:["About $450K saved","100% margin improvement in targeted units"]},
  {col:"home", title:"The paper register", tab:"Clinic appointments", one:"A multi-user web app that replaces a dental clinic's paper register.", when:"Independent build", status:["Built","proto"], c:"#c4663f", fg:"#fbf1e6", pic:"calendar", cap:"two chairs, thirty-minute slots",
   margin:[["Users","Receptionist, assistants"],["Device","Phones"],["Built with","Claude Code"]],
   body:["The clinic booked every patient in a paper register. I built a multi-user web app to replace it.",
         "The receptionist and the assistants log in on their phones. They see booked and free slots for each chair, book specialists and mark shows and no-shows.",
         "The rules came from the front desk. Walk-ins go into a free gap or join the end of the queue. A late specialist shifts the next appointments. A no-show is marked after 15 minutes and can be undone."],
-  facts:[["2","chairs"],["30 min","slots"],["10–9","opening hours"]]},
+  facts:[["2","chairs, booked in 30-minute slots"]], also:["Open 10 AM to 9 PM","No-shows marked after 15 minutes"]},
  {col:"home", title:"The duty sheet", tab:"Duty rota", one:"A phone-first rota for the clinic's dental assistants.", when:"Independent build", status:["In use","live"], c:"#e8917a", fg:"#3a2018", pic:"rota", cap:"who is on which chair today",
   margin:[["User","The person in charge"],["Hosted on","GitHub Pages"]],
   body:["The duty sheet for the assistants lived on paper. I built a phone-first rota app.",
@@ -358,7 +377,7 @@ const F = [
   margin:[["User","Me"],["AI","Gemini API"],["Hosted on","GitHub Pages"]],
   body:["I wanted to get deep into AI and system architecture in 100 days, one hour a day. I built the app I study with.",
         "It has lessons, diagrams, quizzes, mock interviews and daily puzzles, and it tracks my progress. It is my start screen every morning."],
-  facts:[["100","days"],["1 hr","a day"]]},
+  facts:[["100","days, one hour a day"]]},
  {col:"home", title:"A study companion", tab:"Study companion", one:"A phone study site for a family member's entrance exam.", when:"Independent build", status:["Built","proto"], c:"#f0b48f", fg:"#3a2018", pic:"books", cap:"plan, notes, tests",
   margin:[["Device","iPhone"]],
   body:["A family member is preparing for a competitive entrance exam, with study time in short blocks. I built a hosted study site for her phone with the plan, notes, mock tests and visual summaries."]},
@@ -545,7 +564,8 @@ function docHTML(f){
   else main = `<h2>Brief</h2><p class="lede mk">${esc(f.one)}</p>${f.body.map(t=>`<p class="mk">${esc(t)}</p>`).join("")}`;
   const sheet = `<article class="sheet"><span class="fileno">File #${f.no}</span><div class="sheet-grid">${margin}<div>${main}</div></div></article>`;
   const atts = [];
-  if(f.facts) atts.push(`<div class="clipwrap">${CLIP}<div class="receipt mk"><div class="rh"><span>RECEIPT</span><span>#${f.no}</span></div><dl>${f.facts.map(([v,k])=>`<div class="row"><dd>${esc(k)}</dd><dt>${esc(v)}</dt></div>`).join("")}</dl><div class="rf">THANK YOU · COME AGAIN</div></div></div>`);
+  if(f.facts){ const L="ABC";
+    atts.push(`<div class="exhibits">${f.facts.slice(0,3).map(([v,k],i)=>`<div class="exhibit mk${i===0?" lead":""}">${i===0?CLIP:""}<span class="ex-tag">Exhibit ${L[i]} · File ${f.no}</span><span class="ex-num">${esc(v)}</span><span class="ex-lbl">${esc(k)}</span></div>`).join("")}${f.also?`<p class="also mk"><b>Also on file</b>${f.also.map(esc).join(" · ")}</p>`:""}</div>`); }
   if(f.pic) atts.push(`<figure class="figure" style="--tint:${f.c}"><div class="frame">${doodle(f.pic)}</div><figcaption>fig. ${f.no} · ${esc(f.cap)}</figcaption></figure>`);
   if(f.note) atts.push(`<p class="card-note mk">${esc(f.note)}</p>`);
   return sheet + (atts.length?`<div class="attach">${atts.join("")}</div>`:"");
@@ -595,7 +615,7 @@ $("#prevBtn").onclick=e=>{ if(e.currentTarget.dataset.go) switchFile(e.currentTa
 $("#nextBtn").onclick=e=>{ if(e.currentTarget.dataset.go) switchFile(e.currentTarget.dataset.go); };
 
 /* open / close: the folder flies up and becomes the open file */
-let busy=false;
+let busy=false, pushed=false;
 function fly(from,to,colour,ms){
   const fl=document.createElement("div"); fl.className="flyer"; fl.style.background=colour;
   Object.assign(fl.style,{left:from.left+"px",top:from.top+"px",width:from.width+"px",height:from.height+"px"}); document.body.appendChild(fl);
@@ -605,6 +625,7 @@ function fly(from,to,colour,ms){
 function openFile(id, folderEl){
   const f=F.find(x=>x.id===id); if(!f||busy||!fv.hidden) return; busy=true;
   document.body.classList.add("viewing"); fv.classList.remove("show"); fv.hidden=false; fv.scrollTop=0;
+  if(location.hash!=="#"+f.id){ try{ history.pushState({file:f.id},"","#"+f.id); pushed=true; }catch(_){ pushed=false; } } else pushed=false;
   renderFile(f);
   const show=()=>{ fv.classList.add("show"); busy=false; $("#closeBtn").focus({preventScroll:true}); };
   const fb = folderEl && folderEl.querySelector(".fb");
@@ -615,10 +636,12 @@ function openFile(id, folderEl){
   a.onfinish=()=>{ show(); fl.animate([{opacity:1},{opacity:0}],{duration:260,easing:"ease-out",fill:"forwards"}).onfinish=()=>fl.remove(); };
   a.oncancel=()=>{ fl.remove(); show(); };
 }
-function closeFile(){
+function closeFile(fromHistory){
   if(fv.hidden||busy) return;
+  if(!fromHistory && pushed){ pushed=false; history.back(); return; }   // popstate comes back here
+  pushed=false;
   const f=cur, fb=f&&f.el.querySelector(".fb"); chip.hidden=true;
-  try{ history.replaceState(null,"",location.pathname+location.search); }catch(_){}
+  if(!fromHistory){ try{ history.replaceState(null,"",location.pathname+location.search); }catch(_){} }
   const finish=()=>{ fv.hidden=true; docEl.innerHTML=""; cur=null; lastPos=-1; busy=false; const t=f&&f.el.querySelector(".tab"); if(t) t.focus({preventScroll:true}); };
   // if the file belongs to a hidden drawer section, show all again so it can fly home
   if(f && col!=="all" && f.col!==col){ col="all"; document.querySelectorAll(".chip").forEach(x=>x.setAttribute("aria-pressed", x.dataset.col==="all")); layoutDrawer(); }
@@ -632,10 +655,11 @@ function closeFile(){
   fv.classList.remove("show");
   a.onfinish=()=>{ fl.remove(); finish(); }; a.oncancel=a.onfinish;
 }
-$("#closeBtn").onclick=closeFile;
+$("#closeBtn").onclick=()=>closeFile(); $("#closeBtn2").onclick=()=>closeFile();
 addEventListener("keydown", e=>{
   if(fv.hidden) return;
   if(e.key==="Escape"){ closeFile(); return; }
+  if(e.key==="Backspace" && !(e.target.closest && e.target.closest("input,textarea"))){ closeFile(); e.preventDefault(); return; }
   if(e.target.closest && e.target.closest(".tools")) return;
   if(e.key==="ArrowRight"){ const b=$("#nextBtn"); if(!b.disabled){ switchFile(b.dataset.go); e.preventDefault(); } }
   if(e.key==="ArrowLeft"){ const b=$("#prevBtn"); if(!b.disabled){ switchFile(b.dataset.go); e.preventDefault(); } }
@@ -684,6 +708,7 @@ function route(){ const h=location.hash.slice(1);
   if(/^f-\d\d$/.test(h) && fv.hidden){ const f=F.find(x=>x.id===h); if(f) openFile(f.id, f.el); }
   else if(COLS[h]){ const c=document.querySelector(`.chip[data-col="${h}"]`); if(c) c.click(); } }
 addEventListener("hashchange", route);
+addEventListener("popstate", ()=>{ if(!fv.hidden && !/^#f-\d\d$/.test(location.hash)) closeFile(true); });
 idliSize(); drawIdli("sleep"); requestAnimationFrame(idliTick);
 layoutDrawer(); if(document.fonts&&document.fonts.ready) document.fonts.ready.then(fitTabs);
 route();
