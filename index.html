@@ -1,42 +1,929 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Premkumar R - Portfolio</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Lora:ital,wght@0,400;0,700;1,400&family=Roboto+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Premkumar's Files</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="Premkumar R — AI Product & Strategy. Senior Consultant, AI CoE at Infosys BPM. An archive of the AI products, agents, prototypes and side builds he has made, one file each.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Premkumar R — the files">
+<meta property="og:description" content="AI products, agents and strategy at work, and small apps built at home. One file per project.">
+<meta property="og:url" content="https://rpremkumar56.github.io/portfolio/">
+<meta name="twitter:card" content="summary">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=Courier+Prime:wght@400;700&family=Instrument+Serif:ital@0;1&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&display=swap">
+<style>
+/* Layout: a dark archive room. Coloured folders stack like a drawer, tabs staggered; one opens into a paper file with clipped attachments and side tabs. */
+:root{
+  color-scheme: light;
+  --bg:#fbfaf6; --bg-2:#f1eee7; --line:rgba(29,28,26,.14);
+  --ink-on-dark:#1d1c1a; --muted:#77726a;
+  --paper:#fbf8f1; --paper-2:#ffffff; --graphite:#2f2d29; --graphite-soft:#77726a;
+  --ink:#1d1c1a; --accent:#e5461f; --terra:#e5461f; --receipt:#e5461f;
+  --wood:#a87e52; --wood-dark:#845f38;
+  --hl:rgba(255,221,84,.62);
+  --display:"Instrument Serif","Times New Roman",serif;
+  --body:"Newsreader",Georgia,"Times New Roman",serif;
+  --hand:"Caveat","Segoe Print","Comic Sans MS",cursive;
+  --type:"Courier Prime","Courier New",monospace;
+}
+*{box-sizing:border-box}
+html{min-height:100%}
+body{margin:0;min-height:100%;background:var(--bg);color:var(--ink-on-dark);font-family:var(--body);-webkit-font-smoothing:antialiased}
+body.viewing{overflow:hidden}
+[hidden]{display:none!important}
+button{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+a{color:inherit}
+
+/* ---------- top ---------- */
+.room{max-width:1120px;margin:0 auto;padding-top:calc(18px + env(safe-area-inset-top,0px));padding-bottom:calc(40px + env(safe-area-inset-bottom,0px));
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.chips{display:flex;gap:4px;flex-wrap:wrap;min-width:0}
+.chip{background:none;border:1px solid transparent;border-radius:999px;padding:6px 11px;cursor:pointer;color:var(--muted);font-family:var(--type);font-size:12px;letter-spacing:.06em}
+.chip:hover{color:var(--ink-on-dark)}
+.chip[aria-pressed="true"]{border-color:var(--line);color:var(--ink-on-dark);background:var(--bg-2)}
+.resume{color:var(--ink-on-dark);text-decoration:none;border-bottom:1px solid var(--muted);padding-bottom:1px}
+.crumb{font-family:var(--type);font-size:12px;letter-spacing:.06em;color:var(--muted)}
+.bio{margin:20px 0 0;max-width:64ch;font-size:clamp(16.5px,1.6vw,19px);line-height:1.55;color:#2c2a26;text-wrap:pretty}
+.bio b{font-weight:500;color:var(--receipt)}
+.proof{display:flex;gap:14px;flex-wrap:wrap;margin-top:22px}
+.pf{background:var(--paper-2);color:#26231f;padding:10px 14px 12px;min-width:112px;border:1.4px solid var(--ink);box-shadow:4px 5px 0 rgba(29,28,26,.07);transform:rotate(-1.2deg)}
+.pf:nth-child(2){transform:rotate(1deg)}
+.pf:nth-child(3){transform:rotate(-.4deg)}
+.pf-num{display:block;font-family:var(--display);font-size:clamp(40px,4.6vw,54px);line-height:.95}
+.pf-lbl{display:block;font-size:14px;line-height:1.25;color:#3a3731;max-width:15ch}
+.drawer-head{display:flex;align-items:baseline;justify-content:space-between;gap:8px 20px;flex-wrap:wrap;margin-top:72px;border-top:1px solid var(--line);padding-top:16px}
+.drawer-head h2{font-family:var(--display);font-weight:400;font-size:clamp(28px,3.4vw,38px);margin:0}
+.drawer-line{margin:6px 0 0;max-width:60ch;font-size:15.5px;line-height:1.45;color:#4a463f}
+.drawer-line b{font-weight:500;color:var(--ink-on-dark)}
+
+/* ---------- Idli's rack ---------- */
+.tab .tb{width:20px;height:9px;flex:none;opacity:.95}
+.treat{position:absolute;top:-46px;right:56px;z-index:2;display:flex;align-items:center;gap:10px;background:var(--paper-2);color:var(--graphite);border:1.4px solid var(--ink);cursor:pointer;
+  padding:8px 14px 8px 10px;font-family:var(--hand);font-size:19px;line-height:1;box-shadow:0 6px 14px -6px rgba(0,0,0,.5);transform:rotate(-2deg);transition:transform .2s}
+.treat:hover{transform:rotate(-2deg) translateY(-3px)}
+.treat img{width:36px;height:16px}
+.treat.got{cursor:default;opacity:.6;transform:rotate(-2deg)}
+.treatfly{position:fixed;z-index:9;width:36px;height:16px;pointer-events:none}
+.tbub{position:absolute;bottom:34px;left:50%;transform:translateX(-50%) rotate(-2deg);font-family:var(--hand);font-size:18px;color:var(--receipt);white-space:nowrap;opacity:0;transition:opacity .3s}
+.tbub.show{opacity:1}
+
+/* ---------- the drawer of folders ---------- */
+.drawer{position:relative;isolation:isolate;z-index:0;margin-top:56px;--step:50px;--tabh:36px;--peek:104px;--bh:230px}
+.folder{position:absolute;left:0;right:0;top:0;height:var(--bh);transform:translateY(calc(var(--y,0)*1px));transition:transform .42s cubic-bezier(.2,.75,.2,1),opacity .3s}
+.folder .fb{position:absolute;inset:0;background:var(--c);border-radius:0 8px 0 0;box-shadow:0 -1px 0 rgba(29,28,26,.22),0 -6px 12px rgba(29,28,26,.05);overflow:hidden}
+.folder .tab{position:absolute;bottom:100%;left:var(--tx);width:var(--tw);height:var(--tabh);background:var(--c);color:var(--fg);border:0;cursor:pointer;
+  clip-path:polygon(14px 0,calc(100% - 14px) 0,100% 100%,0 100%);display:flex;align-items:center;justify-content:center;gap:7px;padding:2px 17px 0;
+  font-family:var(--display);font-size:18px;white-space:nowrap;overflow:hidden}
+.tab .fno{font-family:var(--type);font-size:10.5px;letter-spacing:.08em;opacity:.75;flex:none}
+.tab .tl{overflow:hidden;text-overflow:ellipsis;min-width:0}
+.folder.peek .meta,.folder.front .meta{opacity:1}
+.meta{opacity:0;transition:opacity .25s;display:grid;grid-template-columns:70px minmax(0,1fr) auto auto;align-items:baseline;gap:18px;padding:16px 26px;color:var(--fg);font-family:var(--type);font-size:12px;line-height:1.45}
+.meta .one{font-family:var(--body);font-size:15px;opacity:.92}
+.meta .when{opacity:.75;white-space:nowrap}
+.meta .open{font-family:var(--hand);font-size:19px;white-space:nowrap}
+.folder .stamp{color:var(--fg);border-color:currentColor}
+.drawer.filtered .folder.out{opacity:0;pointer-events:none}
+.site-foot{margin-top:80px;border-top:1px solid var(--line);padding-top:34px;display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr) minmax(0,1.2fr);gap:28px 40px}
+.site-foot h2{font-family:var(--type);font-weight:700;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin:0 0 12px}
+.site-foot p{margin:0 0 6px;font-size:15.5px;line-height:1.45;color:#3a3731}
+.site-foot a{color:var(--ink-on-dark);text-decoration-color:var(--receipt);text-underline-offset:3px}
+.mail{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.mail a{font-family:var(--display);font-size:clamp(24px,2.8vw,32px);line-height:1.1;text-decoration:none;border-bottom:1.5px solid var(--receipt);word-break:break-all}
+.copy{background:none;border:1px solid var(--line);border-radius:999px;color:var(--muted);font-family:var(--type);font-size:11.5px;letter-spacing:.06em;padding:6px 12px;cursor:pointer}
+.copy:hover{color:var(--ink-on-dark)}
+.links{display:grid;gap:8px;font-family:var(--type);font-size:13px;letter-spacing:.04em}
+.foot-line{grid-column:1/-1;margin-top:10px;padding-top:14px;border-top:1px dashed var(--line);font-family:var(--type);font-size:11px;letter-spacing:.06em;color:var(--muted);display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+
+/* ---------- the park ---------- */
+.park{position:relative;height:100vh;height:100svh;min-height:540px;max-height:1060px;overflow:hidden;background:var(--bg)}
+.scene{position:absolute;inset:0;width:100%;height:100%;display:block;pointer-events:none}
+.bar{position:absolute;left:0;right:0;z-index:3;max-width:1120px;margin:0 auto;display:flex;justify-content:space-between;align-items:flex-start;gap:12px 24px;flex-wrap:wrap;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.bar.top{top:0;padding-top:calc(22px + env(safe-area-inset-top,0px))}
+.bar.bot{bottom:0;padding-bottom:calc(20px + env(safe-area-inset-bottom,0px));align-items:flex-end}
+.pname{font-family:var(--display);font-size:clamp(26px,2.7vw,34px);line-height:1;margin:0;font-weight:400}
+.prole{margin:6px 0 0;font-family:var(--type);font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.plinks{display:flex;gap:18px;font-family:var(--type);font-size:13px;letter-spacing:.04em;padding-top:6px}
+.plinks a,.plinks button{color:var(--ink);text-decoration:none;background:none;border:0;padding:2px 0;cursor:pointer;border-bottom:1.5px solid var(--accent);font:inherit}
+.treatline{margin:0;font-family:var(--hand);font-size:21px;line-height:1.15;color:var(--ink)}
+.treatline b{font-weight:600;color:var(--accent)}
+.scrollcue{font-family:var(--type);font-size:12px;letter-spacing:.06em;color:var(--muted);background:none;border:0;cursor:pointer;padding:4px 0}
+.pdog{position:absolute;left:0;top:0;z-index:2;border:0;background:none;padding:0;margin:0;cursor:pointer;will-change:transform;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+.pdog svg{display:block;overflow:visible;transform-origin:43.16% 100%}
+.pdog:focus-visible{outline-offset:6px;border-radius:12px}
+.bfly{position:absolute;left:0;top:0;z-index:2;width:30px;height:24px;pointer-events:none;will-change:transform}
+.pheart{position:absolute;z-index:3;width:22px;height:20px;pointer-events:none;animation:floatup 1.4s ease-out forwards}
+@keyframes floatup{from{transform:translate(-50%,0) scale(.7);opacity:1}to{transform:translate(-50%,-80px) scale(1.15);opacity:0}}
+.qmark{position:absolute;z-index:3;font-family:var(--hand);font-weight:700;font-size:38px;line-height:1;color:var(--accent);pointer-events:none;animation:qpop .3s ease-out}
+@keyframes qpop{from{transform:translateY(8px) scale(.6);opacity:0}to{transform:none;opacity:1}}
+.oops{position:absolute;z-index:4;left:50%;top:clamp(104px,21%,230px);width:min(470px,calc(100% - 32px));background:#fffefb;border:1.6px solid var(--ink);
+  border-radius:4px 7px 5px 6px;padding:22px 24px 20px;box-shadow:7px 8px 0 rgba(29,28,26,.07);transform:translateX(-50%) rotate(-1.2deg)}
+.oops.in{animation:pop .5s cubic-bezier(.2,.9,.3,1.15)}
+@keyframes pop{from{opacity:0;transform:translateX(-50%) translateY(14px) rotate(-3deg) scale(.95)}to{opacity:1;transform:translateX(-50%) rotate(-1.2deg)}}
+.oops-h{font-family:var(--display);font-style:italic;font-size:clamp(38px,4.4vw,48px);line-height:1;margin:0}
+.oops-t{font-size:clamp(18px,1.9vw,21px);line-height:1.35;margin:.4em 0 .35em}
+.oops-s{font-size:15.5px;line-height:1.45;color:#4a463f;margin:0}
+.oops-a{display:flex;align-items:center;gap:10px 18px;flex-wrap:wrap;margin-top:16px}
+.go{display:inline-flex;align-items:center;gap:8px;background:var(--ink);color:var(--bg);text-decoration:none;border-radius:999px;padding:11px 18px;font-family:var(--type);font-weight:700;font-size:13.5px;letter-spacing:.03em}
+.go:hover{background:#000}
+.stay{background:none;border:0;cursor:pointer;font-family:var(--type);font-size:12px;letter-spacing:.04em;color:var(--muted);padding:6px 0;border-bottom:1px solid var(--line)}
+.oops-u{position:relative;white-space:nowrap}
+.oops-u svg{position:absolute;left:-2%;bottom:-8px;width:104%;height:10px}
+
+/* ---------- the work ---------- */
+.work{padding-top:72px}
+.intro{display:grid;grid-template-columns:minmax(0,1fr);max-width:820px}
+.intro .crumb{margin:0}
+.hey{font-family:var(--display);font-weight:400;font-size:clamp(52px,7.4vw,96px);line-height:.92;margin:.08em 0 .1em;letter-spacing:-.01em}
+.role{margin:.4em 0 0;font-family:var(--type);font-size:12.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+.intro .bio{margin-top:18px}
+.drawer-head{align-items:flex-end}
+.drawer-head .chips{padding-bottom:4px}
+.topark{margin:30px 0 0;text-align:center}
+.topark button{background:none;border:0;cursor:pointer;font-family:var(--hand);font-size:22px;color:var(--ink);padding:4px 2px;border-bottom:1.5px solid var(--accent)}
+.topark button b{color:var(--accent);font-weight:600}
+@media (max-width:640px){
+  .bar.top{flex-direction:column;gap:12px}
+  .plinks{padding-top:0}
+  .oops{padding:18px 18px 16px;top:clamp(150px,26%,240px)}
+  .work{padding-top:52px}
+  .drawer-head .chips{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;max-width:100%;-webkit-mask-image:linear-gradient(90deg,#000 85%,transparent)}
+  .drawer-head .chips::-webkit-scrollbar{display:none}
+  .chip{flex:none}
+}
+@media (max-width:820px){ .site-foot{grid-template-columns:minmax(0,1fr)} }
+
+/* stamps */
+.stamp{display:inline-block;font-family:var(--type);font-weight:700;font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;padding:.35em .7em;border:2px solid currentColor;border-radius:3px;transform:rotate(-4deg);white-space:nowrap}
+.s-live{color:var(--accent)}.s-proto{color:var(--ink)}.s-wait{color:#6b665d}.s-idea{color:var(--muted)}
+
+/* flying folder (drawer ⇄ file) */
+.flyer{position:fixed;z-index:8;border-radius:0 10px 10px 10px;box-shadow:0 24px 40px -22px rgba(29,28,26,.35);pointer-events:none;transform-origin:0 0;will-change:transform,opacity;contain:strict;backface-visibility:hidden}
+#fv.instant{transition:none}
+
+/* ---------- file view ---------- */
+#fv{position:fixed;inset:0;z-index:6;background:var(--bg);overflow-y:auto;overscroll-behavior:contain;opacity:0;transition:opacity .28s ease;-webkit-overflow-scrolling:touch}
+#fv.show{opacity:1}
+.fv-wrap{max-width:1160px;margin:0 auto;padding-top:calc(14px + env(safe-area-inset-top,0px));padding-bottom:calc(120px + env(safe-area-inset-bottom,0px));
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.fv-bar{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;font-family:var(--type);font-size:12px;color:var(--muted);border-bottom:1px solid var(--line);padding-bottom:10px}
+.back{display:inline-flex;align-items:center;gap:8px;background:var(--ink-on-dark);color:var(--bg);border:0;border-radius:999px;cursor:pointer;font-family:var(--type);font-weight:700;font-size:13.5px;letter-spacing:.04em;padding:10px 16px 10px 12px;box-shadow:0 4px 14px rgba(0,0,0,.35)}
+.back:hover{background:#fff}
+.back svg{width:18px;height:18px}
+.fv-bar{position:sticky;top:0;z-index:3;background:var(--bg);padding-top:calc(10px + env(safe-area-inset-top,0px));margin-top:calc(-10px - env(safe-area-inset-top,0px))}
+.backlow{margin:40px auto 0;display:flex}
+.fv-crumb{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.fv-head{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:16px 32px;align-items:end;margin:26px 0 64px}
+.fv-head h1{font-family:var(--display);font-weight:400;font-size:clamp(40px,6.6vw,80px);line-height:.95;margin:0;text-wrap:balance}
+.fv-side{font-family:var(--type);font-size:12px;line-height:1.6;color:var(--muted);text-align:right}
+.fv-side .stamp{margin-top:8px}
+.panel-wrap{position:relative;padding-right:48px}
+.panel{position:relative;background:var(--c);border-radius:0 10px 10px 10px;padding:38px clamp(18px,4vw,54px) 54px;min-height:420px}
+.panel::before{content:attr(data-label);position:absolute;bottom:100%;left:0;height:34px;padding:8px 26px 0;background:var(--c);color:var(--fg);font-family:var(--display);font-size:18px;white-space:nowrap;
+  clip-path:polygon(0 0,calc(100% - 14px) 0,100% 100%,0 100%);min-width:220px}
+.doc{display:grid;grid-template-columns:minmax(0,1fr) 270px;gap:26px;align-items:start}
+.sheet{position:relative;background:var(--paper);color:var(--graphite);padding:46px clamp(20px,4vw,48px) 52px clamp(56px,7vw,92px);box-shadow:0 2px 0 rgba(0,0,0,.06),0 8px 14px -8px rgba(0,0,0,.45);
+  background-image:var(--grain,none)}
+.sheet::before{content:"";position:absolute;left:clamp(18px,2.6vw,30px);top:34px;bottom:34px;width:12px;
+  background:radial-gradient(circle,var(--bg) 0 4px,rgba(29,28,26,.35) 4.6px,transparent 5.6px) 0 0/12px 33.3% repeat-y}
+.sheet-grid{display:grid;grid-template-columns:150px minmax(0,1fr);gap:30px}
+.margin{font-family:var(--type);font-size:11.5px;line-height:1.55;color:var(--graphite-soft);display:grid;gap:12px;align-content:start;padding-top:8px}
+.margin b{display:block;font-weight:700;color:var(--graphite);letter-spacing:.06em;font-size:10.5px;text-transform:uppercase}
+.sheet h2{font-family:var(--display);font-style:italic;font-weight:400;font-size:clamp(34px,4vw,50px);line-height:1;margin:0 0 .45em;color:#26231f}
+.sheet .lede{font-size:clamp(17px,1.8vw,19.5px);line-height:1.5;margin:0 0 .9em;color:#2c2924}
+.sheet p{font-size:clamp(16px,1.6vw,17.5px);line-height:1.62;margin:0 0 .9em;max-width:62ch;text-wrap:pretty}
+.fileno{position:absolute;top:22px;right:22px;font-family:var(--type);font-size:12px;letter-spacing:.06em;color:var(--ink);border:1.5px solid var(--ink);padding:4px 8px;transform:rotate(2deg)}
+.attach{display:grid;gap:26px;align-content:start;padding-top:28px}
+.clipwrap{position:relative}
+.clipwrap > svg.clip{position:absolute;top:-16px;left:28px;width:18px;height:50px;z-index:2}
+.exhibits{display:grid;gap:18px}
+.exhibit{position:relative;display:block;background:var(--paper-2);color:#26231f;padding:16px 18px 18px;box-shadow:0 3px 8px -3px rgba(0,0,0,.45);transform:rotate(-1.4deg)}
+.exhibit:nth-child(2){transform:rotate(1.2deg)}
+.exhibit:nth-child(3){transform:rotate(-.6deg)}
+.exhibit.lead{margin-left:-46px;padding:20px 20px 22px}
+.exhibit > svg.clip{position:absolute;top:-16px;right:26px;width:18px;height:50px}
+.ex-tag{display:block;font-family:var(--type);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--terra)}
+.ex-num{display:block;font-family:var(--display);font-size:clamp(46px,5.4vw,66px);line-height:.95;margin:.12em 0 .08em;letter-spacing:-.01em;font-variant-numeric:lining-nums}
+.exhibit.lead .ex-num{font-size:clamp(54px,6.6vw,84px)}
+.ex-lbl{display:block;font-size:16px;line-height:1.3;color:#3a3731;text-wrap:balance}
+.also{margin:0;font-family:var(--type);font-size:12.5px;line-height:1.55;color:var(--fg)}
+.also b{display:block;font-weight:700;letter-spacing:.14em;text-transform:uppercase;font-size:10.5px;opacity:.7;margin-bottom:2px}
+.receipt{position:relative;background:var(--receipt);color:#2f2a1c;padding:16px 16px 18px;font-family:var(--type);font-size:12px;line-height:1.45;transform:rotate(1.6deg);box-shadow:0 6px 14px -6px rgba(0,0,0,.45);margin-left:-44px}
+.receipt::after{content:"";position:absolute;left:0;right:0;bottom:-7px;height:7px;background:linear-gradient(-45deg,transparent 5px,var(--receipt) 0) 0 0/10px 10px repeat-x,linear-gradient(45deg,transparent 5px,var(--receipt) 0) 0 0/10px 10px repeat-x}
+.receipt .rh{display:flex;justify-content:space-between;font-weight:700;letter-spacing:.14em;border-bottom:1px dashed rgba(47,42,28,.5);padding-bottom:6px;margin-bottom:6px}
+.receipt dl{margin:0}
+.receipt .row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;align-items:baseline;padding:2px 0}
+.receipt dd{margin:0;overflow:hidden;white-space:nowrap}
+.receipt dd::after{content:" ................................................................";opacity:.45}
+.receipt dt{font-weight:700;font-variant-numeric:tabular-nums}
+.receipt .rf{border-top:1px dashed rgba(47,42,28,.5);margin-top:6px;padding-top:6px;text-align:center;letter-spacing:.1em;font-size:11px}
+.figure{background:var(--paper-2);padding:12px 12px 10px;transform:rotate(-2deg);box-shadow:0 3px 8px -3px rgba(0,0,0,.45);color:var(--graphite)}
+.figure .frame{aspect-ratio:4/3;display:grid;place-items:center;background:#f3efe6;position:relative;overflow:hidden}
+.figure .frame::before{content:"";position:absolute;inset:16% 12% 18% 14%;background:var(--tint);opacity:.35;transform:rotate(-3deg)}
+.figure svg.dd{width:90%;position:relative}
+.figure figcaption{font-family:var(--type);font-size:10.5px;letter-spacing:.04em;color:var(--graphite-soft);margin-top:8px}
+.card-note{background:var(--paper-2);color:var(--accent);font-family:var(--hand);font-size:22px;line-height:1.15;padding:14px 16px 16px;transform:rotate(-1.2deg);box-shadow:0 3px 8px -3px rgba(0,0,0,.45);
+  background-image:repeating-linear-gradient(transparent 0 25px,rgba(29,28,26,.09) 25px 26px);background-position:0 12px}
+.sidetabs{position:absolute;top:28px;right:0;width:48px;display:flex;flex-direction:column;gap:6px;overflow:hidden}
+.stab{writing-mode:vertical-rl;height:150px;width:44px;border:0;cursor:pointer;background:var(--c);color:var(--fg);font-family:var(--display);font-size:14.5px;
+  border-radius:0 10px 10px 0;padding:8px 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;opacity:.92;transition:transform .2s}
+.stab:hover{transform:translateX(3px);opacity:1}
+.stab[aria-current="true"]{opacity:1;box-shadow:inset 3px 0 0 rgba(0,0,0,.2)}
+.fv-nav{display:flex;justify-content:space-between;gap:12px;margin-top:34px;font-family:var(--type);font-size:12.5px}
+.fv-nav button{background:none;border:0;cursor:pointer;color:var(--ink-on-dark);padding:8px 0;text-align:left;max-width:48%}
+.fv-nav button:last-child{text-align:right}
+.fv-nav button:disabled{opacity:.25;cursor:default}
+.fv-nav small{display:block;color:var(--muted);letter-spacing:.06em}
+.trailbar{position:fixed;left:0;right:0;bottom:0;z-index:7;display:flex;flex-direction:column;align-items:center;gap:2px;padding-bottom:calc(8px + env(safe-area-inset-bottom,0px));padding-top:6px;
+  background:linear-gradient(rgba(251,250,246,0),rgba(251,250,246,.96) 40%);pointer-events:none}
+.trail{position:relative;width:clamp(180px,46vw,460px);height:46px}
+.tline{position:absolute;left:-6px;right:-6px;bottom:10px;height:6px;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='6' viewBox='0 0 60 6'%3E%3Cpath d='M0 3.4C9 2.4 15 4 24 3.2S40 2.2 48 3.5 56 3 60 3.2' fill='none' stroke='%23a39d92' stroke-width='1.2' stroke-linecap='round'/%3E%3C/svg%3E") repeat-x;background-size:60px 6px}
+.tick{position:absolute;bottom:8px;width:1.4px;height:9px;background:var(--muted);transform:translateX(-50%) rotate(5deg);opacity:.6}
+.tick.seen{background:var(--receipt);opacity:1}
+.tdog{position:absolute;bottom:13px;left:0;transform:translateX(-50%);transition:left .75s cubic-bezier(.4,.1,.3,1)}
+.tdog img{width:56px;height:25px;display:block}
+.tdog.right img{transform:scaleX(-1)}
+.tmeta{font-family:var(--type);font-size:11px;color:var(--muted);letter-spacing:.06em}
+.tip{font-family:var(--hand);font-size:18px;color:var(--muted);min-height:1.1em}
+.map svg{width:100%;height:auto;display:block}
+.map svg text{font-family:var(--hand);fill:#34312c}
+.creds h3{font-family:var(--type);font-weight:700;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--terra);margin:1.2em 0 .4em}
+.creds p{margin:0 0 .35em}
+.creds a{color:var(--ink)}
+.nojs{max-width:720px;margin:24px auto;padding:0 16px;font-size:17px;line-height:1.5}
+.nojs h2{font-family:var(--display);font-weight:400;font-size:30px;margin:1.2em 0 .3em}
+
+@media (max-width:820px){
+  .doc{grid-template-columns:minmax(0,1fr)}
+  .attach{grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));padding-top:0}
+  .receipt{margin-left:0}
+  .exhibit.lead{margin-left:0}
+  .exhibits{grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr))}
+  .sheet-grid{grid-template-columns:minmax(0,1fr);gap:14px}
+  .margin{grid-template-columns:repeat(auto-fit,minmax(130px,1fr));padding-top:0}
+  .panel-wrap{padding-right:0}
+  .sidetabs{position:static;width:auto;flex-direction:row;overflow-x:auto;margin-top:14px;padding-bottom:4px}
+  .stab{writing-mode:horizontal-tb;height:40px;width:auto;flex:none;padding:0 16px;border-radius:0 0 10px 10px;max-width:220px}
+  .fv-head{grid-template-columns:minmax(0,1fr)}
+  .fv-side{text-align:left}
+  .tip{display:none}
+}
+@media (max-width:640px){
+  .chips{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;-webkit-mask-image:linear-gradient(90deg,#000 85%,transparent)}
+  .chips::-webkit-scrollbar{display:none}
+  .chip{flex:none}
+  .proof{gap:10px}
+  .pf{min-width:0;flex:1 1 0;padding:9px 10px 10px}
+  .pf-lbl{font-size:12.5px}
+  .drawer-head{margin-top:52px}
+  .treat{position:static;margin:0 0 14px;transform:none}
+  .treat:hover{transform:none}
+  .drawer{--step:54px;--peek:0px;--bh:150px}
+  .meta{grid-template-columns:minmax(0,1fr) auto;gap:6px 12px;padding:14px 16px}
+  .meta .fn,.meta .open{display:none}
+  .folder .tab{font-size:17px}
+  .panel{padding:30px 14px 34px}
+  .sheet{padding:40px 18px 36px 44px}
+  .sheet::before{left:14px}
+  .fileno{top:12px;right:12px}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01s!important;transition-duration:.01s!important}
+}
+</style>
 </head>
-<body class="landing-page">
-    <div class="landing-container">
-        <div class="landing-title-container">
-            <h1 class="landing-name">PREMKUMAR R</h1>
-            <div class="landing-subtitle">
-                <span>AI Product</span>
-                <span class="dot">•</span>
-                <span>Strategist</span>
-                <span class="dot">•</span>
-                <span>Builder</span>
-            </div>
-        </div>
-        <div class="choice-container">
-            <a href="work.html" class="choice-button work-button">
-                <span class="button-text">The Official Story</span>
-                <span class="button-subtext">(Résumé Edition)</span>
-                <span class="button-arrow">→</span>
-            </a>
-            <a href="work-narrative-cinematic.html" class="choice-button narrative-button">
-                <span class="button-text">The *You might want to see this* Story</span>
-                <span class="button-subtext"></span>
-                <span class="button-arrow">→</span>
-            </a>
-            
-        </div>
-        <div class="landing-footer">
-            An Exploration of Endeavors. *Choose wisely.*
-        </div>
+<body>
+<section class="park" id="park" aria-label="Idli's park">
+  <svg class="scene" id="scene" aria-hidden="true"></svg>
+  <div class="bar top">
+    <div><p class="pname">Premkumar R</p><p class="prole">AI Product &amp; Strategy · AI CoE, Infosys BPM</p></div>
+    <nav class="plinks" aria-label="Site"><a href="#work" id="skipWork">The work ↓</a><button type="button" id="contactCta">Contact ↓</button></nav>
+  </div>
+  <button type="button" class="pdog" id="idli" aria-label="Pet Idli, the dachshund"></button>
+  <svg class="bfly" id="bfly" viewBox="-15 -12 30 24" aria-hidden="true"><g id="wings"><path d="M0 0C-4 -10 -14 -11 -13 -3C-12 3 -5 3 0 0ZM0 0C-3 4 -10 9 -9 3" fill="#fffefb" stroke="#1d1c1a" stroke-width="1.5" stroke-linejoin="round"/><path d="M0 0C4 -10 14 -11 13 -3C12 3 5 3 0 0ZM0 0C3 4 10 9 9 3" fill="#fffefb" stroke="#1d1c1a" stroke-width="1.5" stroke-linejoin="round"/></g><path d="M0 -4V5" stroke="#1d1c1a" stroke-width="1.8" stroke-linecap="round"/></svg>
+  <div class="oops" id="oops" hidden role="status">
+    <p class="oops-h">Oh, sorry.</p>
+    <p class="oops-t">You came for Prem’s <span class="oops-u">work<svg viewBox="0 0 120 10" preserveAspectRatio="none" aria-hidden="true"><path d="M2 6C20 2 34 9 52 5S86 2 118 6" fill="none" stroke="#e5461f" stroke-width="2.4" stroke-linecap="round"/></svg></span>, not his dog.</p>
+    <p class="oops-s">He leads AI product bets in the AI CoE at Infosys BPM. Everything he has worked on is in the files below.</p>
+    <div class="oops-a"><a class="go" href="#work" id="goWork">Show me the work ↓</a><button type="button" class="stay" id="stay">I’ll watch Idli a bit</button></div>
+  </div>
+  <div class="bar bot">
+    <p class="treatline" id="treatLine" aria-live="polite"></p>
+    <button type="button" class="scrollcue" id="scrollCue">scroll for the work ↓</button>
+  </div>
+</section>
+<main class="room" id="room">
+  <section class="work" id="work" aria-label="The work">
+    <div class="intro">
+      <p class="crumb">The archive</p>
+      <h2 class="hey">Hi, I’m Prem.</h2>
+      <p class="role">AI Product &amp; Strategy · Senior Consultant, AI CoE, Infosys BPM</p>
+      <p class="bio">I’m a strategy person who builds. I studied engineering, did my MBA at IIM Sirmaur and spent four years in Corporate Strategy before moving to the AI CoE. I find where AI can change how a business runs, then shape it into a product: discovery, prototype, evaluation and the business case. My work goes to CXOs and client leaders. For 8 quarters I prepared the CEO’s briefers, and now I pitch AI bets to client heads. Operations teams in finance and HR use what we build in their daily work. <b>Four AI use cases are now live in client operations, aimed at 30–50% less manual effort.</b></p>
+      <div class="proof" aria-label="In numbers">
+        <div class="pf"><span class="pf-num">25+</span><span class="pf-lbl">AI use cases taken to a decision</span></div>
+        <div class="pf"><span class="pf-num">4</span><span class="pf-lbl">use cases live in client operations</span></div>
+        <div class="pf"><span class="pf-num">8</span><span class="pf-lbl">quarters of CEO briefers</span></div>
+      </div>
     </div>
+    <div class="drawer-head"><div><div class="crumb" id="crumb">The archive · 15 files</div><h2 id="heroTitle">Open a file to see what I’ve been working on</h2><p class="drawer-line" id="heroText"></p></div>
+      <span class="chips" role="group" aria-label="Show files">
+        <button type="button" class="chip" data-col="all" aria-pressed="true">All</button>
+        <button type="button" class="chip" data-col="work" aria-pressed="false">At work</button>
+        <button type="button" class="chip" data-col="home" aria-pressed="false">At home</button>
+        <button type="button" class="chip" data-col="ref" aria-pressed="false">Reference</button>
+      </span>
+    </div>
+    <section class="drawer" id="drawer" aria-label="Files"></section>
+    <p class="topark"><button type="button" id="toPark">Back to the park ↑</button></p>
+  </section>
+  <footer class="site-foot" id="contact" aria-label="Contact">
+    <div>
+      <h2>Write to me</h2>
+      <div class="mail"><a href="mailto:r.premkumar96@gmail.com" id="mailLink">r.premkumar96@gmail.com</a><button type="button" class="copy" id="copyMail">Copy</button></div>
+      <p style="margin-top:12px">Based in Bangalore.</p>
+    </div>
+    <div>
+      <h2>Elsewhere</h2>
+      <div class="links">
+        <a href="https://www.linkedin.com/in/premkumar-r-" target="_blank" rel="noopener">LinkedIn →</a>
+        <a href="https://github.com/rpremkumar56" target="_blank" rel="noopener">GitHub →</a>
+      </div>
+    </div>
+    <div>
+      <h2>On record</h2>
+      <p>Top Gun Award, Infosys BPM: Best Quarterly Performer, four times.</p>
+      <p>CEO High Performer Award, Infosys BPM, Q2’25.</p>
+      <p>MBA, Marketing &amp; HR, IIM Sirmaur. B.E., Electrical &amp; Electronics Engineering, St. Joseph’s Institute of Technology, Chennai.</p>
+    </div>
+    <div class="foot-line"><span>Premkumar R · 2026</span><span>Built with Claude Code · hosted on GitHub Pages</span></div>
+  </footer>
+</main>
+
+<section id="fv" hidden aria-label="File">
+  <div class="fv-wrap">
+    <div class="fv-bar">
+      <button type="button" class="back" id="closeBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>All files</button>
+      <span class="fv-crumb" id="fvCrumb"></span>
+    </div>
+    <div class="fv-head"><h1 id="fvTitle"></h1><div class="fv-side" id="fvSide"></div></div>
+    <div class="panel-wrap"><button type="button" class="treat" id="treatBtn" hidden><img alt="" id="treatImg"><span id="treatTxt">a treat for Idli · tap to keep it</span></button><div class="panel" id="panel"><div class="doc" id="doc"></div></div><nav class="sidetabs" id="sidetabs" aria-label="Other files in this drawer"></nav></div>
+    <div class="fv-nav"><button type="button" id="prevBtn"></button><button type="button" id="nextBtn"></button></div>
+    <button type="button" class="back backlow" id="closeBtn2"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>Back to all files</button>
+  </div>
+  <div class="trailbar" aria-hidden="true">
+    <div class="trail"><div class="tline"></div><div id="tmarks"></div><div class="tdog" id="tdog"><img id="tdogImg" alt=""><span class="tbub" id="tbub"></span></div></div>
+    <div class="tmeta" id="tmeta"></div>
+    <div class="tip" id="tip"></div>
+  </div>
+</section>
+
+<noscript>
+  <div class="nojs">
+    <p>This is Idli’s park. With JavaScript turned on, she walks around here. Prem’s work is below.</p>
+    <h2>At work</h2><p>Senior Consultant, AI CoE at Infosys BPM (Feb 2026 – now). I lead an AI Squad: 9 accounts, 25+ use cases, 20 prototypes. Files: AI Reconciliation (live in 4 use cases), Marine Claims AI, Finance Ops AI-Assist, multilingual AI evaluation in 5 languages, Ramp-down Radar. Corporate Strategy (May 2022 – Jan 2026): CEO briefers for 8 quarters, $1.5B+ business planning, a market intelligence system for 20+ accounts, a $10M+ transformation programme.</p>
+    <h2>At home</h2><p>Clinic appointment and rota web apps, two learning apps and a WhatsApp clinic assistant, built with Claude Code and hosted on GitHub.</p>
+    <p>r.premkumar96@gmail.com</p>
+  </div>
+</noscript>
+
+<script>
+(() => {
+"use strict";
+const REDUCED = matchMedia("(prefers-reduced-motion: reduce)").matches;
+const COARSE = matchMedia("(pointer: coarse)").matches;
+const INK = "#1d1c1a", GRAPHITE = "#2f2d29", ACC = "#e5461f";
+const $ = s => document.querySelector(s);
+
+/* ================= CONTENT =================
+   One entry per file. Thin files stay thin: a brief and, only if we have them, numbers, a figure and a note. */
+const COLS = {
+  work:{name:"At work", line:"Since Feb 2026 I lead a cross-functional AI Squad in the AI CoE at Infosys BPM: <b>9 accounts, 25+ use cases, 20 prototypes</b>. Before that, four years in Corporate Strategy next to the CXO office."},
+  home:{name:"At home", line:"Small apps I built after hours for people I know. Each one <b>replaced paper or a habit</b>. Built with Claude Code, hosted on GitHub."},
+  ref: {name:"Reference", line:"What I work with, drawn as rulers."}
+};
+const ALL_LINE = "Each folder is one piece of work: <b>the problem, what I did and what came of it.</b> Each one also hides a treat for Idli.";
+const F = [
+ {col:"work", title:"AI Reconciliation", tab:"AI Reconciliation", one:"A reusable product that reconciles finance documents with AI and auditable rules.", when:"AI CoE · 2026", status:["Live","live"], c:"#dfe5ec", fg:"#1d1c1a", pic:"recon", cap:"two ledgers, one rulebook",
+  margin:[["Role","Co-creator"],["Team","AI CoE"],["Used in","Finance operations"]],
+  body:["I co-created a reusable product for finance operations. AI extracts the data from documents. Configurable rules then reconcile it, and every decision leaves an audit trail.",
+        "The same product now runs across many workflows. Each team changes the rules, not the code. Four use cases are live in client operations."],
+  facts:[["4","use cases live in client operations"],["~16","workflows across 9 accounts"],["30–50%","target effort reduction"]], also:["6+ POCs delivered"]},
+ {col:"work", title:"Marine Claims AI", tab:"Marine Claims AI", one:"Human-in-the-loop agents that calculate and explain contract deadlines.", when:"AI CoE · 2026", status:["Prototype","proto"], c:"#cdd7e5", fg:"#1d1c1a", pic:"agents", cap:"the agent drafts, a person decides",
+  margin:[["Role","Prototyped and pitched"],["Process","Marine claims"]],
+  body:["A marine claims team handles more than 300 cases a month. Each case carries contract deadlines, and a missed deadline costs money.",
+        "I prototyped and pitched human-in-the-loop AI agents. They calculate each contract deadline and explain how they got it. They also organise the correspondence for every case. A person reviews and decides."],
+  facts:[["300+","claims cases a month"],["~$0.8M","annual time-bar exposure"]], note:"the agent drafts, a person decides"},
+ {col:"work", title:"Finance Ops AI-Assist", tab:"Finance Ops AI", one:"Two AI-assist products for invoice processing and vendor queries.", when:"AI CoE · 2026", status:["Prototype","proto"], c:"#e8dfcd", fg:"#1d1c1a", pic:"recon", cap:"invoice in, answer out",
+  margin:[["Role","Defined and pitched"],["Process","Invoices, vendor queries"]],
+  body:["I defined and pitched two AI-assist products: one for invoice processing and one for vendor queries.",
+        "They validate documents, classify cases and rank them by SLA. They retrieve answers from the ERP and draft replies in several languages."],
+  facts:[["~41%","projected time saving"],["~20","FTE of effort"]], also:["2 products: invoices and vendor queries"]},
+ {col:"work", title:"Testing AI in five languages", tab:"AI Evaluation", one:"An evaluation design for a live HR AI solution across five European languages.", when:"AI CoE · 2026", status:["Live","live"], c:"#d6dfcd", fg:"#1d1c1a", pic:"langs", cap:"same question, five languages",
+  margin:[["Role","Designed the evaluation"],["Channels","Email, documents, tickets, calls"]],
+  body:["A live HR AI solution handled emails, documents, tickets and live calls in five European languages. I designed how we evaluate it.",
+        "I built risk-based test sets and graded each error by severity. I added human-validation controls and rollout gates. Each gate links to a real operational decision: go, hold or roll back."],
+  facts:[["5","European languages"],["4","channels: email, documents, tickets, calls"]], note:"a metric is only useful if it changes a decision"},
+ {col:"work", title:"Ramp-down Radar", tab:"Ramp-down Radar", one:"An AI prototype that flags client accounts at risk of ramping down.", when:"AI CoE · 2026", status:["Pending sponsor","wait"], c:"#efe3c4", fg:"#1d1c1a", pic:"radar", cap:"signals before the numbers move",
+  margin:[["Role","Built the prototype"],["Data","Synthetic only, by design"],["Next","Real-data pilot"]],
+  body:["Some client accounts ramp down even when delivery looks smooth. Leadership wanted to see this earlier.",
+        "I built an AI prototype that flags accounts at risk. It combines account signals with an external-event monitor that watches public news about each client.",
+        "I validated it on synthetic data. A pilot on real data waits for sponsor approval, because client data stays inside approved tools."],
+  note:"built on synthetic data first, on purpose"},
+ {col:"work", title:"CEO briefers", tab:"CEO briefers", one:"Quarterly CEO briefers, board decks and investor narratives.", when:"Corporate Strategy · 2022–26", status:["Done","idea"], c:"#e7d4d0", fg:"#1d1c1a", pic:"strategy", cap:"eight quarters in a row",
+  margin:[["Role","Prepared the briefers"],["With","CXO office, business heads"]],
+  body:["For eight quarters in a row, I worked with the CXO office and the business heads. Each quarter I prepared the CEO briefers, the board presentations and investor-ready narratives."],
+  facts:[["8","consecutive quarters of CEO briefers"]]},
+ {col:"work", title:"Business planning", tab:"Business planning", one:"Business planning and financial modelling for $1.5B+ of revenue.", when:"Corporate Strategy · 2022–26", status:["Done","idea"], c:"#d3dae6", fg:"#1d1c1a", pic:"strategy", cap:"the plan behind the plan",
+  margin:[["Role","Led the planning"],["With","40+ global stakeholders"]],
+  body:["I led business planning and financial modelling for revenue projections of more than $1.5B. The work involved more than 40 stakeholders across the globe."],
+  facts:[["$1.5B+","in revenue projections"],["40+","global stakeholders"]]},
+ {col:"work", title:"Market intelligence", tab:"Market intelligence", one:"An automated intelligence system that feeds CXO newsletters.", when:"Corporate Strategy · 2022–26", status:["Done","idea"], c:"#e6e1d5", fg:"#1d1c1a", pic:"radar", cap:"accounts and industries, every day",
+  margin:[["Role","Built the system"],["Readers","CXOs"]],
+  body:["I built an automated intelligence system that covers more than 20 key accounts and their industries. It powers daily and monthly newsletters for the CXOs."],
+  facts:[["20+","key accounts covered"]], also:["Daily and monthly CXO newsletters"]},
+ {col:"work", title:"Enterprise transformation", tab:"Transformation", one:"A $10M+ cost programme and two organisational redesigns.", when:"Corporate Strategy · 2022–26", status:["Done","idea"], c:"#f0dacb", fg:"#1d1c1a", pic:"strategy", cap:"cost down, margin up",
+  margin:[["Role","Directed the programme"],["Scope","20,000+ employees"]],
+  body:["I directed a cost optimisation programme of more than $10M and two organisational redesigns. Together they affected more than 20,000 employees.",
+        "The results were about 16% savings year on year, faster financial reporting and a 100% margin improvement in the targeted units."],
+  facts:[["$10M+","cost optimisation programme"],["20,000+","employees affected"],["~16%","savings year on year"]], also:["About $450K saved","100% margin improvement in targeted units"]},
+ {col:"home", title:"The paper register", tab:"Clinic appointments", one:"A multi-user web app that replaces a dental clinic's paper register.", when:"Independent build", status:["Built","proto"], c:"#f2d8c6", fg:"#1d1c1a", pic:"calendar", cap:"two chairs, thirty-minute slots",
+  margin:[["Users","Receptionist, assistants"],["Device","Phones"],["Built with","Claude Code"]],
+  body:["The clinic booked every patient in a paper register. I built a multi-user web app to replace it.",
+        "The receptionist and the assistants log in on their phones. They see booked and free slots for each chair, book specialists and mark shows and no-shows.",
+        "The rules came from the front desk. Walk-ins go into a free gap or join the end of the queue. A late specialist shifts the next appointments. A no-show is marked after 15 minutes and can be undone."],
+  facts:[["2","chairs, booked in 30-minute slots"]], also:["Open 10 AM to 9 PM","No-shows marked after 15 minutes"]},
+ {col:"home", title:"The duty sheet", tab:"Duty rota", one:"A phone-first rota for the clinic's dental assistants.", when:"Independent build", status:["In use","live"], c:"#e8cfc4", fg:"#1d1c1a", pic:"rota", cap:"who is on which chair today",
+  margin:[["User","The person in charge"],["Hosted on","GitHub Pages"]],
+  body:["The duty sheet for the assistants lived on paper. I built a phone-first rota app.",
+        "The app suggests the rota. The person in charge changes any slot by hand. The data stays on her phone, with backup files."],
+  note:"semi-automatic beats fully automatic when people know things the app does not"},
+ {col:"home", title:"A 100-day study desk", tab:"100-day study desk", one:"The app I study AI and system architecture with, one hour a day.", when:"Independent build", status:["In use","live"], c:"#efe4d2", fg:"#1d1c1a", pic:"desk", cap:"one hour a day",
+  margin:[["User","Me"],["AI","Gemini API"],["Hosted on","GitHub Pages"]],
+  body:["I wanted to get deep into AI and system architecture in 100 days, one hour a day. I built the app I study with.",
+        "It has lessons, diagrams, quizzes, mock interviews and daily puzzles, and it tracks my progress. It is my start screen every morning."],
+  facts:[["100","days, one hour a day"]]},
+ {col:"home", title:"A study companion", tab:"Study companion", one:"A phone study site for a family member's entrance exam.", when:"Independent build", status:["Built","proto"], c:"#e3dccd", fg:"#1d1c1a", pic:"books", cap:"plan, notes, tests",
+  margin:[["Device","iPhone"]],
+  body:["A family member is preparing for a competitive entrance exam, with study time in short blocks. I built a hosted study site for her phone with the plan, notes, mock tests and visual summaries."]},
+ {col:"home", title:"On the workbench", tab:"WhatsApp assistant", one:"A WhatsApp assistant for clinic appointments and reminders, being rebuilt.", when:"Independent build", status:["In build","wait"], c:"#f3e0d2", fg:"#1d1c1a", pic:"phone", cap:"reminders where patients already are",
+  margin:[["Stack","WhatsApp Cloud API, FastAPI"]],
+  body:["My first version booked appointments and sent reminders. It stalled on business-profile verification.",
+        "I am rebuilding it from scratch. This time I start with the approval path, not the code."],
+  note:"the platform rules are part of the product"},
+ {col:"ref", kind:"map", title:"Field notes", tab:"Field notes", one:"What I work with, drawn as rulers.", when:"Reference", status:["Draft","idea"], c:"#e9e6df", fg:"#1d1c1a", margin:[["Read it as","one tick per level of hands-on depth"]]}
+];
+F.forEach((f,i)=>{ f.i=i; f.no=String(i+1).padStart(2,"0"); f.id="f-"+f.no; });
+const SKILLS = [["Business planning & modelling",5],["CEO briefers & board decks",5],["Market intelligence",4],["AI product discovery",4],["Rapid prototyping",4],
+  ["AI evaluation design",4],["Agentic workflows",3],["Claude Code & MCP",3],["Power BI & Excel",4],["Python",2]];
+
+/* ================= PEN SKETCH ART ================= */
+const PEN="#1d1c1a";
+const DOG={ body:"M-60 -27C-60 -38 -52 -42 -40 -42L30 -43C44 -43 52 -37 52 -27C52 -18 46 -15 36 -15Q-5 -11 -46 -15C-56 -15 -60 -19 -60 -27Z",
+  head:"M0 0C1 -14 11 -23 22 -21C30 -20 34 -15 40 -14L50 -13C56 -12 57 -5 51 -3L38 -2C30 -1 26 4 17 6C7 8 0 6 0 0Z",
+  ear:"M13 -17C5 -17 1 -6 3 5C5 11 11 11 12 5C13 -1 17 -10 13 -17Z", tail:"M0 0C-8 -3 -14 -10 -17 -20" };
+const DOG_VB="-82 -72 190 84";
+function dogMarkup(p={}, ids=false){
+  const L=p.legs||[0,0,0,0], id=k=>ids?` id="${k}"`:"";
+  const SW=(w=2.4)=>`fill="none" stroke="${PEN}" stroke-width="${w}" stroke-linecap="round" stroke-linejoin="round"`, S=SW();
+  const FI=`fill="#fffefb" stroke="${PEN}" stroke-width="2.4" stroke-linejoin="round"`;
+  const leg=(x,a,far,k)=>`<g${id(k)} transform="translate(${x} -17) rotate(${a})"><path d="M0 0L1 15L8 15" ${S}${far?' stroke-opacity=".45"':''}/></g>`;
+  return `<g${id("dogAll")}>${leg(28,L[1],1,"lFF")}${leg(-50,L[3],1,"lBF")}`+
+   `<g${id("tailG")} transform="translate(-58 -33) rotate(${p.tail||0})"><path d="${DOG.tail}" ${S}/></g>`+
+   `<path d="${DOG.body}" ${FI}/><path d="M-30 -36c6 -2 12 -2 18 0M-6 -37c5 -1.5 9 -1.5 13 0" ${SW(1.3)} stroke-opacity=".45"/>`+
+   `${leg(36,L[0],0,"lFN")}${leg(-42,L[2],0,"lBN")}`+
+   `<g${id("headG")} transform="translate(44 -36) rotate(${p.head||0})"><path d="${DOG.head}" ${FI}/>`+
+   (p.sleep?`<path d="M24 -12q3 2.4 6 0" ${SW(1.8)}/>`:`<circle cx="27" cy="-12" r="2.1" fill="${PEN}"/>`)+
+   `<circle cx="51" cy="-8" r="2.6" fill="${PEN}"/><path d="M-1 -9C3 -4 4 2 3 8" fill="none" stroke="#e5461f" stroke-width="3.4" stroke-linecap="round"/><path d="${DOG.ear}" ${FI}/></g></g>`;
+}
+const svgURL=(vb,w,h,inner)=>"data:image/svg+xml,"+encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="${vb}" width="${w}" height="${h}">${inner}</svg>`);
+const BONE_IN=`<g fill="#fffefb" stroke="${PEN}" stroke-width="1.8"><circle cx="6" cy="6.5" r="4.4"/><circle cx="6" cy="13.5" r="4.4"/><circle cx="34" cy="6.5" r="4.4"/><circle cx="34" cy="13.5" r="4.4"/></g><rect x="6" y="6.6" width="28" height="6.8" fill="#fffefb"/><path d="M8 6.6H32M8 13.4H32" stroke="${PEN}" stroke-width="1.8" stroke-linecap="round"/>`;
+const HEART_IN=`<path d="M12 20C5 14.5 2 11 2 7a5 5 0 0 1 10-1.2A5 5 0 0 1 22 7c0 4-3 7.5-10 13z" fill="none" stroke="#e5461f" stroke-width="2.2" stroke-linejoin="round"/>`;
+const PURL={
+  walkA:svgURL(DOG_VB,190,84,dogMarkup({legs:[18,-18,-18,18],tail:-8})),
+  walkB:svgURL(DOG_VB,190,84,dogMarkup({legs:[-18,18,18,-18],tail:8})),
+  happyA:svgURL(DOG_VB,190,84,dogMarkup({tail:-28,head:-8})),
+  happyB:svgURL(DOG_VB,190,84,dogMarkup({tail:24,head:-8})),
+  sleep:svgURL(DOG_VB,190,84,dogMarkup({legs:[70,70,-70,-70],tail:40,head:14,sleep:true})),
+  bone:svgURL("-1 1 42 18",42,18,BONE_IN), heart:svgURL("0 0 24 22",24,22,HEART_IN)
+};
+
+/* ================= DOODLES ================= */
+function doodle(name, ink = INK){
+  const S = `fill="none" stroke="${ink}" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"`;
+  const FL = (c,o=.35) => `fill="${c}" fill-opacity="${o}" stroke="none"`;
+  const lines = (x,y,w,n,g=7) => Array.from({length:n},(_,i)=>`<path d="M${x} ${y+i*g} h${w*(i%3===2?.6:1)}"/>`).join("");
+  const parts = {
+    recon:`<g ${S}><rect x="14" y="14" width="50" height="80"/>${lines(20,26,38,8,8)}<rect x="96" y="14" width="50" height="80"/>${lines(102,26,38,8,8)}<path d="M64 30h32M64 54h32M64 78h32" stroke-dasharray="3 4"/><path d="M75 26l4 5 7-9M75 50l4 5 7-9M75 74l4 5 7-9"/></g>`,
+    agents:`<g ${S}><circle cx="38" cy="34" r="11"/><path d="M20 76c2-16 34-16 36 0"/><rect x="100" y="22" width="40" height="32" rx="4"/><circle cx="112" cy="38" r="2.5"/><circle cx="128" cy="38" r="2.5"/><path d="M120 22v-8M120 12h.1"/><path d="M58 40h36M88 35l6 5-6 5M94 58H60M66 53l-6 5 6 5"/><rect x="100" y="64" width="30" height="28"/>${lines(105,72,20,3,6)}</g>`,
+    langs:`<g ${S}><path d="M12 16h52v26H30l-8 8v-8H12z"/><path d="M76 10h60v24h-40l-8 8v-8H76z"/><path d="M26 58h46v24H40l-8 8v-8h-6z"/><path d="M86 50h58v26h-12v8l-8-8H86z"/>${lines(20,25,34,2,8)}${lines(84,18,42,2,8)}${lines(32,66,32,2,8)}${lines(94,59,40,2,8)}</g>`,
+    radar:`<g ${S}><circle cx="80" cy="56" r="42"/><circle cx="80" cy="56" r="28"/><circle cx="80" cy="56" r="14"/><path d="M80 56l30-30"/><path d="M38 56h84M80 14v84" stroke-dasharray="2 5"/></g><g ${FL(ink,.9)}><circle cx="102" cy="40" r="3.5"/><circle cx="62" cy="74" r="2.5"/><circle cx="96" cy="78" r="2.5"/></g><circle cx="102" cy="40" r="9" ${S}/>`,
+    strategy:`<g ${S}><path d="M18 92h126M18 92V14"/><rect x="28" y="66" width="14" height="26"/><rect x="50" y="58" width="14" height="34"/><rect x="72" y="48" width="14" height="44"/><rect x="94" y="36" width="14" height="56"/><rect x="116" y="22" width="14" height="70"/><path d="M26 54C60 44 88 30 132 12M124 10l9 1-4 8"/></g>`,
+    calendar:`<g ${S}><rect x="16" y="14" width="128" height="80"/><path d="M16 28h128M80 14v80"/>${Array.from({length:6},(_,i)=>`<path d="M16 ${40+i*9}h128"/>`).join("")}</g><g ${FL(ink,.5)}><rect x="18" y="41" width="60" height="7"/><rect x="82" y="59" width="60" height="7"/><rect x="18" y="68" width="60" height="7"/></g>`,
+    rota:`<g ${S}><rect x="14" y="14" width="132" height="80"/><path d="M14 30h132M54 14v80M84 14v80M114 14v80"/>${[44,58,72,86].map(y=>`<path d="M20 ${y}h28"/>`).join("")}<path d="M63 40l5 6 8-10M93 54l5 6 8-10M123 40l5 6 8-10M63 68l5 6 8-10M123 82l5 6 8-10"/><path d="M93 66l10 10M103 66l-10 10"/></g>`,
+    desk:`<g ${S}><path d="M14 80c22-8 44-8 66 0 22-8 44-8 66 0V40c-22-8-44-8-66 0-22-8-44-8-66 0z"/><path d="M80 40v40"/>${lines(22,48,48,3,8)}${lines(88,48,48,3,8)}<path d="M120 36V14l-16-6M104 8l-14 10h20z"/></g>`,
+    books:`<g ${S}><rect x="22" y="58" width="110" height="14"/><rect x="30" y="44" width="96" height="14"/><rect x="18" y="72" width="120" height="16"/><path d="M38 30h70l-6 14H44z"/></g>`,
+    phone:`<g ${S}><rect x="54" y="8" width="52" height="94" rx="7"/><path d="M74 14h12"/><path d="M62 26h28v14H66l-4 4z"/><path d="M98 50H72v14h22l4 4z"/><path d="M62 74h24v12H66l-4 4z"/></g>`,
+    moon:`<g ${S}><circle cx="122" cy="28" r="20"/><circle cx="114" cy="22" r="4"/><circle cx="128" cy="34" r="3"/>${[0,1,2,3,4,5].map(i=>`<ellipse cx="${28+i*12}" cy="${94-i*12}" rx="12" ry="4.5"/>`).join("")}<path d="M96 36l-12 12" stroke-dasharray="2 4"/></g>`,
+    reel:`<g ${S}><rect x="34" y="8" width="50" height="94" rx="7"/><path d="M52 44v20l17-10z"/><path d="M100 90V60M114 90V44M128 90V30"/><path d="M96 92h38"/></g>`,
+    stroke:`<g ${S}><path d="M10 70c10-40 30-40 34-8s-14 28-6 6 26-36 32-10-10 26 2 10 24-34 34-8-8 22 6 6 18-24 30-6"/><path d="M10 92h140" stroke-dasharray="2 5"/></g>`,
+    bowl:`<g ${S}><path d="M22 54h116c-4 26-26 40-58 40S26 80 22 54z"/><path d="M60 46c-6-8 6-12 0-22M80 46c-6-8 6-12 0-22M100 46c-6-8 6-12 0-22"/></g>`
+  };
+  return `<svg class="dd" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 110" aria-hidden="true">${parts[name]||""}</svg>`;
+}
+const CLIP = `<svg class="clip" viewBox="0 0 16 44" aria-hidden="true"><path d="M5 30V8a3 3 0 0 1 6 0v26a5 5 0 0 1-10 0V12" fill="none" stroke="#9a968f" stroke-width="1.8" stroke-linecap="round"/></svg>`;
+/* paper grain: drawn once into a small image, so no filter runs while files open */
+(function(){ try{ const c=document.createElement("canvas"); c.width=c.height=160; const g=c.getContext("2d"), im=g.createImageData(160,160);
+  for(let i=0;i<im.data.length;i+=4){ const v=Math.random(); im.data[i]=88; im.data[i+1]=76; im.data[i+2]=56; im.data[i+3]=v<.5?Math.round(v*42):Math.round((1-v)*14); }
+  g.putImageData(im,0,0); document.documentElement.style.setProperty("--grain",`url(${c.toDataURL()})`); }catch(e){} })();
+const esc = s => String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+
+/* ================= STORAGE ================= */
+const store = { get(k){ try{ return localStorage.getItem(k); }catch(e){ return null; } }, set(k,v){ try{ localStorage.setItem(k,v); return true; }catch(e){ return false; } } };
+const NS="prfiles.v1.";
+function hash(str){ let h=5381; for(let i=0;i<str.length;i++) h=((h<<5)+h+str.charCodeAt(i))|0; return (h>>>0).toString(36); }
+let SEEN; try{ SEEN=new Set(JSON.parse(store.get(NS+"seen"))||[]); }catch(e){ SEEN=new Set(); }
+const saveSeen=()=>store.set(NS+"seen",JSON.stringify([...SEEN]));
+let FOUND; try{ FOUND=new Set(JSON.parse(store.get(NS+"treats"))||[]); }catch(e){ FOUND=new Set(); }
+let EATEN = parseInt(store.get(NS+"eaten")||"0",10)||0;
+const saveTreats=()=>{ store.set(NS+"treats",JSON.stringify([...FOUND])); store.set(NS+"eaten",String(EATEN)); };
+const pending=()=>Math.max(0,FOUND.size-EATEN);
+
+/* ================= THE DRAWER ================= */
+const drawer=$("#drawer");
+let col="all", peekI=-1, DR={step:50,tabh:36,peek:104};
+F.forEach(f=>{
+  const el=document.createElement("article"); el.className="folder"; el.dataset.id=f.id;
+  el.style.setProperty("--c",f.c); el.style.setProperty("--fg",f.fg);
+  el.innerHTML=`<button type="button" class="tab" data-open="${f.id}" aria-label="Open file ${f.no}: ${esc(f.title)}. ${esc(f.status[0])}."><span class="fno">${f.no}</span><span class="tl">${esc(f.tab)}</span><img class="tb" alt="" src="${PURL.bone}" title="A treat for Idli is in this file"></button>
+    <div class="fb" data-open="${f.id}"><div class="meta"><span class="fn">FILE ${f.no}</span><span class="one">${esc(f.one)}</span><span class="when">${esc(f.when)}</span><span class="stamp">${esc(f.status[0])}</span></div></div>`;
+  f.el=el; drawer.appendChild(el);
+});
+function visibleFiles(){ return F.filter(f=>col==="all"||f.col===col); }
+function cssNum(v){ return parseFloat(getComputedStyle(drawer).getPropertyValue(v))||0; }
+function layoutDrawer(){
+  const vis=visibleFiles(), step=cssNum("--step"), tabh=cssNum("--tabh"), peek=cssNum("--peek"), bh=cssNum("--bh");
+  DR={step,tabh,peek};
+  const narrow = innerWidth<=640, slots = narrow?2:4;
+  F.forEach(f=>f.el.classList.add("out"));
+  vis.forEach((f,k)=>{
+    const el=f.el; el.classList.remove("out"); el.style.zIndex=k+1;
+    const tw = narrow ? 58 : 24, tx = narrow ? (k%2)*(100-tw) : (k%slots)*((100-tw)/(slots-1));
+    el.style.setProperty("--tw",tw+"%"); el.style.setProperty("--tx",tx+"%");
+    const vi=vis.indexOf(F[peekI]);
+    el.style.setProperty("--y", tabh + k*step + (peekI>=0 && vi>=0 && k>vi ? peek : 0));
+    el.querySelector(".tab").tabIndex=0;
+    el.classList.toggle("peek", k===vis.indexOf(F[peekI]));
+    el.classList.toggle("front", k===vis.length-1);
+  });
+  F.filter(f=>!vis.includes(f)).forEach(f=>{ f.el.style.setProperty("--y", tabh + (vis.length-1)*step + 60); f.el.querySelector(".tab").tabIndex=-1; });
+  drawer.style.height = (tabh + Math.max(0,vis.length-1)*step + bh + peek) + "px";
+  drawer.classList.toggle("filtered", col!=="all");
+  $("#heroTitle").textContent = col==="all" ? "Open a file to see what I’ve been working on" : col==="ref" ? "What I work with" : `${COLS[col].name}: ${vis.length} files`;
+  $("#crumb").textContent = col==="all" ? `The archive · ${F.length} files` : `The archive / ${COLS[col].name} · files ${vis[0].no}–${vis[vis.length-1].no}`;
+  $("#heroText").innerHTML = col==="all" ? ALL_LINE : COLS[col].line;
+  fitTabs();
+}
+function fitTabs(){ document.querySelectorAll(".folder:not(.out) .tab").forEach(t=>{ const l=t.querySelector(".tl"); l.style.fontSize=""; let fs=parseFloat(getComputedStyle(t).fontSize), g=0;
+  while(l.scrollWidth>l.clientWidth+1 && fs>11 && g++<24){ fs-=.5; l.style.fontSize=fs+"px"; } }); }
+function applyPeek(){
+  const vis=visibleFiles(), vi=vis.indexOf(F[peekI]);
+  vis.forEach((f,k)=>{ f.el.style.setProperty("--y", DR.tabh + k*DR.step + (vi>=0 && k>vi ? DR.peek : 0)); f.el.classList.toggle("peek", k===vi); });
+}
+function setPeek(i){ if(COARSE || i===peekI) return; peekI=i; applyPeek(); }
+drawer.addEventListener("pointerover", e=>{ const fo=e.target.closest(".folder"); if(fo) setPeek(F.findIndex(f=>f.el===fo)); });
+drawer.addEventListener("pointerleave", ()=>setPeek(-1));
+drawer.addEventListener("focusin", e=>{ const fo=e.target.closest(".folder"); if(fo) setPeek(F.findIndex(f=>f.el===fo)); });
+drawer.addEventListener("click", e=>{ const t=e.target.closest("[data-open]"); if(t) openFile(t.dataset.open, t.closest(".folder")); });
+document.querySelectorAll(".chip").forEach(c=>c.addEventListener("click",()=>{ col=c.dataset.col; peekI=-1;
+  document.querySelectorAll(".chip").forEach(x=>x.setAttribute("aria-pressed", x===c)); layoutDrawer(); }));
+
+/* ================= THE PARK ================= */
+const park=$("#park"), scene=$("#scene"), idliBtn=$("#idli"), bfly=$("#bfly"), oops=$("#oops"), treatLine=$("#treatLine");
+idliBtn.innerHTML=`<svg viewBox="${DOG_VB}">${dogMarkup({},true)}</svg>`;
+const dsvg=idliBtn.firstChild, part=id=>dsvg.querySelector("#"+id);
+const P_={all:part("dogAll"),fn:part("lFN"),ff:part("lFF"),bn:part("lBN"),bf:part("lBF"),tail:part("tailG"),head:part("headG")};
+let W=0,H=0,GY=0,K=1,BOWL={x:0,y:0};
+let seed=11; const rr=()=>{ seed=(seed*16807)%2147483647; return seed/2147483647; };
+function wline(pts,j=1.3){
+  const p=pts.map(([x,y])=>[x+(rr()-.5)*j*2,y+(rr()-.5)*j*2]); let d=`M${p[0][0].toFixed(1)} ${p[0][1].toFixed(1)}`;
+  for(let i=0;i<p.length-1;i++){ const a=p[i-1]||p[i], b=p[i], c=p[i+1], e=p[i+2]||c;
+    d+=`C${(b[0]+(c[0]-a[0])/6).toFixed(1)} ${(b[1]+(c[1]-a[1])/6).toFixed(1)} ${(c[0]-(e[0]-b[0])/6).toFixed(1)} ${(c[1]-(e[1]-b[1])/6).toFixed(1)} ${c[0].toFixed(1)} ${c[1].toFixed(1)}`; }
+  return d; }
+const seg=(x1,y1,x2,y2,n=5,j=1.2)=>wline(Array.from({length:n+1},(_,i)=>[x1+(x2-x1)*i/n,y1+(y2-y1)*i/n]),j);
+const D={x:0,dir:1,state:"walk",t:4,tx:0,ph:0,hop:0,heartT:0,headA:0,minX:0,maxX:0};
+function drawScene(){
+  W=park.clientWidth; H=park.clientHeight; const phone=W<640;
+  GY=Math.round(H*(phone?.74:.79)); K=phone?1.05:Math.min(1.7,Math.max(1.3,W/950)); seed=11;
+  const S=(w=2,o=1)=>`fill="none" stroke="${PEN}" stroke-width="${w}" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="${o}"`;
+  let g="";
+  // ground: a broken pen line, drawn twice
+  for(let pass=0;pass<2;pass++){ let x=-20; while(x<W+20){ const L=120+rr()*300, gap=8+rr()*34;
+    g+=`<path d="${seg(x,GY+pass*2.5,Math.min(W+20,x+L),GY+pass*2.5+(rr()-.5)*2,Math.max(3,Math.round(L/60)))}" ${S(pass?1.2:2,pass?.35:1)}/>`; x+=L+gap; } }
+  // grass tufts
+  const tuft=(x,y,sc=1,o=1)=>{ let t=""; const n=3+Math.floor(rr()*3); for(let i=0;i<n;i++){ const bx=x+i*3.2*sc; t+=`<path d="${seg(bx,y,bx+(rr()-.45)*9*sc,y-(7+rr()*11)*sc,2,.6)}" ${S(1.5,o)}/>`; } return t; };
+  for(let x=10;x<W;x+=40+rr()*80) g+=tuft(x,GY,1);
+  for(let i=0;i<Math.round(W/160);i++) g+=tuft(rr()*W, GY+26+rr()*Math.max(10,H-GY-80), .8, .55);
+  // tree
+  const tx=phone?W*.79:W*.82; let th=Math.min(H*.36,320)*(phone?.8:1), cr=Math.min(170,W*.13)*(phone?1.15:1);
+  // keep the canopy clear of the name and links at the top
+  const pr=park.getBoundingClientRect(), topLimit=$(".bar.top").getBoundingClientRect().bottom-pr.top+28, canopyTop=()=>GY-th-cr*.55-cr*.78*1.16;
+  if(canopyTop()<topLimit){ const f=Math.max(.45,(GY-topLimit)/(GY-canopyTop())); th*=f; cr*=f; }
+  scene.dataset.treeTop=Math.round(canopyTop()); scene.dataset.barBottom=Math.round(topLimit-28);
+  g+=`<path d="${wline([[tx-14,GY],[tx-9,GY-th*.4],[tx-7,GY-th*.75],[tx-8,GY-th]],1)}" ${S(2.2)}/><path d="${wline([[tx+14,GY],[tx+9,GY-th*.4],[tx+7,GY-th*.75],[tx+9,GY-th]],1)}" ${S(2.2)}/>`;
+  g+=`<path d="${wline([[tx-2,GY-th*.7],[tx-cr*.35,GY-th*.95],[tx-cr*.55,GY-th*1.1]],1)}" ${S(1.8)}/><path d="${wline([[tx+3,GY-th*.62],[tx+cr*.4,GY-th*.9],[tx+cr*.6,GY-th*1.02]],1)}" ${S(1.8)}/>`;
+  for(let k=0;k<4;k++){ const yy=GY-th*(.15+k*.18), xx=tx-6+rr()*10; g+=`<path d="${seg(xx,yy,xx+rr()*3,yy-14,2,.5)}" ${S(1.1,.5)}/>`; }
+  const cy=GY-th-cr*.55, pts=[]; for(let a=0;a<=Math.PI*2+.01;a+=Math.PI/14){ const bump=1+.1*Math.sin(a*7)+.05*Math.sin(a*3); pts.push([tx+Math.cos(a)*cr*bump, cy+Math.sin(a)*cr*.78*bump]); }
+  g+=`<path d="${wline(pts,2.2)}" fill="#fffefb" ${S(2)}/>`;
+  for(let k=0;k<7;k++){ const ax=tx+(rr()-.5)*cr*1.1, ay=cy+(rr()-.5)*cr*.9; g+=`<path d="M${ax.toFixed(1)} ${ay.toFixed(1)}q5 -5 10 0" ${S(1.3,.5)}/>`; }
+  // bench
+  const bx=phone?W*.06:W*.13, bw=150*K, sh=30*K, bh=34*K;
+  g+=`<path d="${seg(bx,GY-sh,bx+bw,GY-sh-1,4)}" ${S(2.2)}/><path d="${seg(bx+2,GY-sh+5,bx+bw-2,GY-sh+4,4)}" ${S(1.3,.6)}/>`;
+  g+=`<path d="${seg(bx+4,GY-sh-bh,bx+bw-4,GY-sh-bh-1,4)}" ${S(2)}/><path d="${seg(bx+4,GY-sh-bh*.55,bx+bw-4,GY-sh-bh*.55,4)}" ${S(1.6)}/>`;
+  [[bx+10,GY-sh-bh,bx+12,GY-sh],[bx+bw-10,GY-sh-bh,bx+bw-12,GY-sh],[bx+12,GY-sh,bx+8,GY],[bx+bw-12,GY-sh,bx+bw-8,GY],[bx+30,GY-sh,bx+28,GY],[bx+bw-30,GY-sh,bx+bw-28,GY]]
+    .forEach(([a,b,c,d])=>g+=`<path d="${seg(a,b,c,d,2,.7)}" ${S(2)}/>`);
+  // Idli's bowl, with her name in the accent colour
+  BOWL={x:bx+bw+56*K, y:GY}; const ow=40*K, oh=18*K;
+  g+=`<path d="${wline([[BOWL.x-ow/2,GY-oh],[BOWL.x-ow*.42,GY-2],[BOWL.x+ow*.42,GY-2],[BOWL.x+ow/2,GY-oh]],.6)}" fill="#fffefb" ${S(2)}/><ellipse cx="${BOWL.x}" cy="${GY-oh}" rx="${ow/2}" ry="${4*K}" fill="#fffefb" ${S(1.8)}/>`;
+  g+=`<text x="${BOWL.x}" y="${GY-oh*.3}" text-anchor="middle" font-family="Caveat,cursive" font-size="${13*K}" fill="#e5461f">idli</text><g id="bowlTreats"></g>`;
+  // two birds
+  for(let k=0;k<2;k++){ const x=W*(.3+k*.18)+rr()*60, y=H*(.22+k*.07); g+=`<path d="M${x.toFixed(1)} ${y.toFixed(1)}q6 -7 12 0q6 -7 12 0" ${S(1.6,.8)}/>`; }
+  scene.setAttribute("viewBox",`0 0 ${W} ${H}`); scene.innerHTML=g;
+  dsvg.setAttribute("width",190*K); dsvg.setAttribute("height",84*K);
+  D.minX=82*K+10; D.maxX=W-108*K-10;   // her drawing spans 82 units behind and 108 ahead of her feet D.x=Math.max(D.minX,Math.min(D.maxX,D.x||W*.42)); D.tx=Math.max(D.minX,Math.min(D.maxX,D.tx||D.x));
+  drawBowl(); place(performance.now());
+}
+function drawBowl(){ const b=scene.querySelector("#bowlTreats"); if(!b) return; const n=Math.min(3,pending());
+  b.innerHTML=Array.from({length:n},(_,i)=>`<image href="${PURL.bone}" x="${(BOWL.x-15*K+i*6*K).toFixed(1)}" y="${(GY-26*K-i*3).toFixed(1)}" width="${(20*K).toFixed(1)}" height="${(9*K).toFixed(1)}"/>`).join(""); }
+/* Idli's behaviour */
+let parkOn=true, oopsShown=false, lastT=performance.now(), qEl=null;
+function setTarget(x){ D.tx=Math.max(D.minX,Math.min(D.maxX,x)); }
+function heart(){ const h=document.createElement("img"); h.className="pheart"; h.src=PURL.heart; h.alt="";
+  h.style.left=(D.x+(D.dir>0?60:-60)*K+(Math.random()-.5)*30)+"px"; h.style.top=(GY-84*K)+"px"; park.appendChild(h); setTimeout(()=>h.remove(),1500); }
+function pose(now,dt){
+  const st=D.state, moving=st==="walk"||st==="trot"||st==="toBowl";
+  if(moving) D.ph+=dt*(st==="trot"?17:st==="toBowl"?15:10);
+  const sw=moving?Math.sin(D.ph)*(st==="walk"?20:28):0;
+  let head=0, tail=Math.sin(now/180)*8;
+  if(st==="sniff") head=16+Math.sin(now/70)*3;
+  else if(st==="look"||st==="oops") head=-12;
+  else if(st==="eat") head=24+Math.abs(Math.sin(now/120))*6;
+  else if(st==="happy"){ head=-8; tail=Math.sin(now/55)*28; }
+  else if(st==="sit"){ head=-4; tail=Math.sin(now/260)*6; }
+  if(moving) tail=Math.sin(now/90)*14;
+  D.headA+=(head-D.headA)*Math.min(1,dt*10);
+  P_.fn.setAttribute("transform",`translate(36 -17) rotate(${sw.toFixed(1)})`); P_.bf.setAttribute("transform",`translate(-50 -17) rotate(${sw.toFixed(1)})`);
+  P_.ff.setAttribute("transform",`translate(28 -17) rotate(${(-sw).toFixed(1)})`); P_.bn.setAttribute("transform",`translate(-42 -17) rotate(${(-sw).toFixed(1)})`);
+  P_.tail.setAttribute("transform",`translate(-58 -33) rotate(${tail.toFixed(1)})`); P_.head.setAttribute("transform",`translate(44 -36) rotate(${D.headA.toFixed(1)})`);
+  P_.all.setAttribute("transform",`translate(0 ${(moving?-Math.abs(Math.sin(D.ph))*1.6:0).toFixed(2)})`);
+}
+function place(now){
+  const hop=REDUCED?0:Math.abs(Math.sin(now/70))*16*D.hop;
+  idliBtn.style.transform=`translate(${(D.x-82*K).toFixed(1)}px, ${(GY-72*K+1-hop).toFixed(1)}px)`;
+  dsvg.style.transform = D.dir<0 ? "scaleX(-1)" : "";
+  if(qEl){ qEl.style.left=(D.x+(D.dir>0?64:-84)*K)+"px"; qEl.style.top=(GY-116*K)+"px"; }
+}
+const B={x:0,y:0,t:0,vx:42};
+function flutter(now,dt){
+  B.t+=dt; B.x+=B.vx*dt; if(B.x<W*.08||B.x>W*.92){ B.vx*=-1; B.x=Math.max(W*.08,Math.min(W*.92,B.x)); }
+  B.y=GY-H*.26+Math.sin(B.t*1.3)*H*.07+Math.sin(B.t*3.1)*10;
+  bfly.style.transform=`translate(${B.x.toFixed(1)}px, ${B.y.toFixed(1)}px) scaleX(${B.vx<0?-1:1})`;
+  bfly.querySelector("#wings").setAttribute("transform",Math.sin(now/55)>0?"scale(1 1)":"scale(.35 1)");
+}
+function tick(now){
+  const dt=Math.min(.05,(now-lastT)/1000); lastT=now;
+  if(parkOn && !document.hidden && !document.body.classList.contains("viewing") && W){
+    if(REDUCED && D.state!=="happy") D.state="sit";
+    if(pending()>0 && !REDUCED && !["toBowl","eat","happy","oops"].includes(D.state)){ D.state="toBowl"; setTarget(BOWL.x-(D.x<BOWL.x?118:-118)*K); }
+    if(REDUCED && pending()>0){ EATEN=FOUND.size; saveTreats(); drawBowl(); updateTreatUI(); }
+    const st=D.state;
+    if(st==="walk"||st==="trot"||st==="toBowl"){
+      const sp=(st==="trot"?190:st==="toBowl"?150:62)*K, dx=D.tx-D.x;
+      if(Math.abs(dx)<3){ D.x=D.tx;
+        if(st==="toBowl"){ D.state="eat"; D.t=1.4+Math.min(2,pending()*.5); D.dir = BOWL.x>D.x?1:-1; }
+        else { const r=Math.random(); D.state = r<.4?"sniff":r<.75?"sit":"look"; D.t=1.4+Math.random()*2.2; } }
+      else { D.dir=Math.sign(dx); D.x+=D.dir*Math.min(Math.abs(dx),sp*dt); }
+      if(st==="trot" && Math.random()<dt*.6) setTarget(B.x-40);
+    } else if(st==="eat"){ D.t-=dt; if(D.t<=0){ const n=pending(); EATEN=FOUND.size; saveTreats(); drawBowl(); updateTreatUI(); D.state="happy"; D.t=2.4; D.hop=1; D.heartT=0;
+        say(FOUND.size>=F.length?"Idli ate the last treat. She is very full now.":`Idli ate ${n} treat${n>1?"s":""}. There are more in the files.`,3800); } }
+    else if(st==="happy"){ D.heartT-=dt; if(D.heartT<=0){ heart(); D.heartT=.36; } D.t-=dt; if(D.t<=0){ D.state=REDUCED?"sit":"look"; D.t=1.2; } }
+    else if(st==="oops"){ D.t-=dt; if(D.t<=0){ if(qEl){ qEl.remove(); qEl=null; } D.state="sit"; D.t=3; } }
+    else { D.t-=dt; if(D.t<=0 && !REDUCED){ if(Math.random()<.22){ D.state="trot"; setTarget(B.x); } else { D.state="walk"; setTarget(D.minX+Math.random()*(D.maxX-D.minX)); } } }
+    D.hop=Math.max(0,D.hop-dt*2.2);
+    pose(now,dt); place(now); if(!REDUCED) flutter(now,dt);
+  }
+  requestAnimationFrame(tick);
+}
+idliBtn.addEventListener("click", e=>{ e.stopPropagation(); D.state="happy"; D.t=2.2; D.hop=1; D.heartT=0; say("Idli is very happy to see you",2600); });
+/* the "oops" moment */
+let oopsT=0;
+function showOops(){
+  if(oopsShown) return; oopsShown=true; clearTimeout(oopsT);
+  oops.hidden=false; if(!REDUCED) oops.classList.add("in");
+  if(!REDUCED && !["eat","toBowl"].includes(D.state)){ D.state="oops"; D.t=2.2; D.dir = D.x>W/2?-1:1;
+    qEl=document.createElement("span"); qEl.className="qmark"; qEl.textContent="?"; qEl.setAttribute("aria-hidden","true"); park.appendChild(qEl); }
+}
+oopsT=setTimeout(showOops, 3000);
+["wheel","touchstart","keydown"].forEach(ev=>addEventListener(ev,()=>{ if(!document.body.classList.contains("viewing")) showOops(); },{passive:true,once:true}));
+park.addEventListener("pointerdown", e=>{ if(!e.target.closest("#idli,a,button")) showOops(); });
+function goWork(e){ if(e) e.preventDefault(); showOops(); $("#work").scrollIntoView({behavior:REDUCED?"auto":"smooth"}); }
+$("#goWork").addEventListener("click",goWork); $("#skipWork").addEventListener("click",goWork); $("#scrollCue").addEventListener("click",goWork);
+$("#stay").addEventListener("click",()=>{ oops.hidden=true; say("Idli is glad you stayed. Tap her to say hello.",3200); });
+$("#toPark").addEventListener("click",()=>{ park.scrollIntoView({behavior:REDUCED?"auto":"smooth"}); });
+try{ new IntersectionObserver(es=>es.forEach(e=>{ parkOn=e.isIntersecting; }),{threshold:.15}).observe(park); }catch(e){}
+/* messages */
+let hintT=0;
+function say(m,ms){ treatLine.textContent=m; clearTimeout(hintT); hintT=setTimeout(updateTreatUI, ms||3000); }
+function updateTreatUI(){
+  const n=FOUND.size, all=F.length, p=pending();
+  treatLine.innerHTML = n>=all ? `Idli is full · <b>all ${all} treats</b> found` : n===0 ? `This is Idli · <b>each file</b> below hides a treat for her` : `Idli · <b>${n} of ${all}</b> treats found`;
+  $("#toPark").innerHTML = p>0 ? `Take <b>${p} treat${p>1?"s":""}</b> back to Idli ↑` : n>0 ? `Back to the park ↑ · <b>${n} of ${all}</b> treats found` : "Back to the park ↑";
+  F.forEach(f=>{ const g=f.el.querySelector(".tb"); if(g) g.hidden=FOUND.has(f.id); });
+}
+
+/* ================= FILE VIEW ================= */
+const fv=$("#fv"), docEl=$("#doc"), panel=$("#panel"), tipEl=$("#tip");
+let cur=null;
+function skillMap(){
+  const cx=250, cy=255, n=SKILLS.length; let g="";
+  SKILLS.forEach(([name,d],i)=>{
+    const a=-Math.PI/2+i*2*Math.PI/n+.12, L=34+d*27, ux=Math.cos(a), uy=Math.sin(a), x2=cx+ux*L, y2=cy+uy*L, nx=-uy, ny=ux, bend=(i%2?1:-1)*6;
+    g+=`<path d="M${cx+ux*16} ${cy+uy*16} Q${cx+ux*L/2+nx*bend} ${cy+uy*L/2+ny*bend} ${x2} ${y2}" fill="none" stroke="${GRAPHITE}" stroke-width="1.2" stroke-linecap="round"/>`;
+    for(let k=1;k<=d;k++){ const t=16+k*(L-16)/(d+.6), tx=cx+ux*t, ty=cy+uy*t; g+=`<path d="M${tx-nx*4} ${ty-ny*4} L${tx+nx*4} ${ty+ny*4}" stroke="${GRAPHITE}" stroke-width="1"/>`; }
+    const lx=cx+ux*(L+30), ly=cy+uy*(L+22), w0=name.split(" "), mid=Math.ceil(w0.length/2), l1=w0.slice(0,mid).join(" "), l2=w0.slice(mid).join(" ");
+    const w=Math.max(l1.length,l2.length)*7.4+14, bx=Math.max(4,Math.min(496-w,lx-w/2)), by=ly-17;
+    g+=`<rect x="${bx}" y="${by}" width="${w}" height="36" fill="#e5461f" fill-opacity=".1"/><text x="${bx+w/2}" y="${by+15}" font-size="15.5" text-anchor="middle">${esc(l1)}</text><text x="${bx+w/2}" y="${by+30}" font-size="15.5" text-anchor="middle">${esc(l2)}</text>`;
+  });
+  g+=`<circle cx="${cx}" cy="${cy}" r="15" fill="#ffffff" stroke="${ACC}" stroke-width="1.6"/><text x="${cx}" y="${cy+5}" font-size="16" text-anchor="middle" style="fill:${ACC}">me</text>`;
+  return `<svg viewBox="0 0 500 510" role="img" aria-label="Skills map: ${SKILLS.map(s=>s[0]+" depth "+s[1]+" of 5").join(", ")}">${g}</svg>`;
+}
+function docHTML(f){
+  const margin = `<div class="margin mk">${(f.margin||[]).map(([k,v])=>`<div><b>${esc(k)}</b>${esc(v)}</div>`).join("")}<div><b>File</b>${f.no} · ${esc(COLS[f.col].name)}</div></div>`;
+  let main;
+  if(f.kind==="map") main = `<h2>Field notes</h2><p class="lede mk">What I work with. Each line is a ruler: one tick for each level of hands-on depth.</p><div class="map">${skillMap()}</div>`;
+  else main = `<h2>Brief</h2><p class="lede mk">${esc(f.one)}</p>${f.body.map(t=>`<p class="mk">${esc(t)}</p>`).join("")}`;
+  const sheet = `<article class="sheet"><span class="fileno">File #${f.no}</span><div class="sheet-grid">${margin}<div>${main}</div></div></article>`;
+  const atts = [];
+  if(f.facts){ const L="ABC";
+    atts.push(`<div class="exhibits">${f.facts.slice(0,3).map(([v,k],i)=>`<div class="exhibit mk${i===0?" lead":""}">${i===0?CLIP:""}<span class="ex-tag">Exhibit ${L[i]} · File ${f.no}</span><span class="ex-num">${esc(v)}</span><span class="ex-lbl">${esc(k)}</span></div>`).join("")}${f.also?`<p class="also mk"><b>Also on file</b>${f.also.map(esc).join(" · ")}</p>`:""}</div>`); }
+  if(f.pic) atts.push(`<figure class="figure" style="--tint:${f.c}"><div class="frame">${doodle(f.pic)}</div><figcaption>fig. ${f.no} · ${esc(f.cap)}</figcaption></figure>`);
+  if(f.note) atts.push(`<p class="card-note mk">${esc(f.note)}</p>`);
+  return sheet + (atts.length?`<div class="attach">${atts.join("")}</div>`:"");
+}
+function colFiles(f){ return F.filter(x=>x.col===f.col); }
+/* side tabs must end inside the open folder: shrink them, and if there are too many, show a window around this file */
+function fitSideTabs(){
+  const st=$("#sidetabs"), tabs=[...st.querySelectorAll(".stab")];
+  tabs.forEach(t=>{ t.hidden=false; t.style.height=""; });
+  if(innerWidth<=820 || !tabs.length){ st.style.maxHeight=""; return; }
+  const avail=Math.max(120, panel.offsetHeight-28-24), gap=6, n=tabs.length;
+  const per=Math.min(150, Math.max(104, Math.floor((avail+gap)/n)-gap));
+  const fit=Math.max(1, Math.floor((avail+gap)/(per+gap)));
+  const k=tabs.findIndex(t=>t.dataset.go===st.dataset.cur);
+  let a=Math.max(0, Math.min(k-Math.floor((fit-1)/2), n-fit)), b=a+fit;
+  tabs.forEach((t,i)=>{ t.style.height=per+"px"; t.hidden = i<a || i>=b; t.style.fontSize="";
+    if(!t.hidden){ let fs=parseFloat(getComputedStyle(t).fontSize), g=0; while(t.scrollHeight>t.clientHeight+1 && fs>11 && g++<16){ fs-=.5; t.style.fontSize=fs+"px"; } } });
+  st.style.maxHeight=avail+"px";
+}
+function renderFile(f){
+  cur=f;
+  panel.style.setProperty("--c",f.c); panel.style.setProperty("--fg",f.fg); panel.dataset.label=`${f.no} · ${f.tab}`;
+  $("#fvTitle").textContent=f.title;
+  $("#fvCrumb").textContent=`The archive / ${COLS[f.col].name} / File ${f.no}`;
+  $("#fvSide").innerHTML=`${esc(f.when)}<br>${esc(COLS[f.col].name)} · file ${f.no} of ${String(F.length).padStart(2,"0")}<br><span class="stamp s-${f.status[1]}" style="color:${f.status[1]==="idea"?"#a39d92":""}">${esc(f.status[0])}</span>`;
+  const html=docHTML(f), key=`${f.id}:${hash(html)}`;
+  docEl.innerHTML = html;
+  const sibs=colFiles(f);
+  $("#sidetabs").dataset.cur = f.id;
+  $("#sidetabs").innerHTML = sibs.map(x=>`<button type="button" class="stab" data-go="${x.id}" style="--c:${x.c};--fg:${x.fg}" ${x===f?'aria-current="true"':""} title="File ${x.no}: ${esc(x.title)}" aria-label="File ${x.no}: ${esc(x.title)}">${esc(x.tab)}</button>`).join("");
+  const k=sibs.indexOf(f), pv=sibs[k-1], nx=sibs[k+1];
+  const pb=$("#prevBtn"), nb=$("#nextBtn");
+  pb.disabled=!pv; nb.disabled=!nx;
+  pb.innerHTML = pv?`<small>Previous file</small>← ${pv.no} · ${esc(pv.title)}`:""; pb.dataset.go=pv?pv.id:"";
+  nb.innerHTML = nx?`<small>Next file</small>${nx.no} · ${esc(nx.title)} →`:""; nb.dataset.go=nx?nx.id:"";
+  fitSideTabs();
+  SEEN.add(f.id); saveSeen(); trail(f);
+  try{ history.replaceState(null,"","#"+f.id); }catch(_){}
+  showTreat(f);
+}
+/* the treat hidden in each file */
+const treatBtn=$("#treatBtn");
+$("#treatImg").src=PURL.bone;
+function showTreat(f){
+  const got=FOUND.has(f.id); treatBtn.hidden=false; treatBtn.classList.toggle("got",got); treatBtn.disabled=got;
+  $("#treatTxt").textContent = got ? "treat already kept for Idli" : "a treat for Idli · tap to keep it";
+  tipEl.textContent = `${FOUND.size} of ${F.length} treats found`;
+}
+treatBtn.addEventListener("click", ()=>{
+  const f=cur; if(!f||FOUND.has(f.id)) return;
+  FOUND.add(f.id); saveTreats(); showTreat(f); updateTreatUI(); drawBowl();
+  const left=F.length-FOUND.size;
+  const msg = left ? `+1 treat · ${left} more to find` : "that was the last treat!";
+  const go=()=>{ const b=$("#tbub"); b.textContent=msg; b.classList.add("show"); clearTimeout(b._t); b._t=setTimeout(()=>b.classList.remove("show"),2200);
+    let k=0; clearInterval(trailAnim); trailAnim=setInterval(()=>{ $("#tdogImg").src=(k++%2)?PURL.happyA:PURL.happyB; if(k>10){ clearInterval(trailAnim); $("#tdogImg").src=PURL.walkA; } },140); };
+  if(REDUCED || !document.body.animate){ go(); return; }
+  const a=$("#treatImg").getBoundingClientRect(), d=$("#tdog").getBoundingClientRect();
+  const im=document.createElement("img"); im.className="treatfly"; im.src=PURL.bone; im.alt=""; im.style.left=a.left+"px"; im.style.top=a.top+"px"; document.body.appendChild(im);
+  const dx=d.left+d.width/2-a.left-20, dy=d.top-a.top;
+  const an=im.animate([{transform:"translate(0,0) scale(1)"},{transform:`translate(${dx*.5}px,${dy*.5-80}px) scale(1.2)`,offset:.5},{transform:`translate(${dx}px,${dy}px) scale(.6)`}],{duration:650,easing:"cubic-bezier(.4,0,.3,1)"});
+  an.onfinish=an.oncancel=()=>{ im.remove(); go(); };
+});
+/* Idli's trail: one tick per file in this drawer */
+let lastPos=-1, trailAnim=0;
+function trail(f){
+  const sibs=colFiles(f), k=sibs.indexOf(f), m=$("#tmarks"), d=$("#tdog"), img=$("#tdogImg");
+  m.innerHTML = sibs.map((x,i)=>`<span class="tick${SEEN.has(x.id)?" seen":""}" style="left:${sibs.length>1?i/(sibs.length-1)*100:50}%"></span>`).join("");
+  $("#tmeta").textContent=`${COLS[f.col].name} · file ${k+1} of ${sibs.length}`;
+  const pos = sibs.length>1 ? k/(sibs.length-1)*100 : 50;
+  if(lastPos>=0 && pos!==lastPos) d.classList.toggle("right", pos>lastPos); else if(lastPos<0) d.classList.add("right");
+  d.style.left=pos+"%";
+  clearInterval(trailAnim);
+  const end=()=>{ if(k===sibs.length-1 && sibs.length>1){ let n=0; trailAnim=setInterval(()=>{ img.src=(n++%2)?PURL.happyA:PURL.happyB; if(n>12){ clearInterval(trailAnim); img.src=PURL.sleep; } },160); } else img.src=PURL.walkA; };
+  if(REDUCED || lastPos<0 || pos===lastPos){ lastPos=pos; end(); return; }
+  lastPos=pos; let n=0; trailAnim=setInterval(()=>{ img.src=(n++%2)?PURL.walkA:PURL.walkB; },130); setTimeout(()=>{ clearInterval(trailAnim); end(); },780);
+}
+function switchFile(id){
+  const f=F.find(x=>x.id===id); if(!f||f===cur) return;
+  if(REDUCED){ renderFile(f); fv.scrollTop=0; return; }
+  renderFile(f); fv.scrollTo({top:0});
+  panel.animate([{opacity:.25,transform:"translateY(10px)"},{opacity:1,transform:"none"}],{duration:240,easing:"cubic-bezier(.2,.7,.2,1)"});
+}
+$("#sidetabs").addEventListener("click", e=>{ const b=e.target.closest("[data-go]"); if(b) switchFile(b.dataset.go); });
+$("#prevBtn").onclick=e=>{ if(e.currentTarget.dataset.go) switchFile(e.currentTarget.dataset.go); };
+$("#nextBtn").onclick=e=>{ if(e.currentTarget.dataset.go) switchFile(e.currentTarget.dataset.go); };
+
+/* open / close: the folder flies up and becomes the open file */
+let busy=false, pushed=false;
+function fly(from,to,colour,ms){
+  const fl=document.createElement("div"); fl.className="flyer"; fl.style.background=colour;
+  Object.assign(fl.style,{left:from.left+"px",top:from.top+"px",width:from.width+"px",height:from.height+"px"}); document.body.appendChild(fl);
+  const a=fl.animate([{transform:"translate(0,0) scale(1,1)"},{transform:`translate(${to.left-from.left}px,${to.top-from.top}px) scale(${to.width/from.width},${to.height/from.height})`}],{duration:ms,easing:"cubic-bezier(.33,0,.15,1)",fill:"forwards"});
+  return {fl,a};
+}
+function openFile(id, folderEl){
+  const f=F.find(x=>x.id===id); if(!f||busy||!fv.hidden) return; busy=true;
+  document.body.classList.add("viewing"); fv.classList.remove("show"); fv.hidden=false; fv.scrollTop=0;
+  if(location.hash!=="#"+f.id){ try{ history.pushState({file:f.id},"","#"+f.id); pushed=true; }catch(_){ pushed=false; } } else pushed=false;
+  renderFile(f);
+  const show=()=>{ fv.classList.add("show"); busy=false; $("#closeBtn").focus({preventScroll:true}); };
+  const fb = folderEl && folderEl.querySelector(".fb");
+  if(!fb || REDUCED || !document.body.animate){ show(); return; }
+  const from=fb.getBoundingClientRect(), to=panel.getBoundingClientRect();
+  const vis={left:to.left,top:to.top,width:to.width,height:Math.min(to.height, innerHeight-to.top)};
+  const {fl,a}=fly(from,vis,f.c,460);
+  // the view stays unpainted during the flight, then appears under the landed folder, which fades away
+  a.onfinish=()=>{ fv.classList.add("instant","show"); show(); requestAnimationFrame(()=>{ fv.classList.remove("instant");
+    fl.animate([{opacity:1},{opacity:0}],{duration:200,easing:"ease-out",fill:"forwards"}).onfinish=()=>fl.remove(); }); };
+  a.oncancel=()=>{ fl.remove(); fv.classList.add("show"); show(); };
+}
+function closeFile(fromHistory){
+  if(fv.hidden||busy) return;
+  if(!fromHistory && pushed){ pushed=false; history.back(); return; }   // popstate comes back here
+  pushed=false;
+  const f=cur, fb=f&&f.el.querySelector(".fb");
+  if(!fromHistory){ try{ history.replaceState(null,"",location.pathname+location.search); }catch(_){} }
+  const finish=()=>{ fv.hidden=true; docEl.innerHTML=""; cur=null; lastPos=-1; busy=false; const t=f&&f.el.querySelector(".tab"); if(t) t.focus({preventScroll:true}); };
+  // if the file belongs to a hidden drawer section, show all again so it can fly home
+  if(f && col!=="all" && f.col!==col){ col="all"; document.querySelectorAll(".chip").forEach(x=>x.setAttribute("aria-pressed", x.dataset.col==="all")); layoutDrawer(); }
+  document.body.classList.remove("viewing");
+  if(REDUCED||!fb||!document.body.animate){ fv.classList.remove("show"); setTimeout(finish, REDUCED?0:280); return; }
+  busy=true;
+  fb.scrollIntoView({block:"nearest"});
+  const from=panel.getBoundingClientRect(), to=fb.getBoundingClientRect();
+  const src={left:from.left,top:from.top,width:from.width,height:Math.min(from.height, innerHeight-Math.max(0,from.top))};
+  const {fl,a}=fly(src,to,f.c,420);
+  fv.animate([{opacity:1},{opacity:0}],{duration:180,easing:"ease-in",fill:"forwards"}).onfinish=()=>fv.classList.remove("show");
+  a.onfinish=()=>{ fl.remove(); fv.getAnimations().forEach(x=>x.cancel()); fv.classList.remove("show"); finish(); }; a.oncancel=a.onfinish;
+}
+$("#closeBtn").onclick=()=>closeFile();
+$("#contactCta").onclick=()=>{ showOops(); document.getElementById("contact").scrollIntoView({behavior:REDUCED?"auto":"smooth"}); };
+$("#copyMail").onclick=e=>{ const b=e.currentTarget, t="r.premkumar96@gmail.com";
+  const ok=()=>{ b.textContent="Copied"; setTimeout(()=>b.textContent="Copy",1600); };
+  if(navigator.clipboard&&navigator.clipboard.writeText) navigator.clipboard.writeText(t).then(ok,()=>{ selectMail(); b.textContent="Selected"; });
+  else { selectMail(); b.textContent="Selected"; } };
+function selectMail(){ const r=document.createRange(); r.selectNodeContents($("#mailLink")); const s=getSelection(); s.removeAllRanges(); s.addRange(r); } $("#closeBtn2").onclick=()=>closeFile();
+addEventListener("keydown", e=>{
+  if(fv.hidden) return;
+  if(e.key==="Escape"){ closeFile(); return; }
+  if(e.key==="Backspace" && !(e.target.closest && e.target.closest("input,textarea"))){ closeFile(); e.preventDefault(); return; }
+  if(e.key==="ArrowRight"){ const b=$("#nextBtn"); if(!b.disabled){ switchFile(b.dataset.go); e.preventDefault(); } }
+  if(e.key==="ArrowLeft"){ const b=$("#prevBtn"); if(!b.disabled){ switchFile(b.dataset.go); e.preventDefault(); } }
+});
+
+/* resize, deep links, start */
+let rT=0; addEventListener("resize",()=>{ clearTimeout(rT); rT=setTimeout(()=>{ drawScene(); layoutDrawer(); if(!fv.hidden) fitSideTabs(); },120); });
+function route(){ const h=location.hash.slice(1);
+  if(/^f-\d\d$/.test(h) && fv.hidden){ const f=F.find(x=>x.id===h); if(f) openFile(f.id, f.el); }
+  else if(COLS[h]){ const c=document.querySelector(`.chip[data-col="${h}"]`); if(c) c.click(); } }
+addEventListener("hashchange", route);
+addEventListener("popstate", ()=>{ if(!fv.hidden && !/^#f-\d\d$/.test(location.hash)) closeFile(true); });
+drawScene(); B.x=W*.3; updateTreatUI(); setTarget(W*.55); requestAnimationFrame(tick); if(document.fonts&&document.fonts.ready) document.fonts.ready.then(()=>{ drawScene(); });
+layoutDrawer(); if(document.fonts&&document.fonts.ready) document.fonts.ready.then(fitTabs);
+route();
+})();
+</script>
 </body>
-</html>
+</html>
