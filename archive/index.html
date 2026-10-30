@@ -8,7 +8,7 @@
 <meta name="description" content="Premkumar R — AI Product & Strategy. Senior Consultant, AI CoE at Infosys BPM. An archive of the AI products, agents, prototypes and side builds he has made, one file each.">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Premkumar R — the files">
-<meta property="og:description" content="AI products, agents and strategy at work; small apps at home; reels and experiments for fun. One file per project.">
+<meta property="og:description" content="AI products, agents and strategy at work, and small apps built at home. One file per project.">
 <meta property="og:url" content="https://rpremkumar56.github.io/portfolio/archive/">
 <meta name="twitter:card" content="summary">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -54,8 +54,12 @@ a{color:inherit}
 .crumb{font-family:var(--type);font-size:12px;letter-spacing:.06em;color:var(--muted)}
 .hero h1{font-family:var(--display);font-weight:400;font-size:clamp(48px,7.4vw,92px);line-height:.92;margin:0;letter-spacing:-.01em}
 .role{margin:.55em 0 0;font-family:var(--type);font-size:12.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--receipt)}
-.thesis{margin:.7em 0 0;max-width:40ch;font-size:clamp(17px,2vw,21px);line-height:1.4;color:#e4ded3}
-.proof{display:flex;gap:12px;flex-wrap:wrap;margin-top:20px}
+.story{margin:22px 0 0;display:grid;gap:0;max-width:640px;border-top:1px solid var(--line)}
+.story > div{display:grid;grid-template-columns:132px minmax(0,1fr);gap:18px;padding:11px 0;border-bottom:1px solid var(--line)}
+.story dt{font-family:var(--type);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);padding-top:4px}
+.story dd{margin:0;font-size:clamp(16px,1.75vw,18.5px);line-height:1.42;color:#e9e3d8}
+.story dd b{font-weight:500;color:var(--receipt)}
+.proof{display:flex;gap:12px;flex-wrap:wrap;margin-top:12px}
 .pf{background:var(--paper-2);color:#26231f;padding:10px 14px 12px;min-width:112px;box-shadow:0 8px 18px -10px rgba(0,0,0,.6);transform:rotate(-1.2deg)}
 .pf:nth-child(2){transform:rotate(1deg)}
 .pf:nth-child(3){transform:rotate(-.4deg)}
@@ -245,6 +249,8 @@ a{color:inherit}
   .rack{height:108px;margin-bottom:34px}
   .cushion{width:100px}
   .proof{gap:10px}
+  .story > div{grid-template-columns:minmax(0,1fr);gap:2px;padding:10px 0}
+  .story dt{padding-top:0}
   .pf{min-width:0;flex:1 1 0;padding:9px 10px 10px}
   .pf-lbl{font-size:12.5px}
   .drawer-head{margin-top:52px}
@@ -273,7 +279,6 @@ a{color:inherit}
       <button type="button" class="chip" data-col="all" aria-pressed="true">All</button>
       <button type="button" class="chip" data-col="work" aria-pressed="false">At work</button>
       <button type="button" class="chip" data-col="home" aria-pressed="false">At home</button>
-      <button type="button" class="chip" data-col="fun" aria-pressed="false">For fun</button>
       <button type="button" class="chip" data-col="ref" aria-pressed="false">Reference</button>
     </span>
   </nav>
@@ -281,13 +286,19 @@ a{color:inherit}
     <div class="hero-main">
       <h1>Premkumar R</h1>
       <p class="role">AI Product &amp; Strategy · Senior Consultant, AI CoE, Infosys BPM</p>
-      <p class="thesis">I turn messy business problems into working AI prototypes, and the strong ones into products.</p>
+      <dl class="story">
+        <div><dt>Who I am</dt><dd>A strategy person who builds. MBA from IIM Sirmaur, engineer by training, four years in Corporate Strategy, now in the AI CoE.</dd></div>
+        <div><dt>What I do</dt><dd>I find where AI can change how a business runs. Then I shape it into a product: discovery, prototype, evaluation and the business case.</dd></div>
+        <div><dt>Who sees it</dt><dd>CXOs and client leaders. For 8 quarters I prepared the CEO’s briefers. Now I pitch AI bets to client heads.</dd></div>
+        <div><dt>Who acts on it</dt><dd>Operations teams in finance and HR, who use what we build in their daily work.</dd></div>
+        <div><dt>What changed</dt><dd><b>4 AI use cases are live</b> in client operations, aimed at <b>30–50% less manual effort</b>.</dd></div>
+      </dl>
       <div class="proof" aria-label="In numbers">
-        <div class="pf"><span class="pf-num">20</span><span class="pf-lbl">AI prototypes built</span></div>
+        <div class="pf"><span class="pf-num">25+</span><span class="pf-lbl">AI use cases taken to a decision</span></div>
         <div class="pf"><span class="pf-num">4</span><span class="pf-lbl">use cases live in client operations</span></div>
-        <div class="pf"><span class="pf-num">9</span><span class="pf-lbl">client accounts</span></div>
+        <div class="pf"><span class="pf-num">8</span><span class="pf-lbl">quarters of CEO briefers</span></div>
       </div>
-      <div class="ctas"><a href="https://rpremkumar56.github.io/portfolio/work.html">Résumé →</a><button type="button" data-open="f-20" id="contactCta">Contact →</button></div>
+      <div class="ctas"><a href="https://rpremkumar56.github.io/portfolio/work.html">Résumé →</a><button type="button" id="contactCta">Contact →</button></div>
     </div>
     <div class="rack" id="rack">
       <div class="rack-back"></div><div class="cushion"></div>
@@ -298,7 +309,7 @@ a{color:inherit}
       <p class="treatline" id="treatLine" aria-live="polite"></p>
     </div>
   </div>
-  <div class="drawer-head"><div><div class="crumb" id="crumb">The archive / All files</div><h2 id="heroTitle">Files 01–20</h2><p class="drawer-line" id="heroText"></p></div></div>
+  <div class="drawer-head"><div><div class="crumb" id="crumb">The archive · 16 files</div><h2 id="heroTitle">Open a file to see what I’ve been working on</h2><p class="drawer-line" id="heroText"></p></div></div>
   <section class="drawer" id="drawer" aria-label="Files"></section>
   <p class="hint" id="hint">open any folder · tap Idli to say hello</p>
   <p class="foot">Built with Claude Code · hosted on GitHub Pages</p>
@@ -326,7 +337,6 @@ a{color:inherit}
   <div class="nojs">
     <h2>At work</h2><p>Senior Consultant, AI CoE at Infosys BPM (Feb 2026 – now). I lead an AI Squad: 9 accounts, 25+ use cases, 20 prototypes. Files: AI Reconciliation (live in 4 use cases), Marine Claims AI, Finance Ops AI-Assist, multilingual AI evaluation in 5 languages, Ramp-down Radar. Corporate Strategy (May 2022 – Jan 2026): CEO briefers for 8 quarters, $1.5B+ business planning, a market intelligence system for 20+ accounts, a $10M+ transformation programme.</p>
     <h2>At home</h2><p>Clinic appointment and rota web apps, two learning apps and a WhatsApp clinic assistant, built with Claude Code and hosted on GitHub.</p>
-    <h2>For fun</h2><p>wedidsomemath reels, a reel-scoring Claude skill, a studio ident for Atma Films and a notebook of ideas.</p>
     <p><a href="https://rpremkumar56.github.io/portfolio/work.html">Read the résumé edition</a> · r.premkumar96@gmail.com</p>
   </div>
 </noscript>
@@ -343,12 +353,11 @@ const $ = s => document.querySelector(s);
 /* ================= CONTENT =================
    One entry per file. Thin files stay thin: a brief and, only if we have them, numbers, a figure and a note. */
 const COLS = {
-  work:{name:"At work", line:"Senior Consultant, AI CoE at Infosys BPM since Feb 2026. I lead a cross-functional AI Squad: <b>9 accounts, 25+ use cases, 20 prototypes</b>. Before that, four years in Corporate Strategy."},
-  home:{name:"At home", line:"Small apps for real people, built after hours with Claude Code and hosted on GitHub."},
-  fun: {name:"For fun", line:"Reels, puzzles, motion and kitchen ideas. Mostly for fun."},
+  work:{name:"At work", line:"Since Feb 2026 I lead a cross-functional AI Squad in the AI CoE at Infosys BPM: <b>9 accounts, 25+ use cases, 20 prototypes</b>. Before that, four years in Corporate Strategy next to the CXO office."},
+  home:{name:"At home", line:"Small apps I built after hours for people I know. Each one <b>replaced paper or a habit</b>. Built with Claude Code, hosted on GitHub."},
   ref: {name:"Reference", line:"What I work with, and how to reach me."}
 };
-const ALL_LINE = "Work, home builds and side experiments. <b>One folder per project</b>, so open any of them.";
+const ALL_LINE = "Each folder is one piece of work: <b>the problem, what I did and what came of it.</b> Each one also hides a treat for Idli.";
 const F = [
  {col:"work", title:"AI Reconciliation", tab:"AI Reconciliation", one:"A reusable product that reconciles finance documents with AI and auditable rules.", when:"AI CoE · 2026", status:["Live","live"], c:"#d9dfe8", fg:"#1f2a44", pic:"recon", cap:"two ledgers, one rulebook",
   margin:[["Role","Co-creator"],["Team","AI CoE"],["Used in","Finance operations"]],
@@ -417,23 +426,6 @@ const F = [
   body:["My first version booked appointments and sent reminders. It stalled on business-profile verification.",
         "I am rebuilding it from scratch. This time I start with the approval path, not the code."],
   note:"the platform rules are part of the product"},
- {col:"fun", title:"We did some math", tab:"wedidsomemath", one:"Short videos on absurd Indian math.", when:"Instagram", status:["Posting","live"], c:"#e0a93b", fg:"#2d2a25", pic:"moon", cap:"idlis to the Moon, stacked",
-  margin:[["Made with","Claude motion skills, HyperFrames"]],
-  body:["A page of short videos on absurd Indian math. The first one asks how many idlis it takes to reach the Moon.",
-        "The format is \"Mom says [famous line]. I calculated it.\" A parent and son argue, then the numbers settle it."]},
- {col:"fun", title:"A score for reels", tab:"Reel scorer", one:"A Claude skill that scores a reel script before I post it.", when:"Claude skill", status:["Built","proto"], c:"#6f7d55", fg:"#f4f1e6", pic:"reel", cap:"hook, retention, shares",
-  margin:[["For","Puzzle and riddle reels"]],
-  body:["I am starting a channel of short puzzle reels. Before I post, I want to know if a script will hold attention.",
-        "So I built a Claude skill that scores a script for hook, retention and shares. It fixes the weak parts and adds sound effects under the voice."],
-  note:"opinions are cheap, scores are arguable"},
- {col:"fun", title:"Six scripts, one stroke", tab:"Atma Films ident", one:"A studio ident that morphs through six scripts in one pen stroke.", when:"Design work", status:["Prototype","proto"], c:"#2d2a25", fg:"#e9e4da", pic:"stroke", cap:"Tamil to Latin in a single line",
-  margin:[["Client","Atma Films"],["Tools","After Effects, an HTML timing tool"]],
-  body:["Atma Films is a documentary photo and video studio. I designed a darkroom-inspired website for it as a React prototype.",
-        "The ident is one pen stroke. It morphs through Tamil, Malayalam, Kannada, Telugu, Devanagari and Latin, then resolves into the logo."]},
- {col:"fun", title:"Notebook ideas", tab:"Notebook ideas", one:"Two ideas I have not shipped.", when:"Not shipped", status:["Idea","idea"], c:"#a8b38a", fg:"#2d2a25", pic:"bowl", cap:"thalippu meets aglio e olio",
-  margin:[["Status","Thinking"]],
-  body:["A cooking page that bridges Tamil, Mediterranean and Italian kitchens. The first dish is Thalippu Aglio e Olio. Two rules: never say \"fusion\" on screen, and keep the Tamil names untranslated.",
-        "A short sitcom of 3D characters in an IT office as AI arrives. Four people, small arguments, ten seconds each."]},
  {col:"ref", kind:"map", title:"Field notes", tab:"Field notes", one:"What I work with, drawn as rulers.", when:"Reference", status:["Draft","idea"], c:"#ece6dc", fg:"#2d2a25", margin:[["Read it as","one tick per level of hands-on depth"]]},
  {col:"ref", kind:"creds", title:"Contact & credentials", tab:"Contact", one:"Awards, education and how to reach me.", when:"Reference", status:["Open to talk","live"], c:"#c9bfae", fg:"#2d2a25", margin:[["Based in","Bangalore"]]}
 ];
@@ -528,8 +520,8 @@ function layoutDrawer(){
   F.filter(f=>!vis.includes(f)).forEach(f=>{ f.el.style.setProperty("--y", tabh + (vis.length-1)*step + 60); f.el.querySelector(".tab").tabIndex=-1; });
   drawer.style.height = (tabh + Math.max(0,vis.length-1)*step + bh + peek) + "px";
   drawer.classList.toggle("filtered", col!=="all");
-  $("#heroTitle").textContent = vis.length ? `Files ${vis[0].no}–${vis[vis.length-1].no}` : "No files";
-  $("#crumb").textContent = `The archive / ${col==="all"?"All files":COLS[col].name}`;
+  $("#heroTitle").textContent = col==="all" ? "Open a file to see what I’ve been working on" : col==="ref" ? "How I work, and how to reach me" : `${COLS[col].name}: ${vis.length} files`;
+  $("#crumb").textContent = col==="all" ? `The archive · ${F.length} files` : `The archive / ${COLS[col].name} · files ${vis[0].no}–${vis[vis.length-1].no}`;
   $("#heroText").innerHTML = col==="all" ? ALL_LINE : COLS[col].line;
   fitTabs();
 }
@@ -596,7 +588,7 @@ function baseHint(){ return FOUND.size>=F.length ? "you found every treat · Idl
 function say(m,ms){ treatLine.textContent=m; clearTimeout(hintT); hintT=setTimeout(updateTreatUI, ms||3000); }
 function updateTreatUI(){
   const n=FOUND.size, all=F.length;
-  treatLine.innerHTML = n>=all ? "Idli is full · <b>all 20 treats</b> found" : `Idli is hungry · <b>${n} of ${all}</b> treats found`;
+  treatLine.innerHTML = n>=all ? `Idli is full · <b>all ${all} treats</b> found` : `Idli is hungry · <b>${n} of ${all}</b> treats found`;
   hintEl.textContent = baseHint();
   F.forEach(f=>{ const g=f.el.querySelector(".tb"); if(g) g.hidden=FOUND.has(f.id); });
 }
@@ -742,7 +734,7 @@ function closeFile(fromHistory){
   a.onfinish=()=>{ fl.remove(); finish(); }; a.oncancel=a.onfinish;
 }
 $("#closeBtn").onclick=()=>closeFile();
-$("#contactCta").onclick=()=>{ const f=F.find(x=>x.id==="f-20"); openFile(f.id, f.el); }; $("#closeBtn2").onclick=()=>closeFile();
+$("#contactCta").onclick=()=>{ const f=F.find(x=>x.kind==="creds"); openFile(f.id, f.el); }; $("#closeBtn2").onclick=()=>closeFile();
 addEventListener("keydown", e=>{
   if(fv.hidden) return;
   if(e.key==="Escape"){ closeFile(); return; }
