@@ -56,18 +56,31 @@ a{color:inherit}
 .hero p b{font-weight:500;color:var(--ink-on-dark)}
 
 /* ---------- Idli's rack ---------- */
-.rack{position:relative;width:min(360px,100%);height:150px;flex:none}
+.rack{position:relative;width:min(460px,100%);height:150px;flex:none;margin-bottom:48px}
 .rack-back{position:absolute;left:10px;right:10px;top:10px;bottom:16px;background:#2c2924;border-radius:3px 3px 0 0;box-shadow:inset 0 8px 12px -8px rgba(0,0,0,.6)}
 .rack-wall{position:absolute;bottom:0;top:0;width:14px;background:var(--wood);box-shadow:inset -3px 0 0 var(--wood-dark)}
 .rack-wall.l{left:0;border-radius:3px 0 0 0}
 .rack-wall.r{right:0;border-radius:0 3px 0 0;box-shadow:inset 3px 0 0 var(--wood-dark)}
 .rack-floor{position:absolute;left:0;right:0;bottom:0;height:16px;background:var(--wood);border-top:3px solid var(--wood-dark)}
-.cushion{position:absolute;left:22px;bottom:14px;width:150px;height:22px;border-radius:50%;background:#77716a;box-shadow:inset 0 -5px 0 #625d57,inset 0 4px 0 #8d877f}
+.cushion{position:absolute;left:22px;bottom:14px;width:136px;height:22px;border-radius:50%;background:#77716a;box-shadow:inset 0 -5px 0 #625d57,inset 0 4px 0 #8d877f}
 .idli{position:absolute;left:0;bottom:22px;width:144px;height:90px;padding:0;border:0;background:none;cursor:pointer;touch-action:manipulation}
 .idli canvas{width:100%;height:100%;image-rendering:pixelated;image-rendering:crisp-edges;display:block}
 .rail{position:absolute;left:14px;right:14px;bottom:16px;height:26px;pointer-events:none;
   background:repeating-linear-gradient(90deg,transparent 0 30px,var(--wood) 30px 35px,var(--wood-dark) 35px 37px,transparent 37px 52px)}
 .rail::after{content:"";position:absolute;left:0;right:0;top:0;height:7px;background:var(--wood);border-bottom:2px solid var(--wood-dark);border-radius:2px}
+.bowl{position:absolute;bottom:16px;image-rendering:pixelated;image-rendering:crisp-edges;pointer-events:none}
+.bowltag{position:absolute;bottom:58px;font-family:var(--type);font-weight:700;font-size:11px;color:var(--receipt);pointer-events:none}
+.treatline{position:absolute;left:0;right:0;top:calc(100% + 26px);font-family:var(--hand);font-size:19px;line-height:1.15;color:var(--muted);text-align:left}
+.treatline b{color:var(--receipt);font-weight:600}
+.tab .tb{width:16px;height:8px;image-rendering:pixelated;flex:none;opacity:.95}
+.treat{position:absolute;top:-46px;right:56px;z-index:2;display:flex;align-items:center;gap:10px;background:var(--paper-2);color:var(--graphite);border:0;cursor:pointer;
+  padding:8px 14px 8px 10px;font-family:var(--hand);font-size:19px;line-height:1;box-shadow:0 6px 14px -6px rgba(0,0,0,.5);transform:rotate(-2deg);transition:transform .2s}
+.treat:hover{transform:rotate(-2deg) translateY(-3px)}
+.treat img{width:40px;height:20px;image-rendering:pixelated}
+.treat.got{cursor:default;opacity:.6;transform:rotate(-2deg)}
+.treatfly{position:fixed;z-index:9;width:40px;height:20px;image-rendering:pixelated;pointer-events:none}
+.tbub{position:absolute;bottom:34px;left:50%;transform:translateX(-50%) rotate(-2deg);font-family:var(--hand);font-size:18px;color:var(--receipt);white-space:nowrap;opacity:0;transition:opacity .3s}
+.tbub.show{opacity:1}
 .plate{position:absolute;right:26px;bottom:-1px;transform:translateY(100%);font-family:var(--type);font-size:10px;letter-spacing:.18em;background:linear-gradient(#d6b46a,#b8913f);color:#4a3514;padding:3px 8px;border-radius:2px}
 .heart{position:absolute;width:28px;height:24px;image-rendering:pixelated;pointer-events:none;animation:float 1.3s ease-out forwards}
 @keyframes float{from{transform:translate(-50%,0) scale(.7);opacity:1}to{transform:translate(-50%,-70px) scale(1.1);opacity:0}}
@@ -79,7 +92,7 @@ a{color:inherit}
 .folder{position:absolute;left:0;right:0;top:0;height:var(--bh);transform:translateY(calc(var(--y,0)*1px));transition:transform .42s cubic-bezier(.2,.75,.2,1),opacity .3s;will-change:transform}
 .folder .fb{position:absolute;inset:0;background:var(--c);border-radius:0 8px 0 0;box-shadow:0 -3px 10px rgba(0,0,0,.35);overflow:hidden}
 .folder .tab{position:absolute;bottom:100%;left:var(--tx);width:var(--tw);height:var(--tabh);background:var(--c);color:var(--fg);border:0;cursor:pointer;
-  clip-path:polygon(14px 0,calc(100% - 14px) 0,100% 100%,0 100%);display:flex;align-items:center;justify-content:center;gap:10px;padding:2px 22px 0;
+  clip-path:polygon(14px 0,calc(100% - 14px) 0,100% 100%,0 100%);display:flex;align-items:center;justify-content:center;gap:7px;padding:2px 17px 0;
   font-family:var(--display);font-size:18px;white-space:nowrap;overflow:hidden}
 .tab .fno{font-family:var(--type);font-size:10.5px;letter-spacing:.08em;opacity:.75;flex:none}
 .tab .tl{overflow:hidden;text-overflow:ellipsis;min-width:0}
@@ -113,10 +126,6 @@ a{color:inherit}
 .fv-bar{position:sticky;top:0;z-index:3;background:var(--bg);padding-top:calc(10px + env(safe-area-inset-top,0px));margin-top:calc(-10px - env(safe-area-inset-top,0px))}
 .backlow{margin:40px auto 0;display:flex}
 .fv-crumb{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.tools{display:flex;gap:4px;background:var(--bg-2);border:1px solid var(--line);border-radius:999px;padding:3px}
-.tool{display:flex;align-items:center;gap:6px;font-family:var(--type);font-size:12px;color:var(--muted);background:none;border:0;border-radius:999px;padding:7px 10px;cursor:pointer}
-.tool svg{width:17px;height:17px;flex:none}
-.tool.on{background:var(--ink-on-dark);color:var(--bg)}
 .fv-head{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:16px 32px;align-items:end;margin:26px 0 64px}
 .fv-head h1{font-family:var(--display);font-weight:400;font-size:clamp(40px,6.6vw,80px);line-height:.95;margin:0;text-wrap:balance}
 .fv-side{font-family:var(--type);font-size:12px;line-height:1.6;color:var(--muted);text-align:right}
@@ -189,12 +198,6 @@ a{color:inherit}
 .tdog.right img{transform:scaleX(-1)}
 .tmeta{font-family:var(--type);font-size:11px;color:var(--muted);letter-spacing:.06em}
 .tip{font-family:var(--hand);font-size:18px;color:var(--muted);min-height:1.1em}
-.markchip{position:fixed;z-index:9;font-family:var(--type);font-size:13px;background:var(--ink-on-dark);color:var(--bg);border:0;border-radius:999px;padding:10px 14px;box-shadow:0 6px 16px rgba(0,0,0,.4);cursor:pointer}
-.doc.t-hl .mk,.doc.t-ul .mk{cursor:text}
-.doc.t-erase .mark{cursor:pointer}
-.doc.t-erase .mark:hover{outline:1px dashed var(--terra);outline-offset:1px}
-.mark.hl{background:linear-gradient(100deg,rgba(255,221,84,0) .5%,var(--hl) 2%,rgba(255,221,84,.5) 6%,rgba(255,221,84,.48) 94%,var(--hl) 98%,rgba(255,221,84,0) 99.5%);-webkit-box-decoration-break:clone;box-decoration-break:clone;padding:0 .08em;border-radius:.2em .1em .25em .1em}
-.mark.ul{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='6' viewBox='0 0 40 6'%3E%3Cpath d='M0 3.2 C6 2.2 9 4.4 15 3.4 S25 2 31 3.6 37 3 40 3.1' fill='none' stroke='%233a3731' stroke-width='1.1' stroke-linecap='round' opacity='.85'/%3E%3C/svg%3E");background-repeat:repeat-x;background-position:0 100%;background-size:40px 6px;padding-bottom:3px;-webkit-box-decoration-break:clone;box-decoration-break:clone}
 .map svg{width:100%;height:auto;display:block}
 .map svg text{font-family:var(--hand);fill:#34312c}
 .creds h3{font-family:var(--type);font-weight:700;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--terra);margin:1.2em 0 .4em}
@@ -216,10 +219,11 @@ a{color:inherit}
   .stab{writing-mode:horizontal-tb;height:40px;width:auto;flex:none;padding:0 16px;border-radius:0 0 10px 10px;max-width:220px}
   .fv-head{grid-template-columns:minmax(0,1fr)}
   .fv-side{text-align:left}
-  .tool .lbl{display:none}
   .tip{display:none}
 }
 @media (max-width:640px){
+  .treat{position:static;margin:0 0 14px;transform:none}
+  .treat:hover{transform:none}
   .drawer{--step:54px;--peek:0px;--bh:150px}
   .meta{grid-template-columns:minmax(0,1fr) auto;gap:6px 12px;padding:14px 16px}
   .meta .fn,.meta .open{display:none}
@@ -257,8 +261,10 @@ a{color:inherit}
     <div class="rack" id="rack">
       <div class="rack-back"></div><div class="cushion"></div>
       <button type="button" class="idli" id="idli" aria-label="Pet Idli, the pixel dachshund"><canvas id="idliCanvas" width="16" height="10"></canvas></button>
-      <div class="rail"></div><div class="rack-wall l"></div><div class="rack-wall r"></div><div class="rack-floor"></div>
+      <div class="bowls-slot"></div><div class="rail"></div><div class="rack-wall l"></div><div class="rack-wall r"></div><div class="rack-floor"></div>
+      <canvas class="bowl" id="bowlFood" width="12" height="6" aria-hidden="true"></canvas><canvas class="bowl" id="bowlWater" width="12" height="6" aria-hidden="true"></canvas><span class="bowltag" id="bowlTag"></span>
       <span class="plate">IDLI'S RACK</span>
+      <p class="treatline" id="treatLine" aria-live="polite"></p>
     </div>
   </div>
   <section class="drawer" id="drawer" aria-label="Files"></section>
@@ -271,25 +277,18 @@ a{color:inherit}
     <div class="fv-bar">
       <button type="button" class="back" id="closeBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>All files</button>
       <span class="fv-crumb" id="fvCrumb"></span>
-      <div class="tools" role="toolbar" aria-label="Marking tools">
-        <button type="button" class="tool on" data-tool="read" aria-pressed="true" title="Read"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 5.5c3-1.3 6-1.3 9 .5 3-1.8 6-1.8 9-.5v13c-3-1.3-6-1.3-9 .5-3-1.8-6-1.8-9-.5z"/><path d="M12 6v13"/></svg><span class="lbl">Read</span></button>
-        <button type="button" class="tool" data-tool="hl" aria-pressed="false" title="Highlighter"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><path d="M4 20l2.5-6.5L16 4l4 4-9.5 9.5z"/><path d="M4 20l2.5-6.5 4 4z" fill="currentColor"/></svg><span class="lbl">Highlight</span></button>
-        <button type="button" class="tool" data-tool="ul" aria-pressed="false" title="Pencil underline"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 18l1.6-5L16 2.6 19.4 6 9 16.4z"/><path d="M3 22c4-1.5 7 1 11-.4s5-.6 7 0"/></svg><span class="lbl">Underline</span></button>
-        <button type="button" class="tool" data-tool="erase" aria-pressed="false" title="Eraser"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><path d="M8 20l-4.5-4.5L14 5l6 6-9 9z"/><path d="M8 20h12M9 10l6 6"/></svg><span class="lbl">Erase</span></button>
-      </div>
     </div>
     <div class="fv-head"><h1 id="fvTitle"></h1><div class="fv-side" id="fvSide"></div></div>
-    <div class="panel-wrap"><div class="panel" id="panel"><div class="doc" id="doc"></div></div><nav class="sidetabs" id="sidetabs" aria-label="Other files in this drawer"></nav></div>
+    <div class="panel-wrap"><button type="button" class="treat" id="treatBtn" hidden><img alt="" id="treatImg"><span id="treatTxt">a treat for Idli · tap to keep it</span></button><div class="panel" id="panel"><div class="doc" id="doc"></div></div><nav class="sidetabs" id="sidetabs" aria-label="Other files in this drawer"></nav></div>
     <div class="fv-nav"><button type="button" id="prevBtn"></button><button type="button" id="nextBtn"></button></div>
     <button type="button" class="back backlow" id="closeBtn2"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>Back to all files</button>
   </div>
   <div class="trailbar" aria-hidden="true">
-    <div class="trail"><div class="tline"></div><div id="tmarks"></div><div class="tdog" id="tdog"><img id="tdogImg" alt=""></div></div>
+    <div class="trail"><div class="tline"></div><div id="tmarks"></div><div class="tdog" id="tdog"><img id="tdogImg" alt=""><span class="tbub" id="tbub"></span></div></div>
     <div class="tmeta" id="tmeta"></div>
     <div class="tip" id="tip"></div>
   </div>
 </section>
-<button type="button" class="markchip" id="markChip" hidden>Mark it</button>
 
 <noscript>
   <div class="nojs">
@@ -417,12 +416,18 @@ const PIX = {
   sleep:["................","................","................","................","..BBBB..........",".KBBBBBEE.......","BBBBBBBEEBBBBBBT","....BBBEEBBBBBBT","....BBBBBBBBBBBB","................"],
   happyA:["...............T","..BBBB........T.",".KBBBBBEE.....T.","BBBBBBBEE.......","....BBBEEBBBBBB.","....BBBEEBBBBBBB","....BBBBBBBBBBBB","....BB.......BB.","....BB.......BB.","................"],
   happyB:["................","..BBBB..........",".KBBBBBEE.......","BBBBBBBEE......T","....BBBEEBBBBBBT","....BBBEEBBBBBBB","....BBBBBBBBBBBB","....BB.......BB.","....BB.......BB.","................"],
-  heart:[".HH.HH.","HHHHHHH","HHHHHHH",".HHHHH.","..HHH..","...H..."]
+  eatA:["................","................","...............T","..BKBB........T.",".KBBBBBEEBBBBBB.","BBBBBBBEEBBBBBBB","....BBBBBBBBBBBB","....BB.......BB.","....BB.......BB.","................"],
+  eatB:["................","................","...............T","..BKBB........T.",".KBBBBBEEBBBBBB.","BB.BBBBEEBBBBBBB","....BBBBBBBBBBBB","....BB.......BB.","....BB.......BB.","................"],
+  heart:[".HH.HH.","HHHHHHH","HHHHHHH",".HHHHH.","..HHH..","...H..."],
+  bone:[".OO....OO.","OWWOOOOWWO",".OWWWWWWO.","OWWOOOOWWO",".OO....OO."]
 };
-const PCOL = {B:"#a85d42", K:"#1d1a18", E:"#2a2522", T:"#a85d42", H:"#e0584a"};
-function pixCanvas(rows, sc=1, c){ const w=rows[0].length, h=rows.length; c=c||document.createElement("canvas"); c.width=w*sc; c.height=h*sc;
+const BOWL_FOOD = n => [ n>=3?"....CCCC....":"............", n>=1?("..CCCC"+(n>=2?".CCCC.":"......")):"............", ".RRRRRRRRRR.", ".RTTTTTTTTR.", "..RTTTTTTR..", "...RRRRRR..." ];
+const BOWL_WATER = [ "............", "............", ".rrrrrrrrrr.", ".rAAAAAAAAr.", "..rGGGGGGr..", "...rrrrrr..." ];
+const PCOL = {B:"#a85d42", K:"#1d1a18", E:"#2a2522", T:"#a85d42", H:"#e0584a", W:"#f3e7cc", O:"#4a4741"};
+const BCOL = {C:"#f3e7cc", R:"#9a4b2c", T:"#c4663f", r:"#6f7f8c", A:"#8cc4e6", G:"#56636d"};
+function pixCanvas(rows, sc=1, c, pal=PCOL){ const w=rows[0].length, h=rows.length; c=c||document.createElement("canvas"); c.width=w*sc; c.height=h*sc;
   const g=c.getContext("2d"); if(!g) return c; g.clearRect(0,0,c.width,c.height);
-  rows.forEach((r,y)=>[...r].forEach((ch,x)=>{ if(PCOL[ch]){ g.fillStyle=PCOL[ch]; g.fillRect(x*sc,y*sc,sc,sc);} })); return c; }
+  rows.forEach((r,y)=>[...r].forEach((ch,x)=>{ if(pal[ch]){ g.fillStyle=pal[ch]; g.fillRect(x*sc,y*sc,sc,sc);} })); return c; }
 const PURL = {}; Object.keys(PIX).forEach(k=>{ try{ PURL[k]=pixCanvas(PIX[k],4).toDataURL(); }catch(e){ PURL[k]=""; } });
 
 /* ================= DOODLES ================= */
@@ -457,6 +462,10 @@ const NS="prfiles.v1.";
 function hash(str){ let h=5381; for(let i=0;i<str.length;i++) h=((h<<5)+h+str.charCodeAt(i))|0; return (h>>>0).toString(36); }
 let SEEN; try{ SEEN=new Set(JSON.parse(store.get(NS+"seen"))||[]); }catch(e){ SEEN=new Set(); }
 const saveSeen=()=>store.set(NS+"seen",JSON.stringify([...SEEN]));
+let FOUND; try{ FOUND=new Set(JSON.parse(store.get(NS+"treats"))||[]); }catch(e){ FOUND=new Set(); }
+let EATEN = parseInt(store.get(NS+"eaten")||"0",10)||0;
+const saveTreats=()=>{ store.set(NS+"treats",JSON.stringify([...FOUND])); store.set(NS+"eaten",String(EATEN)); };
+const pending=()=>Math.max(0,FOUND.size-EATEN);
 
 /* ================= THE DRAWER ================= */
 const drawer=$("#drawer");
@@ -464,7 +473,7 @@ let col="all", peekI=-1;
 F.forEach(f=>{
   const el=document.createElement("article"); el.className="folder"; el.dataset.id=f.id;
   el.style.setProperty("--c",f.c); el.style.setProperty("--fg",f.fg);
-  el.innerHTML=`<button type="button" class="tab" data-open="${f.id}" aria-label="Open file ${f.no}: ${esc(f.title)}. ${esc(f.status[0])}."><span class="fno">${f.no}</span><span class="tl">${esc(f.tab)}</span></button>
+  el.innerHTML=`<button type="button" class="tab" data-open="${f.id}" aria-label="Open file ${f.no}: ${esc(f.title)}. ${esc(f.status[0])}."><span class="fno">${f.no}</span><span class="tl">${esc(f.tab)}</span><img class="tb" alt="" src="${PURL.bone}" title="A treat for Idli is in this file"></button>
     <div class="fb" data-open="${f.id}"><div class="meta"><span class="fn">FILE ${f.no}</span><span class="one">${esc(f.one)}</span><span class="when">${esc(f.when)}</span><span class="stamp">${esc(f.status[0])}</span></div></div>`;
   f.el=el; drawer.appendChild(el);
 });
@@ -493,7 +502,7 @@ function layoutDrawer(){
   fitTabs();
 }
 function fitTabs(){ document.querySelectorAll(".folder:not(.out) .tab").forEach(t=>{ const l=t.querySelector(".tl"); l.style.fontSize=""; let fs=parseFloat(getComputedStyle(t).fontSize), g=0;
-  while(l.scrollWidth>l.clientWidth+1 && fs>12 && g++<20){ fs-=.5; l.style.fontSize=fs+"px"; } }); }
+  while(l.scrollWidth>l.clientWidth+1 && fs>11 && g++<24){ fs-=.5; l.style.fontSize=fs+"px"; } }); }
 function setPeek(i){ if(COARSE || i===peekI) return; peekI=i; layoutDrawer(); }
 drawer.addEventListener("pointerover", e=>{ const fo=e.target.closest(".folder"); if(fo) setPeek(F.findIndex(f=>f.el===fo)); });
 drawer.addEventListener("pointerleave", ()=>setPeek(-1));
@@ -508,7 +517,15 @@ const I={x:18,dir:1,state:"sleep",t:5,frame:"",heartT:0,hop:0};
 let idliScale=9;
 function idliSize(){ idliScale = innerWidth<760 ? 7 : 9; idliBtn.style.width=16*idliScale+"px"; idliBtn.style.height=10*idliScale+"px"; }
 function drawIdli(f){ if(I.frame===f) return; I.frame=f; pixCanvas(PIX[f],1,idliCv); }
-function rackBounds(){ const w=rack.clientWidth, bw=16*idliScale; return [18, Math.max(18,w-18-bw)]; }
+const bowlFood=$("#bowlFood"), bowlWater=$("#bowlWater"), bowlTag=$("#bowlTag");
+let bowlScale=7, bowlLeft=0;
+function placeBowls(){
+  bowlScale = idliScale>=9 ? 7 : 5; const bw=12*bowlScale, w=rack.clientWidth;
+  [bowlWater,bowlFood].forEach((b,i)=>{ b.style.width=bw+"px"; b.style.height=6*bowlScale+"px"; b.style.left=(w-18-bw*(i+1)-6*i)+"px"; });
+  bowlLeft = w-18-bw*2-6; bowlTag.style.left=(bowlLeft+bw-8)+"px"; drawBowls();
+}
+function drawBowls(){ const n=pending(); pixCanvas(BOWL_FOOD(n),1,bowlFood,BCOL); pixCanvas(BOWL_WATER,1,bowlWater,BCOL); bowlTag.textContent = n>3 ? "×"+n : ""; }
+function rackBounds(){ const bw=16*idliScale; return [18, Math.max(18,bowlLeft-bw+idliScale*2)]; }
 let zzEl=null;
 function setZZ(on){ if(on&&!zzEl){ zzEl=document.createElement("span"); zzEl.className="zz"; zzEl.textContent="z"; zzEl.setAttribute("aria-hidden","true"); rack.appendChild(zzEl); } if(!on&&zzEl){ zzEl.remove(); zzEl=null; } }
 function heart(){ if(!PURL.heart) return; const h=document.createElement("img"); h.className="heart"; h.src=PURL.heart; h.alt="";
@@ -520,10 +537,18 @@ function idliTick(now){
   if(!document.hidden && !document.body.classList.contains("viewing")){
     const [lo,hi]=rackBounds();
     if(REDUCED && I.state!=="happy") I.state="sleep";
+    if(pending()>0 && ["walk","sit","sleep","toBed"].includes(I.state) && !REDUCED){ I.state="toFood"; setZZ(false); }
+    if(REDUCED && pending()>0){ EATEN=FOUND.size; saveTreats(); drawBowls(); updateTreatUI(); }
     if(I.state==="walk"){ I.x+=I.dir*42*dt; if(I.x<=lo){I.x=lo;I.dir=1;} if(I.x>=hi){I.x=hi;I.dir=-1;}
-      drawIdli(Math.floor(now/180)%2?"walkA":"walkB"); I.t-=dt; if(I.t<=0){ if(Math.random()<.3) I.state="toBed"; else { I.state="sit"; I.t=1.5+Math.random()*2; } } }
+      drawIdli(Math.floor(now/180)%2?"walkA":"walkB"); I.t-=dt; if(I.t<=0){ const r=Math.random(); if(r<.25) I.state="toBed"; else if(r<.4) I.state="toWater"; else { I.state="sit"; I.t=1.5+Math.random()*2; } } }
     else if(I.state==="toBed"){ I.dir=-1; I.x=Math.max(lo,I.x-42*dt); drawIdli(Math.floor(now/180)%2?"walkA":"walkB"); if(I.x<=lo+.5){ I.state="sleep"; I.t=7+Math.random()*6; I.dir=1; } }
     else if(I.state==="happy"){ drawIdli(Math.floor(now/110)%2?"happyA":"happyB"); I.heartT-=dt; if(I.heartT<=0){ heart(); I.heartT=.38; } I.t-=dt; if(I.t<=0){ I.state=REDUCED?"sleep":"sit"; I.t=1.2; } }
+    else if(I.state==="toFood"||I.state==="toWater"){ I.dir=1; I.x=Math.min(hi,I.x+60*dt); drawIdli(Math.floor(now/140)%2?"walkA":"walkB");
+      if(I.x>=hi-.5){ I.x=hi; if(I.state==="toFood"){ I.state="eat"; I.t=1.2+Math.min(3,pending()*.5); } else { I.state="drink"; I.t=2.2; } } }
+    else if(I.state==="eat"||I.state==="drink"){ drawIdli(Math.floor(now/150)%2?"eatA":"eatB"); I.t-=dt;
+      if(I.t<=0){ if(I.state==="eat"){ const n=pending(); EATEN=FOUND.size; saveTreats(); drawBowls(); updateTreatUI(); I.state="happy"; I.t=2.2; I.hop=1; I.heartT=0;
+          say(FOUND.size>=F.length ? "Idli ate the last treat. She is very full now." : `Idli ate ${n} treat${n>1?"s":""}. Open more files to find more.`, 3600); }
+        else { I.state="sit"; I.t=1.2; } } }
     else if(I.state==="sit"){ drawIdli("walkA"); I.t-=dt; if(I.t<=0){ I.state="walk"; I.t=3+Math.random()*4; if(Math.random()<.5) I.dir*=-1; } }
     else { drawIdli("sleep"); I.t-=dt; if(I.t<=0&&!REDUCED){ I.state="walk"; I.t=3+Math.random()*3; } }
     I.x=Math.max(lo,Math.min(hi,I.x)); setZZ(I.state==="sleep");
@@ -534,12 +559,19 @@ function idliTick(now){
   }
   requestAnimationFrame(idliTick);
 }
-let hintT=0; const hintEl=$("#hint"), HINT=hintEl.textContent;
-function say(m,ms){ hintEl.textContent=m; clearTimeout(hintT); hintT=setTimeout(()=>hintEl.textContent=HINT, ms||3000); }
+let hintT=0; const hintEl=$("#hint"), treatLine=$("#treatLine");
+function baseHint(){ return FOUND.size>=F.length ? "you found every treat · Idli is very full" : "open any folder · each one hides a treat for Idli"; }
+function say(m,ms){ treatLine.textContent=m; clearTimeout(hintT); hintT=setTimeout(updateTreatUI, ms||3000); }
+function updateTreatUI(){
+  const n=FOUND.size, all=F.length;
+  treatLine.innerHTML = n>=all ? "You found all <b>20 treats</b>. Idli is very full." : n===0 ? "Idli is hungry. <b>Each file hides one treat</b> for her." : `Idli is hungry. <b>${n} of ${all}</b> treats found · open more files.`;
+  hintEl.textContent = baseHint();
+  F.forEach(f=>{ const g=f.el.querySelector(".tb"); if(g) g.hidden=FOUND.has(f.id); });
+}
 
 /* ================= FILE VIEW ================= */
-const fv=$("#fv"), docEl=$("#doc"), panel=$("#panel"), tipEl=$("#tip"), chip=$("#markChip");
-let cur=null, tool="read";
+const fv=$("#fv"), docEl=$("#doc"), panel=$("#panel"), tipEl=$("#tip");
+let cur=null;
 function skillMap(){
   const cx=250, cy=255, n=SKILLS.length; let g="";
   SKILLS.forEach(([name,d],i)=>{
@@ -578,7 +610,7 @@ function renderFile(f){
   $("#fvCrumb").textContent=`The archive / ${COLS[f.col].name} / File ${f.no}`;
   $("#fvSide").innerHTML=`${esc(f.when)}<br>${esc(COLS[f.col].name)} · file ${f.no} of ${String(F.length).padStart(2,"0")}<br><span class="stamp s-${f.status[1]}" style="color:${f.status[1]==="idea"?"#a39d92":""}">${esc(f.status[0])}</span>`;
   const html=docHTML(f), key=`${f.id}:${hash(html)}`;
-  docEl.dataset.key=key; const saved=store.get(NS+"mark."+key); docEl.innerHTML = saved || html;
+  docEl.innerHTML = html;
   const sibs=colFiles(f);
   $("#sidetabs").innerHTML = sibs.map(x=>`<button type="button" class="stab" data-go="${x.id}" style="--c:${x.c};--fg:${x.fg}" ${x===f?'aria-current="true"':""}>${x.no} · ${esc(x.tab)}</button>`).join("");
   const k=sibs.indexOf(f), pv=sibs[k-1], nx=sibs[k+1];
@@ -588,8 +620,30 @@ function renderFile(f){
   nb.innerHTML = nx?`<small>Next file</small>${nx.no} · ${esc(nx.title)} →`:""; nb.dataset.go=nx?nx.id:"";
   SEEN.add(f.id); saveSeen(); trail(f);
   try{ history.replaceState(null,"","#"+f.id); }catch(_){}
-  setTool(tool);
+  showTreat(f);
 }
+/* the treat hidden in each file */
+const treatBtn=$("#treatBtn");
+$("#treatImg").src=PURL.bone;
+function showTreat(f){
+  const got=FOUND.has(f.id); treatBtn.hidden=false; treatBtn.classList.toggle("got",got); treatBtn.disabled=got;
+  $("#treatTxt").textContent = got ? "treat already kept for Idli" : "a treat for Idli · tap to keep it";
+  tipEl.textContent = `${FOUND.size} of ${F.length} treats found`;
+}
+treatBtn.addEventListener("click", ()=>{
+  const f=cur; if(!f||FOUND.has(f.id)) return;
+  FOUND.add(f.id); saveTreats(); showTreat(f); updateTreatUI(); drawBowls();
+  const left=F.length-FOUND.size;
+  const msg = left ? `+1 treat · ${left} more to find` : "that was the last treat!";
+  const go=()=>{ const b=$("#tbub"); b.textContent=msg; b.classList.add("show"); clearTimeout(b._t); b._t=setTimeout(()=>b.classList.remove("show"),2200);
+    let k=0; clearInterval(trailAnim); trailAnim=setInterval(()=>{ $("#tdogImg").src=(k++%2)?PURL.happyA:PURL.happyB; if(k>10){ clearInterval(trailAnim); $("#tdogImg").src=PURL.walkA; } },140); };
+  if(REDUCED || !document.body.animate){ go(); return; }
+  const a=$("#treatImg").getBoundingClientRect(), d=$("#tdog").getBoundingClientRect();
+  const im=document.createElement("img"); im.className="treatfly"; im.src=PURL.bone; im.alt=""; im.style.left=a.left+"px"; im.style.top=a.top+"px"; document.body.appendChild(im);
+  const dx=d.left+d.width/2-a.left-20, dy=d.top-a.top;
+  const an=im.animate([{transform:"translate(0,0) scale(1)"},{transform:`translate(${dx*.5}px,${dy*.5-80}px) scale(1.2)`,offset:.5},{transform:`translate(${dx}px,${dy}px) scale(.6)`}],{duration:650,easing:"cubic-bezier(.4,0,.3,1)"});
+  an.onfinish=an.oncancel=()=>{ im.remove(); go(); };
+});
 /* Idli's trail: one tick per file in this drawer */
 let lastPos=-1, trailAnim=0;
 function trail(f){
@@ -640,7 +694,7 @@ function closeFile(fromHistory){
   if(fv.hidden||busy) return;
   if(!fromHistory && pushed){ pushed=false; history.back(); return; }   // popstate comes back here
   pushed=false;
-  const f=cur, fb=f&&f.el.querySelector(".fb"); chip.hidden=true;
+  const f=cur, fb=f&&f.el.querySelector(".fb");
   if(!fromHistory){ try{ history.replaceState(null,"",location.pathname+location.search); }catch(_){} }
   const finish=()=>{ fv.hidden=true; docEl.innerHTML=""; cur=null; lastPos=-1; busy=false; const t=f&&f.el.querySelector(".tab"); if(t) t.focus({preventScroll:true}); };
   // if the file belongs to a hidden drawer section, show all again so it can fly home
@@ -660,56 +714,18 @@ addEventListener("keydown", e=>{
   if(fv.hidden) return;
   if(e.key==="Escape"){ closeFile(); return; }
   if(e.key==="Backspace" && !(e.target.closest && e.target.closest("input,textarea"))){ closeFile(); e.preventDefault(); return; }
-  if(e.target.closest && e.target.closest(".tools")) return;
   if(e.key==="ArrowRight"){ const b=$("#nextBtn"); if(!b.disabled){ switchFile(b.dataset.go); e.preventDefault(); } }
   if(e.key==="ArrowLeft"){ const b=$("#prevBtn"); if(!b.disabled){ switchFile(b.dataset.go); e.preventDefault(); } }
 });
 
-/* marking tools */
-const TIPS={read:"use the side tabs or the arrow keys to move between files",hl:"select any text on the file to highlight it",ul:"select any text to underline it in pencil",erase:"tap a mark to rub it out"};
-function setTool(t){ tool=t;
-  document.querySelectorAll(".tool").forEach(b=>{ const on=b.dataset.tool===t; b.classList.toggle("on",on); b.setAttribute("aria-pressed",on); });
-  ["hl","ul","erase"].forEach(k=>docEl.classList.toggle("t-"+k,t===k));
-  tipEl.textContent = COARSE&&(t==="hl"||t==="ul") ? "select text, then tap the button that appears" : TIPS[t]; chip.hidden=true; }
-document.querySelectorAll(".tool").forEach(b=>b.addEventListener("click",()=>setTool(b.dataset.tool)));
-function selectionTarget(){
-  const sel=getSelection(); if(!sel||!sel.rangeCount||sel.isCollapsed) return null;
-  const range=sel.getRangeAt(0); if(!docEl.contains(range.commonAncestorContainer)) return null;
-  const host=n=>(n.nodeType===1?n:n.parentElement)?.closest(".mk");
-  if(!host(range.startContainer)||!host(range.endContainer)) return {bad:"marks work on the text, the receipt and the notes"};
-  return {range};
-}
-function applyMark(){
-  if(tool!=="hl"&&tool!=="ul") return;
-  const s=selectionTarget(); if(!s) return; if(s.bad){ tipEl.textContent=s.bad; return; }
-  const {range}=s, rn=range.commonAncestorContainer, root=rn.nodeType===1?rn:rn.parentNode;
-  const w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT,{acceptNode:n=>(range.intersectsNode(n)&&n.nodeValue.trim()&&n.parentElement.closest(".mk"))?1:2});
-  const jobs=[]; while(w.nextNode()){ const n=w.currentNode, st=n===range.startContainer?range.startOffset:0, en=n===range.endContainer?range.endOffset:n.length; if(en>st) jobs.push([n,st,en]); }
-  jobs.reverse().forEach(([n,st,en])=>{ let mid=n; if(st>0) mid=n.splitText(st); if(en-st<mid.length) mid.splitText(en-st);
-    const sp=document.createElement("span"); sp.className="mark "+tool; mid.parentNode.insertBefore(sp,mid); sp.appendChild(mid); });
-  getSelection().removeAllRanges(); chip.hidden=true; saveDoc(); tipEl.textContent=TIPS[tool];
-}
-function saveDoc(){ if(docEl.dataset.key && !store.set(NS+"mark."+docEl.dataset.key, docEl.innerHTML)) tipEl.textContent="this browser blocks saving, so marks last until you close the page"; }
-docEl.addEventListener("click", e=>{ if(tool!=="erase") return; const m=e.target.closest(".mark"); if(!m) return; const p=m.parentNode; while(m.firstChild) p.insertBefore(m.firstChild,m); p.removeChild(m); p.normalize(); saveDoc(); });
-document.addEventListener("mouseup", ()=>{ if(!COARSE) setTimeout(applyMark,0); });
-let selT=0;
-document.addEventListener("selectionchange", ()=>{
-  if(!COARSE||fv.hidden||(tool!=="hl"&&tool!=="ul")) return;
-  clearTimeout(selT); chip.hidden=true;
-  selT=setTimeout(()=>{ const s=selectionTarget(); if(!s||s.bad){ if(s&&s.bad) tipEl.textContent=s.bad; return; }
-    const r=s.range.getBoundingClientRect(); chip.textContent=tool==="hl"?"Highlight it":"Underline it"; chip.hidden=false;
-    const cw=chip.offsetWidth; chip.style.left=Math.max(8,Math.min(innerWidth-cw-8,r.left+r.width/2-cw/2))+"px"; chip.style.top=Math.max(8,Math.min(innerHeight-60,r.bottom+14))+"px"; },350);
-});
-chip.addEventListener("pointerdown",e=>e.preventDefault()); chip.addEventListener("mousedown",e=>e.preventDefault()); chip.addEventListener("click",applyMark);
-
 /* resize, deep links, start */
-let rT=0; addEventListener("resize",()=>{ clearTimeout(rT); rT=setTimeout(()=>{ idliSize(); layoutDrawer(); },120); });
+let rT=0; addEventListener("resize",()=>{ clearTimeout(rT); rT=setTimeout(()=>{ idliSize(); placeBowls(); layoutDrawer(); },120); });
 function route(){ const h=location.hash.slice(1);
   if(/^f-\d\d$/.test(h) && fv.hidden){ const f=F.find(x=>x.id===h); if(f) openFile(f.id, f.el); }
   else if(COLS[h]){ const c=document.querySelector(`.chip[data-col="${h}"]`); if(c) c.click(); } }
 addEventListener("hashchange", route);
 addEventListener("popstate", ()=>{ if(!fv.hidden && !/^#f-\d\d$/.test(location.hash)) closeFile(true); });
-idliSize(); drawIdli("sleep"); requestAnimationFrame(idliTick);
+idliSize(); placeBowls(); updateTreatUI(); drawIdli("sleep"); requestAnimationFrame(idliTick);
 layoutDrawer(); if(document.fonts&&document.fonts.ready) document.fonts.ready.then(fitTabs);
 route();
 })();

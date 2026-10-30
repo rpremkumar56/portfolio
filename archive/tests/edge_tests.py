@@ -59,17 +59,32 @@ with sync_playwright() as p:
     pg.keyboard.press('Escape'); pg.wait_for_timeout(800)
     check("no script errors (navigation)", not errs, errs[:3]); ctx.close()
 
-    ctx,pg,errs=page(b,1440,900); pg.goto(URL+'#f-05'); pg.wait_for_timeout(1100)
+    # treats: one per file, collected in the file, eaten from the bowl on the rack
+    ctx,pg,errs=page(b,1440,900); pg.goto(URL); pg.wait_for_timeout(500)
+    check("every folder tab shows a treat at the start", pg.evaluate("()=>[...document.querySelectorAll('.tab .tb')].filter(g=>!g.hidden).length")==20)
+    check("the rack says Idli is hungry", "hungry" in pg.inner_text('#treatLine'))
+    pg.goto(URL+'#f-05'); pg.wait_for_timeout(1100)
     check("deep link #f-05 opens Ramp-down Radar", pg.inner_text('#fvTitle')=="Ramp-down Radar")
-    pg.click('[data-tool=hl]')
-    pg.evaluate("""()=>{ const p=document.querySelector('#doc .sheet p.mk:not(.lede)'); const t=p.firstChild; const r=document.createRange(); r.setStart(t,0); r.setEnd(t,Math.min(30,t.length)); const s=getSelection(); s.removeAllRanges(); s.addRange(r); document.dispatchEvent(new MouseEvent('mouseup')); }""")
-    pg.wait_for_timeout(200)
-    check("highlighter marks selected text", pg.evaluate("()=>document.querySelectorAll('#doc .mark.hl').length")>=1)
-    pg.reload(); pg.wait_for_timeout(1100)
-    check("marks survive a reload", pg.evaluate("()=>document.querySelectorAll('#doc .mark.hl').length")>=1)
-    pg.evaluate("()=>localStorage.setItem('prfiles.v1.mark.f-05:oldhash','<p>OLD TEXT</p>')"); pg.reload(); pg.wait_for_timeout(1100)
-    check("marks saved against old file text are ignored", 'OLD TEXT' not in pg.content())
-    check("no script errors (marks)", not errs, errs[:3]); ctx.close()
+    check("the file offers a treat", pg.is_visible('#treatBtn') and "tap to keep" in pg.inner_text('#treatBtn'))
+    pg.click('#treatBtn'); pg.wait_for_timeout(1200)
+    check("keeping the treat counts it (1 of 20)", "1 of 20" in pg.inner_text('#tip') and pg.evaluate("()=>document.getElementById('treatBtn').disabled"), pg.inner_text('#tip'))
+    pg.evaluate("()=>document.getElementById('treatBtn').click()"); pg.wait_for_timeout(300)
+    check("a second tap does not count twice", "1 of 20" in pg.inner_text('#tip'))
+    pg.click('#nextBtn'); pg.wait_for_timeout(500); pg.click('#treatBtn'); pg.wait_for_timeout(1000)
+    pg.click('#closeBtn'); pg.wait_for_timeout(900)
+    check("those two folders no longer show a treat", pg.evaluate("()=>[...document.querySelectorAll('.tab .tb')].filter(g=>!g.hidden).length")==18)
+    eaten=False
+    for _ in range(40):
+        pg.wait_for_timeout(250)
+        if pg.evaluate("()=>localStorage.getItem('prfiles.v1.eaten')")=="2": eaten=True; break
+    check("Idli walks to her bowl and eats the treats", eaten)
+    pg.reload(); pg.wait_for_timeout(600)
+    check("found treats survive a reload", "2 of 20" in pg.inner_text('#treatLine'), pg.inner_text('#treatLine'))
+    pg.evaluate("()=>{ localStorage.setItem('prfiles.v1.treats', JSON.stringify(Array.from({length:20},(_,i)=>'f-'+String(i+1).padStart(2,'0')))); localStorage.setItem('prfiles.v1.eaten','20'); }")
+    pg.reload(); pg.wait_for_timeout(600)
+    check("all 20 found: the rack says so", "all" in pg.inner_text('#treatLine'))
+    check("no marking tools are left", pg.evaluate("()=>!document.querySelector('.tools,#markChip')"))
+    check("no script errors (treats)", not errs, errs[:3]); ctx.close()
 
     ctx,pg,errs=page(b,390,844,has_touch=True,is_mobile=True); pg.goto(URL+'#f-10'); pg.wait_for_timeout(1100)
     check("phone deep link opens the clinic file", pg.inner_text('#fvTitle')=="The paper register")
@@ -78,8 +93,8 @@ with sync_playwright() as p:
 
     ctx=b.new_context(viewport={'width':1280,'height':800}); ctx.add_init_script("Object.defineProperty(window,'localStorage',{get(){throw new Error('blocked')}})")
     pg=ctx.new_page(); errs=[]; pg.on('pageerror', lambda e: errs.append(str(e))); pg.goto(URL); pg.wait_for_timeout(400)
-    pg.click('.folder[data-id="f-02"] .tab'); pg.wait_for_timeout(950); pg.click('#nextBtn'); pg.wait_for_timeout(500)
-    check("works with browser storage blocked", not errs and pg.inner_text('#fvTitle')=="Finance Ops AI-Assist", errs[:2]); ctx.close()
+    pg.click('.folder[data-id="f-02"] .tab'); pg.wait_for_timeout(950); pg.click('#treatBtn'); pg.wait_for_timeout(900); pg.click('#nextBtn'); pg.wait_for_timeout(500)
+    check("works with browser storage blocked (treats too)", not errs and pg.inner_text('#fvTitle')=="Finance Ops AI-Assist" and "1 of 20" in pg.inner_text('#tip'), errs[:2]); ctx.close()
 
     ctx=b.new_context(java_script_enabled=False); pg=ctx.new_page(); pg.goto(URL)
     check("content readable with JavaScript off", "Ramp-down Radar" in pg.inner_text('body')); ctx.close()
@@ -93,9 +108,9 @@ with sync_playwright() as p:
         hearts=pg.evaluate("()=>document.querySelectorAll('#rack .heart').length"); out=[]
         for i in range(40):
             pg.wait_for_timeout(250)
-            r=pg.evaluate("()=>{const a=document.getElementById('rack').getBoundingClientRect(), d=document.getElementById('idli').getBoundingClientRect(); return [d.left-a.left, a.right-d.right]}")
-            if r[0]<12 or r[1]<12: out.append(r)
-        check(f"[{w}] Idli stays inside her rack for 10 s", not out, out[:3]); check(f"[{w}] tapping Idli makes hearts", hearts>0)
+            r=pg.evaluate("()=>{const a=document.getElementById('rack').getBoundingClientRect(), d=document.getElementById('idli').getBoundingClientRect(), w=document.getElementById('bowlFood').getBoundingClientRect(); return [d.left-a.left, a.right-d.right, w.left-(d.right-d.width*0.16)]}")
+            if r[0]<12 or r[1]<12 or r[2]<-2: out.append(r)
+        check(f"[{w}] Idli stays inside her rack and out of the bowls for 10 s", not out, out[:3]); check(f"[{w}] tapping Idli makes hearts", hearts>0)
         ctx.close()
 
 
