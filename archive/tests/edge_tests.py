@@ -140,14 +140,14 @@ with sync_playwright() as p:
 
     # smoothness of the open flight
     ctx,pg,errs=page(b,1440,900); pg.goto(URL); pg.wait_for_timeout(500); gaps=[]; block=[]
-    for fid in ["f-01","f-05","f-10","f-14"]:
+    for fid in ["f-01","f-05","f-10","f-14"]*3:
         r=pg.evaluate("""(fid)=>new Promise(res=>{ const fr=[]; const t0=performance.now(); const loop=t=>{ fr.push(t); if(t-t0<1200) requestAnimationFrame(loop); else res({fr,t0,click}); };
           requestAnimationFrame(loop); document.querySelector('.folder[data-id="'+fid+'"] .tab').click(); var click=performance.now()-t0; })""", fid)
         fr=r['fr']; gaps+= [b2-a for a,b2 in zip(fr,fr[1:])]; block.append(r['click'])
         pg.keyboard.press('Escape'); pg.wait_for_timeout(800)
     slow=[g for g in gaps if g>34]
     check(f"click blocks the page for under 50 ms (worst {max(block):.0f} ms)", max(block)<50)
-    check(f"open flight: under 5 slow frames ({len(slow)} slow, worst {max(gaps):.0f} ms)", len(slow)<5)
+    check(f"open flight: at most 1 slow frame per open on average ({len(slow)/12:.2f}, worst {max(gaps):.0f} ms)", len(slow)/12<=1)
     ctx.close(); b.close()
 fails=[r for r in results if not r[1]]
 print(f"\n{len(results)-len(fails)} passed, {len(fails)} failed")
