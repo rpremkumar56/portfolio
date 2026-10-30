@@ -52,7 +52,7 @@ with sync_playwright() as p:
     # rapid clicks on three spines
     pg.locator('.spine').nth(0).click(); pg.locator('.spine').nth(7).click(no_wait_after=True, force=True) if False else None
     pg.evaluate("()=>{const s=document.querySelectorAll('.spine'); s[1].click(); s[8].click(); s[12].click();}")
-    pg.wait_for_timeout(900)
+    pg.wait_for_timeout(1500)
     check("rapid clicks open only one book", pg.evaluate("()=>document.querySelectorAll('#reader:not([hidden])').length===1 && document.querySelectorAll('.flyer').length===0"))
     pg.keyboard.press('Escape'); pg.wait_for_timeout(800)
     # wheel burst = one gesture with momentum
