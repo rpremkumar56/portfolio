@@ -20,7 +20,10 @@ DOC="""()=>{ const W=document.documentElement.clientWidth; const fv=document.get
   const sw=fv.scrollWidth>fv.clientWidth+1;
   const pc=getComputedStyle(document.getElementById('panel')).backgroundColor;
   const top=document.elementFromPoint(innerWidth/2, innerHeight-70); const covered = top && top.closest('.drawer') ? 1 : 0;
-  return {wide,sw,pc,covered}; }"""
+  const pr=document.getElementById('panel').getBoundingClientRect(); const tabs=[...document.querySelectorAll('#sidetabs .stab:not([hidden])')];
+  const pastPanel=tabs.some(t=>t.getBoundingClientRect().bottom>pr.bottom+1);
+  const cur=tabs.some(t=>t.getAttribute('aria-current')==='true');
+  return {wide,sw,pc,covered,pastPanel,cur}; }"""
 with sync_playwright() as p:
     b=p.chromium.launch()
     for (w,h) in [(1440,900),(1280,720),(1024,768),(820,1180),(390,844),(360,740),(844,390)]:
@@ -38,6 +41,10 @@ with sync_playwright() as p:
             if d['wide'] or d['sw']: bad.append((fid,d['wide']))
             if d['pc']!=fc: colour.append((fid,fc,d['pc']))
             if d['covered']: bad.append((fid,'drawer shows through the file'))
+            if d['pastPanel'] and w>820: bad.append((fid,'side tabs run past the folder'))
+            if not d['cur'] and w>820: bad.append((fid,'this file has no side tab'))
+            nb=pg.evaluate("()=>{const b=document.getElementById('nextBtn'); if(b.disabled) return true; const fv=document.getElementById('fv'); b.scrollIntoView({block:'center'}); const r=b.getBoundingClientRect(); const e=document.elementFromPoint(r.left+r.width/2, r.top+r.height/2); return !!(e && b.contains(e));}")
+            if not nb: bad.append((fid,'next-file link is covered'))
             if (w,i) in [(1440,4),(390,4),(1440,14)]: pg.screenshot(path=f"{SP}/file-{w}-{fid}.png", full_page=False)
             pg.keyboard.press('Escape'); pg.wait_for_timeout(1000)
         check(f"[{w}x{h}] every file fits the screen", not bad, bad[:3])

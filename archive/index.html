@@ -215,8 +215,8 @@ a{color:inherit}
 .figure figcaption{font-family:var(--type);font-size:10.5px;letter-spacing:.04em;color:var(--graphite-soft);margin-top:8px}
 .card-note{background:var(--paper-2);color:var(--ink);font-family:var(--hand);font-size:22px;line-height:1.15;padding:14px 16px 16px;transform:rotate(-1.2deg);box-shadow:0 3px 8px -3px rgba(0,0,0,.45);
   background-image:repeating-linear-gradient(transparent 0 25px,rgba(43,58,158,.2) 25px 26px);background-position:0 12px}
-.sidetabs{position:absolute;top:28px;right:0;width:48px;display:flex;flex-direction:column;gap:6px}
-.stab{writing-mode:vertical-rl;height:150px;width:44px;border:0;cursor:pointer;background:var(--c);color:var(--fg);font-family:var(--display);font-size:16px;
+.sidetabs{position:absolute;top:28px;right:0;width:48px;display:flex;flex-direction:column;gap:6px;overflow:hidden}
+.stab{writing-mode:vertical-rl;height:150px;width:44px;border:0;cursor:pointer;background:var(--c);color:var(--fg);font-family:var(--display);font-size:14.5px;
   border-radius:0 10px 10px 0;padding:10px 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;opacity:.92;transition:transform .2s}
 .stab:hover{transform:translateX(3px);opacity:1}
 .stab[aria-current="true"]{opacity:1;box-shadow:inset 3px 0 0 rgba(0,0,0,.2)}
@@ -679,6 +679,19 @@ function docHTML(f){
   return sheet + (atts.length?`<div class="attach">${atts.join("")}</div>`:"");
 }
 function colFiles(f){ return F.filter(x=>x.col===f.col); }
+/* side tabs must end inside the open folder: shrink them, and if there are too many, show a window around this file */
+function fitSideTabs(){
+  const st=$("#sidetabs"), tabs=[...st.querySelectorAll(".stab")];
+  tabs.forEach(t=>{ t.hidden=false; t.style.height=""; });
+  if(innerWidth<=820 || !tabs.length){ st.style.maxHeight=""; return; }
+  const avail=Math.max(120, panel.offsetHeight-28-24), gap=6, n=tabs.length;
+  const per=Math.min(150, Math.max(104, Math.floor((avail+gap)/n)-gap));
+  const fit=Math.max(1, Math.floor((avail+gap)/(per+gap)));
+  const k=tabs.findIndex(t=>t.dataset.go===st.dataset.cur);
+  let a=Math.max(0, Math.min(k-Math.floor((fit-1)/2), n-fit)), b=a+fit;
+  tabs.forEach((t,i)=>{ t.style.height=per+"px"; t.hidden = i<a || i>=b; });
+  st.style.maxHeight=avail+"px";
+}
 function renderFile(f){
   cur=f;
   panel.style.setProperty("--c",f.c); panel.style.setProperty("--fg",f.fg); panel.dataset.label=`${f.no} · ${f.tab}`;
@@ -688,12 +701,14 @@ function renderFile(f){
   const html=docHTML(f), key=`${f.id}:${hash(html)}`;
   docEl.innerHTML = html;
   const sibs=colFiles(f);
-  $("#sidetabs").innerHTML = sibs.map(x=>`<button type="button" class="stab" data-go="${x.id}" style="--c:${x.c};--fg:${x.fg}" ${x===f?'aria-current="true"':""}>${x.no} · ${esc(x.tab)}</button>`).join("");
+  $("#sidetabs").dataset.cur = f.id;
+  $("#sidetabs").innerHTML = sibs.map(x=>`<button type="button" class="stab" data-go="${x.id}" style="--c:${x.c};--fg:${x.fg}" ${x===f?'aria-current="true"':""} title="File ${x.no}: ${esc(x.title)}" aria-label="File ${x.no}: ${esc(x.title)}">${esc(x.tab)}</button>`).join("");
   const k=sibs.indexOf(f), pv=sibs[k-1], nx=sibs[k+1];
   const pb=$("#prevBtn"), nb=$("#nextBtn");
   pb.disabled=!pv; nb.disabled=!nx;
   pb.innerHTML = pv?`<small>Previous file</small>← ${pv.no} · ${esc(pv.title)}`:""; pb.dataset.go=pv?pv.id:"";
   nb.innerHTML = nx?`<small>Next file</small>${nx.no} · ${esc(nx.title)} →`:""; nb.dataset.go=nx?nx.id:"";
+  fitSideTabs();
   SEEN.add(f.id); saveSeen(); trail(f);
   try{ history.replaceState(null,"","#"+f.id); }catch(_){}
   showTreat(f);
@@ -803,7 +818,7 @@ addEventListener("keydown", e=>{
 });
 
 /* resize, deep links, start */
-let rT=0; addEventListener("resize",()=>{ clearTimeout(rT); rT=setTimeout(()=>{ idliSize(); placeBowls(); layoutDrawer(); },120); });
+let rT=0; addEventListener("resize",()=>{ clearTimeout(rT); rT=setTimeout(()=>{ idliSize(); placeBowls(); layoutDrawer(); if(!fv.hidden) fitSideTabs(); },120); });
 function route(){ const h=location.hash.slice(1);
   if(/^f-\d\d$/.test(h) && fv.hidden){ const f=F.find(x=>x.id===h); if(f) openFile(f.id, f.el); }
   else if(COLS[h]){ const c=document.querySelector(`.chip[data-col="${h}"]`); if(c) c.click(); } }
