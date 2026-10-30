@@ -110,11 +110,11 @@ button{font:inherit;color:inherit}
 .preview .pt{font-family:var(--display);font-size:25px;line-height:1.02;margin:.2em 0;color:#2d2a25;text-wrap:balance}
 .preview .pw{font-style:italic;font-size:14px;color:var(--graphite-soft);margin:0 0 .6em}
 .preview .po{font-family:var(--hand);font-size:18px;color:var(--ink);margin-top:.4em}
-.flyer{position:fixed;z-index:6;border-radius:3px;box-shadow:0 20px 40px -16px rgba(30,20,10,.5);pointer-events:none;transform-origin:0 0}
+.flyer{position:fixed;z-index:6;border-radius:4px;box-shadow:0 20px 40px -16px rgba(30,20,10,.5);pointer-events:none;transform-origin:0 0;will-change:transform,opacity}
 
 /* ---------- reader ---------- */
 #reader{position:fixed;inset:0;z-index:5;display:flex;flex-direction:column;align-items:center;
-  background:rgba(236,230,220,.94);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);
+  background:rgba(236,230,220,.97);
   padding-top:calc(10px + env(safe-area-inset-top,0px));padding-bottom:calc(8px + env(safe-area-inset-bottom,0px));
   padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));
   opacity:0;transition:opacity .3s ease}
@@ -135,7 +135,7 @@ button{font:inherit;color:inherit}
 .base-left{left:0;width:50%}
 .leaf{left:50%;width:50%;transform-origin:left center;transform-style:preserve-3d;transition:transform .85s cubic-bezier(.45,.05,.25,1)}
 .book.single .leaf{left:0;width:100%}
-.face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;overflow:hidden;container-type:size;background-color:var(--page);
+.face{position:absolute;inset:0;contain:paint;backface-visibility:hidden;-webkit-backface-visibility:hidden;overflow:hidden;container-type:size;background-color:var(--page);
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .35 0 0 0 0 .3 0 0 0 0 .22 0 0 0 .09 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
 .face.back{transform:rotateY(180deg)}
 .leaf .front::after,.base-left .face::after,.leaf .back::after{content:"";position:absolute;inset:0;pointer-events:none}
@@ -461,7 +461,7 @@ function doodle(name, ink = INK){
     stroke:`<g ${S}><path d="M10 70c10-40 30-40 34-8s-14 28-6 6 26-36 32-10-10 26 2 10 24-34 34-8-8 22 6 6 18-24 30-6"/><path d="M10 92h140" stroke-dasharray="2 5"/></g>`,
     bowl:`<g ${S}><path d="M22 54h116c-4 26-26 40-58 40S26 80 22 54z"/><path d="M60 46c-6-8 6-12 0-22M80 46c-6-8 6-12 0-22M100 46c-6-8 6-12 0-22"/></g>`
   };
-  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 110" aria-hidden="true"><defs><filter id="${id}" x="-5%" y="-5%" width="110%" height="110%"><feTurbulence type="fractalNoise" baseFrequency=".035" numOctaves="2" seed="${wob%7+1}"/><feDisplacementMap in="SourceGraphic" scale="2.4"/></filter></defs><g filter="url(#${id})">${parts[name]||""}</g></svg>`;
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 110" aria-hidden="true">${parts[name]||""}</svg>`;
 }
 const CLIP = `<svg class="clip" viewBox="0 0 16 44" aria-hidden="true"><path d="M5 30V8a3 3 0 0 1 6 0v26a5 5 0 0 1-10 0V12" fill="none" stroke="#8d8a84" stroke-width="1.6" stroke-linecap="round"/></svg>`;
 
@@ -618,9 +618,9 @@ function say(m,ms){ hintEl.textContent=m; clearTimeout(hintT); hintT=setTimeout(
 const reader=$("#reader"), bookEl=$("#book"), pageNo=$("#pageNo"), tipEl=$("#tip"), chip=$("#markChip");
 let R=null, tool="read";
 const isSingle = () => { if(innerWidth<760) return true; const aw=Math.min(innerWidth-40,1180), ah=innerHeight-178, w=Math.min(aw,ah*1.46); return w/2<380 || w/1.46<470; };
-function buildReader(b, startPage=0){
+function buildReader(b, startPage=0, colour=b.color){
   const single=isSingle();
-  bookEl.innerHTML=""; bookEl.classList.toggle("single",single); bookEl.style.setProperty("--bc",b.color);
+  bookEl.innerHTML=""; bookEl.classList.toggle("single",single); bookEl.style.setProperty("--bc",colour);
   bookEl.appendChild(Object.assign(document.createElement("div"),{className:"boards"}));
   const endpaper=`<div class="endpaper"><div class="exlibris">ex libris<b>Premkumar R</b></div></div>`;
   const pages=b.pages.map(p=>pageHTML(b,p));
@@ -635,7 +635,7 @@ function buildReader(b, startPage=0){
   } else pages.forEach((h,i)=>{ const l=document.createElement("div"); l.className="leaf"; l.appendChild(mk("front",h,i)); l.appendChild(mk("back","")); leaves.push(l); });
   leaves.forEach(l=>bookEl.appendChild(l));
   bookEl.querySelectorAll(".face[data-key]").forEach(f=>{ const s=store.get(NS+"mark."+f.dataset.key); if(s) f.innerHTML=s; });
-  R={b,single,leaves,n:pages.length,max:single?pages.length-1:leaves.length,f:0,pos:-1};
+  R={b,single,leaves,n:pages.length,max:single?pages.length-1:leaves.length,f:0,pos:-1,colour};
   buildTrail(); sizeBook();
   R.f=pageToF(startPage);
   bookEl.classList.add("instant"); layout(); void bookEl.offsetWidth; requestAnimationFrame(()=>requestAnimationFrame(()=>bookEl.classList.remove("instant")));
@@ -785,29 +785,54 @@ chip.addEventListener("click", applyMark);
 
 /* open / close */
 let busy=false;
+function shellRect(b, page){
+  // size an empty book exactly as the reader will, so the flight can start before the pages exist
+  const single=isSingle(), n=b.pages.length, max=single?n-1:Math.ceil(n/2);
+  R={single}; sizeBook(); R=null;
+  const f=single?Math.max(0,Math.min(max,page)):Math.max(0,Math.min(max,Math.ceil(page/2)));
+  bookEl.classList.toggle("single",single); bookEl.classList.add("instant");
+  bookEl.style.transform = single ? "" : `translateX(${f===0?-25:f===max?25:0}%)`;
+  bookEl.innerHTML='<div class="boards"></div>';
+  return bookEl.firstChild.getBoundingClientRect();
+}
+function fly(from, to, colour, ms){
+  const fl=document.createElement("div"); fl.className="flyer"; fl.style.background=colour;
+  Object.assign(fl.style,{left:from.left+"px",top:from.top+"px",width:from.width+"px",height:from.height+"px"}); document.body.appendChild(fl);
+  const a=fl.animate([{transform:"translate(0,0) scale(1,1)"},{transform:`translate(${to.left-from.left}px,${to.top-from.top}px) scale(${to.width/from.width},${to.height/from.height})`}],
+    {duration:ms, easing:"cubic-bezier(.33,.0,.15,1)", fill:"forwards"});
+  return {fl, a};
+}
 function openVolume(id, page=0, spineEl=null){
   if(busy || !reader.hidden) return; const b=BOOKS.find(x=>x.id===id); if(!b) return; busy=true; preview.hidden=true;
+  const colour = spineEl ? spineEl.style.getPropertyValue("--c").trim() : b.color;
   $("#rtitle").textContent=b.title;
-  document.body.classList.add("reading"); reader.hidden=false;
-  buildReader(b,page);
-  const done=()=>{ reader.classList.add("show"); busy=false; $("#closeBtn").focus({preventScroll:true}); };
-  if(spineEl && !REDUCED && spineEl.animate){
-    spineEl.classList.add("pulled");
-    const s=spineEl.getBoundingClientRect(), t=bookEl.getBoundingClientRect();
-    const fl=document.createElement("div"); fl.className="flyer"; fl.style.background=getComputedStyle(spineEl).backgroundColor;
-    Object.assign(fl.style,{left:s.left+"px",top:s.top+"px",width:s.width+"px",height:s.height+"px"}); document.body.appendChild(fl);
-    const dx=t.left-s.left, dy=t.top-s.top, sx=t.width/s.width, sy=t.height/s.height;
-    const anim=fl.animate([{transform:"translate(0,0) scale(1,1)"},{transform:`translate(${dx}px,${dy}px) scale(${sx},${sy})`}],{duration:520,easing:"cubic-bezier(.5,0,.2,1)"});
-    const fin=()=>{ fl.remove(); spineEl.classList.remove("pulled"); done(); };
-    anim.onfinish=fin; anim.oncancel=fin;
-  } else done();
+  document.body.classList.add("reading"); reader.classList.remove("show"); reader.hidden=false;
+  const show=()=>{ reader.classList.add("show"); busy=false; $("#closeBtn").focus({preventScroll:true}); };
+  if(!spineEl || REDUCED || !document.body.animate){ buildReader(b,page,colour); show(); return; }
+  spineEl.classList.add("pulled");
+  const to=shellRect(b,page), from=spineEl.getBoundingClientRect();
+  const {fl,a}=fly(from,to,colour,560);
+  // build the pages after the flight has started; the flight runs on the compositor, so the work does not stall it
+  requestAnimationFrame(()=>setTimeout(()=>buildReader(b,page,colour),0));
+  const fin=()=>{ spineEl.classList.remove("pulled"); show();
+    fl.animate([{opacity:1},{opacity:0}],{duration:280,easing:"ease-out",fill:"forwards"}).onfinish=()=>fl.remove(); };
+  a.onfinish=fin; a.oncancel=()=>{ fl.remove(); spineEl.classList.remove("pulled"); if(!R) buildReader(b,page,colour); show(); };
 }
 function closeBook(){
-  if(reader.hidden) return;
-  reader.classList.remove("show"); chip.hidden=true;
-  const back = R && document.querySelector(`.spine[data-vol="${R.b.id}"]`);
-  setTimeout(()=>{ reader.hidden=true; bookEl.innerHTML=""; R=null; document.body.classList.remove("reading"); if(back) back.focus({preventScroll:true}); }, REDUCED?0:300);
+  if(reader.hidden || busy) return;
+  const colour=R?R.colour:"", back = R && (document.querySelector(`.spine[data-vol="${R.b.id}"][style*="--c:${colour}"]`) || document.querySelector(`.spine[data-vol="${R.b.id}"]`));
+  const boardsEl=bookEl.querySelector(".boards");
+  chip.hidden=true;
   try{ history.replaceState(null,"",location.pathname+location.search); }catch(_){}
+  const finish=()=>{ reader.hidden=true; bookEl.innerHTML=""; R=null; busy=false; if(back) back.focus({preventScroll:true}); };
+  if(REDUCED || !back || !boardsEl || !document.body.animate){ reader.classList.remove("show"); document.body.classList.remove("reading"); setTimeout(finish, REDUCED?0:300); return; }
+  busy=true;
+  const from=boardsEl.getBoundingClientRect();
+  document.body.classList.remove("reading");
+  const to=back.getBoundingClientRect();
+  const {fl,a}=fly(from,to,colour,460);
+  reader.classList.remove("show");
+  a.onfinish=()=>{ fl.remove(); finish(); }; a.oncancel=a.onfinish;
 }
 $("#closeBtn").onclick=closeBook;
 
@@ -815,7 +840,7 @@ $("#closeBtn").onclick=closeBook;
 let lastSingle=isSingle(), rT=0;
 addEventListener("resize", ()=>{ clearTimeout(rT); rT=setTimeout(()=>{
   idliSize(); fitShelves();
-  if(R){ const s=isSingle(); if(s!==lastSingle){ const keep=visiblePages()[0]??0; buildReader(R.b,keep); } else sizeBook(); }
+  if(R){ const s=isSingle(); if(s!==lastSingle){ const keep=visiblePages()[0]??0; buildReader(R.b,keep,R.colour); } else sizeBook(); }
   lastSingle=isSingle(); },120); });
 
 /* deep links: #work, #home-p3 */

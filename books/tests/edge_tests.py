@@ -34,7 +34,7 @@ with sync_playwright() as p:
         for i in range(15):
             pg.locator('.spine').nth(i).click(); pg.wait_for_timeout(700)
             over+=pg.evaluate(JS_PAGES)
-            pg.keyboard.press('Escape'); pg.wait_for_timeout(380)
+            pg.keyboard.press('Escape'); pg.wait_for_timeout(800)
         check(f"[{w}x{h}] no clipped text on any open spread", not over, over)
         check(f"[{w}x{h}] no script errors", not errs, errs[:3]); ctx.close()
 
@@ -47,14 +47,14 @@ with sync_playwright() as p:
     pg.wait_for_timeout(900)
     st=pg.evaluate("()=>({no:document.querySelector('#pageNo').textContent, next:document.querySelector('#nextBtn').disabled})")
     check("25 fast ArrowRight presses stop at the last page", st['next'], st)
-    pg.keyboard.press('Escape'); pg.wait_for_timeout(400)
+    pg.keyboard.press('Escape'); pg.wait_for_timeout(800)
     check("Esc closes and focus goes back to a spine", pg.evaluate("()=>document.getElementById('reader').hidden && document.activeElement.classList.contains('spine')"))
     # rapid clicks on three spines
     pg.locator('.spine').nth(0).click(); pg.locator('.spine').nth(7).click(no_wait_after=True, force=True) if False else None
     pg.evaluate("()=>{const s=document.querySelectorAll('.spine'); s[1].click(); s[8].click(); s[12].click();}")
     pg.wait_for_timeout(900)
     check("rapid clicks open only one book", pg.evaluate("()=>document.querySelectorAll('#reader:not([hidden])').length===1 && document.querySelectorAll('.flyer').length===0"))
-    pg.keyboard.press('Escape'); pg.wait_for_timeout(400)
+    pg.keyboard.press('Escape'); pg.wait_for_timeout(800)
     # wheel burst = one gesture with momentum
     pg.locator('.spine').nth(0).click(); pg.wait_for_timeout(800)
     before=pg.inner_text('#pageNo')
