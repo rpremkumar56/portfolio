@@ -17,11 +17,11 @@
 <style>
 /* Layout: a dark archive room. Coloured folders stack like a drawer, tabs staggered; one opens into a paper file with clipped attachments and side tabs. */
 :root{
-  color-scheme: dark;
-  --bg:#1b1a18; --bg-2:#25231f; --line:rgba(236,230,220,.14);
-  --ink-on-dark:#ece6dc; --muted:#a39d92;
-  --paper:#f6f2e9; --paper-2:#fffdf8; --graphite:#3a3731; --graphite-soft:#7d776d;
-  --ink:#2b3a9e; --terra:#c4663f; --receipt:#f1d36b;
+  color-scheme: light;
+  --bg:#fbfaf6; --bg-2:#f1eee7; --line:rgba(29,28,26,.14);
+  --ink-on-dark:#1d1c1a; --muted:#77726a;
+  --paper:#fbf8f1; --paper-2:#ffffff; --graphite:#2f2d29; --graphite-soft:#77726a;
+  --ink:#1d1c1a; --accent:#e5461f; --terra:#e5461f; --receipt:#e5461f;
   --wood:#a87e52; --wood-dark:#845f38;
   --hl:rgba(255,221,84,.62);
   --display:"Instrument Serif","Times New Roman",serif;
@@ -35,90 +35,46 @@ body{margin:0;min-height:100%;background:var(--bg);color:var(--ink-on-dark);font
 body.viewing{overflow:hidden}
 [hidden]{display:none!important}
 button{font:inherit;color:inherit}
-:focus-visible{outline:2px solid #f1d36b;outline-offset:3px}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
 a{color:inherit}
 
 /* ---------- top ---------- */
 .room{max-width:1120px;margin:0 auto;padding-top:calc(18px + env(safe-area-inset-top,0px));padding-bottom:calc(40px + env(safe-area-inset-bottom,0px));
   padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
-.nav{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;font-family:var(--type);font-size:12px;letter-spacing:.06em;color:var(--muted);border-bottom:1px solid var(--line);padding-bottom:12px}
-.mono{display:flex;align-items:center;gap:10px;color:var(--ink-on-dark)}
-.mono .seal{width:34px;height:34px;border-radius:50%;border:1.5px solid currentColor;display:grid;place-items:center;font-family:var(--display);font-style:italic;font-size:17px}
 .chips{display:flex;gap:4px;flex-wrap:wrap;min-width:0}
 .chip{background:none;border:1px solid transparent;border-radius:999px;padding:6px 11px;cursor:pointer;color:var(--muted);font-family:var(--type);font-size:12px;letter-spacing:.06em}
 .chip:hover{color:var(--ink-on-dark)}
 .chip[aria-pressed="true"]{border-color:var(--line);color:var(--ink-on-dark);background:var(--bg-2)}
 .resume{color:var(--ink-on-dark);text-decoration:none;border-bottom:1px solid var(--muted);padding-bottom:1px}
-.hero{display:flex;justify-content:space-between;align-items:flex-start;gap:24px 32px;flex-wrap:wrap;margin-top:30px}
-.hero-main{min-width:0;flex:1 1 420px}
 .crumb{font-family:var(--type);font-size:12px;letter-spacing:.06em;color:var(--muted)}
-.hero h1{font-family:var(--display);font-weight:400;font-size:clamp(48px,7.4vw,92px);line-height:.92;margin:0;letter-spacing:-.01em}
-.role{margin:.55em 0 0;font-family:var(--type);font-size:12.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--receipt)}
-.bio{margin:20px 0 0;max-width:64ch;font-size:clamp(16.5px,1.6vw,19px);line-height:1.55;color:#e4ded3;text-wrap:pretty}
+.bio{margin:20px 0 0;max-width:64ch;font-size:clamp(16.5px,1.6vw,19px);line-height:1.55;color:#2c2a26;text-wrap:pretty}
 .bio b{font-weight:500;color:var(--receipt)}
-.story{margin:22px 0 0;display:grid;gap:0;max-width:640px;border-top:1px solid var(--line)}
-.story > div{display:grid;grid-template-columns:132px minmax(0,1fr);gap:18px;padding:11px 0;border-bottom:1px solid var(--line)}
-.story dt{font-family:var(--type);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);padding-top:4px}
-.story dd{margin:0;font-size:clamp(16px,1.75vw,18.5px);line-height:1.42;color:#e9e3d8}
-.story dd b{font-weight:500;color:var(--receipt)}
 .proof{display:flex;gap:14px;flex-wrap:wrap;margin-top:22px}
-.proof-row{margin-top:30px}
-.proof-row .pf{flex:1 1 0;min-width:150px}
-.pf{background:var(--paper-2);color:#26231f;padding:10px 14px 12px;min-width:112px;box-shadow:0 8px 18px -10px rgba(0,0,0,.6);transform:rotate(-1.2deg)}
+.pf{background:var(--paper-2);color:#26231f;padding:10px 14px 12px;min-width:112px;border:1.4px solid var(--ink);box-shadow:4px 5px 0 rgba(29,28,26,.07);transform:rotate(-1.2deg)}
 .pf:nth-child(2){transform:rotate(1deg)}
 .pf:nth-child(3){transform:rotate(-.4deg)}
 .pf-num{display:block;font-family:var(--display);font-size:clamp(40px,4.6vw,54px);line-height:.95}
 .pf-lbl{display:block;font-size:14px;line-height:1.25;color:#3a3731;max-width:15ch}
-.ctas{display:flex;gap:10px 20px;flex-wrap:wrap;margin-top:22px;font-family:var(--type);font-size:13px;letter-spacing:.04em}
-.ctas a,.ctas button{color:var(--ink-on-dark);text-decoration:none;border:0;background:none;cursor:pointer;padding:6px 0;border-bottom:1.5px solid var(--receipt)}
 .drawer-head{display:flex;align-items:baseline;justify-content:space-between;gap:8px 20px;flex-wrap:wrap;margin-top:72px;border-top:1px solid var(--line);padding-top:16px}
 .drawer-head h2{font-family:var(--display);font-weight:400;font-size:clamp(28px,3.4vw,38px);margin:0}
-.drawer-line{margin:6px 0 0;max-width:60ch;font-size:15.5px;line-height:1.45;color:#cfc9be}
+.drawer-line{margin:6px 0 0;max-width:60ch;font-size:15.5px;line-height:1.45;color:#4a463f}
 .drawer-line b{font-weight:500;color:var(--ink-on-dark)}
 
 /* ---------- Idli's rack ---------- */
-.idli-col{flex:0 1 420px;min-width:0;width:min(420px,100%);margin-top:8px}
-.rack{position:relative;width:100%;height:214px;margin-bottom:30px}
-.feed{background:var(--bg-2);border:1px solid var(--line);border-radius:6px;padding:14px 16px 12px}
-.steps{list-style:none;margin:10px 0 0;padding:0;display:grid;gap:8px}
-.steps li{display:grid;grid-template-columns:24px minmax(0,1fr);gap:10px;align-items:baseline;font-size:15.5px;line-height:1.35;color:#e4ded3}
-.steps .sn{display:inline-grid;place-items:center;width:22px;height:22px;border-radius:50%;border:1.5px solid var(--receipt);color:var(--receipt);font-family:var(--type);font-size:11.5px;font-weight:700;transform:translateY(-1px)}
-.steps b{font-weight:500;color:var(--receipt)}
-.feed-foot{margin:10px 0 0;padding-top:8px;border-top:1px dashed var(--line);font-family:var(--type);font-size:11px;letter-spacing:.06em;color:var(--muted)}
-.rack-back{position:absolute;left:10px;right:10px;top:10px;bottom:16px;background:#2c2924;border-radius:3px 3px 0 0;box-shadow:inset 0 8px 12px -8px rgba(0,0,0,.6)}
-.rack-wall{position:absolute;bottom:0;top:0;width:14px;background:var(--wood);box-shadow:inset -3px 0 0 var(--wood-dark)}
-.rack-wall.l{left:0;border-radius:3px 0 0 0}
-.rack-wall.r{right:0;border-radius:0 3px 0 0;box-shadow:inset 3px 0 0 var(--wood-dark)}
-.rack-floor{position:absolute;left:0;right:0;bottom:0;height:16px;background:var(--wood);border-top:3px solid var(--wood-dark)}
-.cushion{position:absolute;left:22px;bottom:14px;width:136px;height:22px;border-radius:50%;background:#77716a;box-shadow:inset 0 -5px 0 #625d57,inset 0 4px 0 #8d877f}
-.idli{position:absolute;left:0;bottom:22px;width:144px;height:90px;padding:0;border:0;background:none;cursor:pointer;touch-action:manipulation}
-.idli canvas{width:100%;height:100%;image-rendering:pixelated;image-rendering:crisp-edges;display:block}
-.rail{position:absolute;left:14px;right:14px;bottom:16px;height:17px;pointer-events:none;
-  background:repeating-linear-gradient(90deg,transparent 0 30px,var(--wood) 30px 35px,var(--wood-dark) 35px 37px,transparent 37px 52px)}
-.rail::after{content:"";position:absolute;left:0;right:0;top:0;height:7px;background:var(--wood);border-bottom:2px solid var(--wood-dark);border-radius:2px}
-.bowl{position:absolute;bottom:16px;image-rendering:pixelated;image-rendering:crisp-edges;pointer-events:none}
-.bowltag{position:absolute;bottom:58px;font-family:var(--type);font-weight:700;font-size:11px;color:var(--receipt);pointer-events:none}
-.treatline{margin:0;font-family:var(--hand);font-size:22px;line-height:1.15;color:var(--ink-on-dark)}
-.treatline b{color:var(--receipt);font-weight:600}
-.tab .tb{width:16px;height:8px;image-rendering:pixelated;flex:none;opacity:.95}
-.treat{position:absolute;top:-46px;right:56px;z-index:2;display:flex;align-items:center;gap:10px;background:var(--paper-2);color:var(--graphite);border:0;cursor:pointer;
+.tab .tb{width:20px;height:9px;flex:none;opacity:.95}
+.treat{position:absolute;top:-46px;right:56px;z-index:2;display:flex;align-items:center;gap:10px;background:var(--paper-2);color:var(--graphite);border:1.4px solid var(--ink);cursor:pointer;
   padding:8px 14px 8px 10px;font-family:var(--hand);font-size:19px;line-height:1;box-shadow:0 6px 14px -6px rgba(0,0,0,.5);transform:rotate(-2deg);transition:transform .2s}
 .treat:hover{transform:rotate(-2deg) translateY(-3px)}
-.treat img{width:40px;height:20px;image-rendering:pixelated}
+.treat img{width:36px;height:16px}
 .treat.got{cursor:default;opacity:.6;transform:rotate(-2deg)}
-.treatfly{position:fixed;z-index:9;width:40px;height:20px;image-rendering:pixelated;pointer-events:none}
+.treatfly{position:fixed;z-index:9;width:36px;height:16px;pointer-events:none}
 .tbub{position:absolute;bottom:34px;left:50%;transform:translateX(-50%) rotate(-2deg);font-family:var(--hand);font-size:18px;color:var(--receipt);white-space:nowrap;opacity:0;transition:opacity .3s}
 .tbub.show{opacity:1}
-.plate{position:absolute;right:26px;bottom:-1px;transform:translateY(100%);font-family:var(--type);font-size:10px;letter-spacing:.18em;background:linear-gradient(#d6b46a,#b8913f);color:#4a3514;padding:3px 8px;border-radius:2px}
-.heart{position:absolute;width:28px;height:24px;image-rendering:pixelated;pointer-events:none;animation:float 1.3s ease-out forwards}
-@keyframes float{from{transform:translate(-50%,0) scale(.7);opacity:1}to{transform:translate(-50%,-70px) scale(1.1);opacity:0}}
-.zz{position:absolute;font-family:var(--type);font-weight:700;font-size:15px;color:var(--muted);pointer-events:none;animation:zz 2.4s ease-in-out infinite}
-@keyframes zz{0%{transform:translate(0,0);opacity:0}30%{opacity:1}100%{transform:translate(14px,-26px);opacity:0}}
 
 /* ---------- the drawer of folders ---------- */
 .drawer{position:relative;isolation:isolate;z-index:0;margin-top:56px;--step:50px;--tabh:36px;--peek:104px;--bh:230px}
 .folder{position:absolute;left:0;right:0;top:0;height:var(--bh);transform:translateY(calc(var(--y,0)*1px));transition:transform .42s cubic-bezier(.2,.75,.2,1),opacity .3s}
-.folder .fb{position:absolute;inset:0;background:var(--c);border-radius:0 8px 0 0;box-shadow:0 -3px 10px rgba(0,0,0,.35);overflow:hidden}
+.folder .fb{position:absolute;inset:0;background:var(--c);border-radius:0 8px 0 0;box-shadow:0 -1px 0 rgba(29,28,26,.22),0 -6px 12px rgba(29,28,26,.05);overflow:hidden}
 .folder .tab{position:absolute;bottom:100%;left:var(--tx);width:var(--tw);height:var(--tabh);background:var(--c);color:var(--fg);border:0;cursor:pointer;
   clip-path:polygon(14px 0,calc(100% - 14px) 0,100% 100%,0 100%);display:flex;align-items:center;justify-content:center;gap:7px;padding:2px 17px 0;
   font-family:var(--display);font-size:18px;white-space:nowrap;overflow:hidden}
@@ -131,10 +87,9 @@ a{color:inherit}
 .meta .open{font-family:var(--hand);font-size:19px;white-space:nowrap}
 .folder .stamp{color:var(--fg);border-color:currentColor}
 .drawer.filtered .folder.out{opacity:0;pointer-events:none}
-.hint{margin:22px 0 0;text-align:center;font-family:var(--hand);font-size:21px;color:var(--muted)}
 .site-foot{margin-top:80px;border-top:1px solid var(--line);padding-top:34px;display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr) minmax(0,1.2fr);gap:28px 40px}
 .site-foot h2{font-family:var(--type);font-weight:700;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin:0 0 12px}
-.site-foot p{margin:0 0 6px;font-size:15.5px;line-height:1.45;color:#ddd7cc}
+.site-foot p{margin:0 0 6px;font-size:15.5px;line-height:1.45;color:#3a3731}
 .site-foot a{color:var(--ink-on-dark);text-decoration-color:var(--receipt);text-underline-offset:3px}
 .mail{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
 .mail a{font-family:var(--display);font-size:clamp(24px,2.8vw,32px);line-height:1.1;text-decoration:none;border-bottom:1.5px solid var(--receipt);word-break:break-all}
@@ -142,14 +97,72 @@ a{color:inherit}
 .copy:hover{color:var(--ink-on-dark)}
 .links{display:grid;gap:8px;font-family:var(--type);font-size:13px;letter-spacing:.04em}
 .foot-line{grid-column:1/-1;margin-top:10px;padding-top:14px;border-top:1px dashed var(--line);font-family:var(--type);font-size:11px;letter-spacing:.06em;color:var(--muted);display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+
+/* ---------- the park ---------- */
+.park{position:relative;height:100vh;height:100svh;min-height:540px;max-height:1060px;overflow:hidden;background:var(--bg)}
+.scene{position:absolute;inset:0;width:100%;height:100%;display:block;pointer-events:none}
+.bar{position:absolute;left:0;right:0;z-index:3;max-width:1120px;margin:0 auto;display:flex;justify-content:space-between;align-items:flex-start;gap:12px 24px;flex-wrap:wrap;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.bar.top{top:0;padding-top:calc(22px + env(safe-area-inset-top,0px))}
+.bar.bot{bottom:0;padding-bottom:calc(20px + env(safe-area-inset-bottom,0px));align-items:flex-end}
+.pname{font-family:var(--display);font-size:clamp(26px,2.7vw,34px);line-height:1;margin:0;font-weight:400}
+.prole{margin:6px 0 0;font-family:var(--type);font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.plinks{display:flex;gap:18px;font-family:var(--type);font-size:13px;letter-spacing:.04em;padding-top:6px}
+.plinks a,.plinks button{color:var(--ink);text-decoration:none;background:none;border:0;padding:2px 0;cursor:pointer;border-bottom:1.5px solid var(--accent);font:inherit}
+.treatline{margin:0;font-family:var(--hand);font-size:21px;line-height:1.15;color:var(--ink)}
+.treatline b{font-weight:600;color:var(--accent)}
+.scrollcue{font-family:var(--type);font-size:12px;letter-spacing:.06em;color:var(--muted);background:none;border:0;cursor:pointer;padding:4px 0}
+.pdog{position:absolute;left:0;top:0;z-index:2;border:0;background:none;padding:0;margin:0;cursor:pointer;will-change:transform;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+.pdog svg{display:block;overflow:visible;transform-origin:43.16% 100%}
+.pdog:focus-visible{outline-offset:6px;border-radius:12px}
+.bfly{position:absolute;left:0;top:0;z-index:2;width:30px;height:24px;pointer-events:none;will-change:transform}
+.pheart{position:absolute;z-index:3;width:22px;height:20px;pointer-events:none;animation:floatup 1.4s ease-out forwards}
+@keyframes floatup{from{transform:translate(-50%,0) scale(.7);opacity:1}to{transform:translate(-50%,-80px) scale(1.15);opacity:0}}
+.qmark{position:absolute;z-index:3;font-family:var(--hand);font-weight:700;font-size:38px;line-height:1;color:var(--accent);pointer-events:none;animation:qpop .3s ease-out}
+@keyframes qpop{from{transform:translateY(8px) scale(.6);opacity:0}to{transform:none;opacity:1}}
+.oops{position:absolute;z-index:4;left:50%;top:clamp(104px,21%,230px);width:min(470px,calc(100% - 32px));background:#fffefb;border:1.6px solid var(--ink);
+  border-radius:4px 7px 5px 6px;padding:22px 24px 20px;box-shadow:7px 8px 0 rgba(29,28,26,.07);transform:translateX(-50%) rotate(-1.2deg)}
+.oops.in{animation:pop .5s cubic-bezier(.2,.9,.3,1.15)}
+@keyframes pop{from{opacity:0;transform:translateX(-50%) translateY(14px) rotate(-3deg) scale(.95)}to{opacity:1;transform:translateX(-50%) rotate(-1.2deg)}}
+.oops-h{font-family:var(--display);font-style:italic;font-size:clamp(38px,4.4vw,48px);line-height:1;margin:0}
+.oops-t{font-size:clamp(18px,1.9vw,21px);line-height:1.35;margin:.4em 0 .35em}
+.oops-s{font-size:15.5px;line-height:1.45;color:#4a463f;margin:0}
+.oops-a{display:flex;align-items:center;gap:10px 18px;flex-wrap:wrap;margin-top:16px}
+.go{display:inline-flex;align-items:center;gap:8px;background:var(--ink);color:var(--bg);text-decoration:none;border-radius:999px;padding:11px 18px;font-family:var(--type);font-weight:700;font-size:13.5px;letter-spacing:.03em}
+.go:hover{background:#000}
+.stay{background:none;border:0;cursor:pointer;font-family:var(--type);font-size:12px;letter-spacing:.04em;color:var(--muted);padding:6px 0;border-bottom:1px solid var(--line)}
+.oops-u{position:relative;white-space:nowrap}
+.oops-u svg{position:absolute;left:-2%;bottom:-8px;width:104%;height:10px}
+
+/* ---------- the work ---------- */
+.work{padding-top:72px}
+.intro{display:grid;grid-template-columns:minmax(0,1fr);max-width:820px}
+.intro .crumb{margin:0}
+.hey{font-family:var(--display);font-weight:400;font-size:clamp(52px,7.4vw,96px);line-height:.92;margin:.08em 0 .1em;letter-spacing:-.01em}
+.role{margin:.4em 0 0;font-family:var(--type);font-size:12.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+.intro .bio{margin-top:18px}
+.drawer-head{align-items:flex-end}
+.drawer-head .chips{padding-bottom:4px}
+.topark{margin:30px 0 0;text-align:center}
+.topark button{background:none;border:0;cursor:pointer;font-family:var(--hand);font-size:22px;color:var(--ink);padding:4px 2px;border-bottom:1.5px solid var(--accent)}
+.topark button b{color:var(--accent);font-weight:600}
+@media (max-width:640px){
+  .bar.top{flex-direction:column;gap:12px}
+  .plinks{padding-top:0}
+  .oops{padding:18px 18px 16px;top:clamp(150px,26%,240px)}
+  .work{padding-top:52px}
+  .drawer-head .chips{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;max-width:100%;-webkit-mask-image:linear-gradient(90deg,#000 85%,transparent)}
+  .drawer-head .chips::-webkit-scrollbar{display:none}
+  .chip{flex:none}
+}
 @media (max-width:820px){ .site-foot{grid-template-columns:minmax(0,1fr)} }
 
 /* stamps */
 .stamp{display:inline-block;font-family:var(--type);font-weight:700;font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;padding:.35em .7em;border:2px solid currentColor;border-radius:3px;transform:rotate(-4deg);white-space:nowrap}
-.s-live{color:#4d6b2f}.s-proto{color:var(--ink)}.s-wait{color:var(--terra)}.s-idea{color:var(--graphite)}
+.s-live{color:var(--accent)}.s-proto{color:var(--ink)}.s-wait{color:#6b665d}.s-idea{color:var(--muted)}
 
 /* flying folder (drawer ⇄ file) */
-.flyer{position:fixed;z-index:8;border-radius:0 10px 10px 10px;box-shadow:0 30px 60px -20px rgba(0,0,0,.6);pointer-events:none;transform-origin:0 0;will-change:transform,opacity;contain:strict;backface-visibility:hidden}
+.flyer{position:fixed;z-index:8;border-radius:0 10px 10px 10px;box-shadow:0 24px 40px -22px rgba(29,28,26,.35);pointer-events:none;transform-origin:0 0;will-change:transform,opacity;contain:strict;backface-visibility:hidden}
 #fv.instant{transition:none}
 
 /* ---------- file view ---------- */
@@ -176,7 +189,7 @@ a{color:inherit}
 .sheet{position:relative;background:var(--paper);color:var(--graphite);padding:46px clamp(20px,4vw,48px) 52px clamp(56px,7vw,92px);box-shadow:0 2px 0 rgba(0,0,0,.06),0 8px 14px -8px rgba(0,0,0,.45);
   background-image:var(--grain,none)}
 .sheet::before{content:"";position:absolute;left:clamp(18px,2.6vw,30px);top:34px;bottom:34px;width:12px;
-  background:radial-gradient(circle,#2b3a9e 0 4.5px,transparent 5px) 0 0/12px 33.3% repeat-y;opacity:.85}
+  background:radial-gradient(circle,var(--bg) 0 4px,rgba(29,28,26,.35) 4.6px,transparent 5.6px) 0 0/12px 33.3% repeat-y}
 .sheet-grid{display:grid;grid-template-columns:150px minmax(0,1fr);gap:30px}
 .margin{font-family:var(--type);font-size:11.5px;line-height:1.55;color:var(--graphite-soft);display:grid;gap:12px;align-content:start;padding-top:8px}
 .margin b{display:block;font-weight:700;color:var(--graphite);letter-spacing:.06em;font-size:10.5px;text-transform:uppercase}
@@ -213,8 +226,8 @@ a{color:inherit}
 .figure .frame::before{content:"";position:absolute;inset:16% 12% 18% 14%;background:var(--tint);opacity:.35;transform:rotate(-3deg)}
 .figure svg.dd{width:90%;position:relative}
 .figure figcaption{font-family:var(--type);font-size:10.5px;letter-spacing:.04em;color:var(--graphite-soft);margin-top:8px}
-.card-note{background:var(--paper-2);color:var(--ink);font-family:var(--hand);font-size:22px;line-height:1.15;padding:14px 16px 16px;transform:rotate(-1.2deg);box-shadow:0 3px 8px -3px rgba(0,0,0,.45);
-  background-image:repeating-linear-gradient(transparent 0 25px,rgba(43,58,158,.2) 25px 26px);background-position:0 12px}
+.card-note{background:var(--paper-2);color:var(--accent);font-family:var(--hand);font-size:22px;line-height:1.15;padding:14px 16px 16px;transform:rotate(-1.2deg);box-shadow:0 3px 8px -3px rgba(0,0,0,.45);
+  background-image:repeating-linear-gradient(transparent 0 25px,rgba(29,28,26,.09) 25px 26px);background-position:0 12px}
 .sidetabs{position:absolute;top:28px;right:0;width:48px;display:flex;flex-direction:column;gap:6px;overflow:hidden}
 .stab{writing-mode:vertical-rl;height:150px;width:44px;border:0;cursor:pointer;background:var(--c);color:var(--fg);font-family:var(--display);font-size:14.5px;
   border-radius:0 10px 10px 0;padding:8px 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;opacity:.92;transition:transform .2s}
@@ -226,13 +239,13 @@ a{color:inherit}
 .fv-nav button:disabled{opacity:.25;cursor:default}
 .fv-nav small{display:block;color:var(--muted);letter-spacing:.06em}
 .trailbar{position:fixed;left:0;right:0;bottom:0;z-index:7;display:flex;flex-direction:column;align-items:center;gap:2px;padding-bottom:calc(8px + env(safe-area-inset-bottom,0px));padding-top:6px;
-  background:linear-gradient(transparent,rgba(27,26,24,.95) 40%);pointer-events:none}
+  background:linear-gradient(rgba(251,250,246,0),rgba(251,250,246,.96) 40%);pointer-events:none}
 .trail{position:relative;width:clamp(180px,46vw,460px);height:46px}
 .tline{position:absolute;left:-6px;right:-6px;bottom:10px;height:6px;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='6' viewBox='0 0 60 6'%3E%3Cpath d='M0 3.4C9 2.4 15 4 24 3.2S40 2.2 48 3.5 56 3 60 3.2' fill='none' stroke='%23a39d92' stroke-width='1.2' stroke-linecap='round'/%3E%3C/svg%3E") repeat-x;background-size:60px 6px}
 .tick{position:absolute;bottom:8px;width:1.4px;height:9px;background:var(--muted);transform:translateX(-50%) rotate(5deg);opacity:.6}
 .tick.seen{background:var(--receipt);opacity:1}
 .tdog{position:absolute;bottom:13px;left:0;transform:translateX(-50%);transition:left .75s cubic-bezier(.4,.1,.3,1)}
-.tdog img{width:40px;height:25px;image-rendering:pixelated;display:block}
+.tdog img{width:56px;height:25px;display:block}
 .tdog.right img{transform:scaleX(-1)}
 .tmeta{font-family:var(--type);font-size:11px;color:var(--muted);letter-spacing:.06em}
 .tip{font-family:var(--hand);font-size:18px;color:var(--muted);min-height:1.1em}
@@ -260,19 +273,10 @@ a{color:inherit}
   .tip{display:none}
 }
 @media (max-width:640px){
-  .nav{flex-wrap:nowrap;gap:10px}
-  .mono{flex:none}
-  .mono .name{display:none}
   .chips{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;-webkit-mask-image:linear-gradient(90deg,#000 85%,transparent)}
   .chips::-webkit-scrollbar{display:none}
   .chip{flex:none}
-  .hero{margin-top:20px}
-  .rack{height:108px;margin-bottom:30px}
-  .idli-col{width:100%;flex-basis:100%;margin-top:0}
-  .cushion{width:100px}
   .proof{gap:10px}
-  .story > div{grid-template-columns:minmax(0,1fr);gap:2px;padding:10px 0}
-  .story dt{padding-top:0}
   .pf{min-width:0;flex:1 1 0;padding:9px 10px 10px}
   .pf-lbl{font-size:12.5px}
   .drawer-head{margin-top:52px}
@@ -282,7 +286,6 @@ a{color:inherit}
   .meta{grid-template-columns:minmax(0,1fr) auto;gap:6px 12px;padding:14px 16px}
   .meta .fn,.meta .open{display:none}
   .folder .tab{font-size:17px}
-  .rack{width:100%}
   .panel{padding:30px 14px 34px}
   .sheet{padding:40px 18px 36px 44px}
   .sheet::before{left:14px}
@@ -294,51 +297,49 @@ a{color:inherit}
 </style>
 </head>
 <body>
+<section class="park" id="park" aria-label="Idli's park">
+  <svg class="scene" id="scene" aria-hidden="true"></svg>
+  <div class="bar top">
+    <div><p class="pname">Premkumar R</p><p class="prole">AI Product &amp; Strategy · AI CoE, Infosys BPM</p></div>
+    <nav class="plinks" aria-label="Site"><a href="#work" id="skipWork">The work ↓</a><button type="button" id="contactCta">Contact ↓</button></nav>
+  </div>
+  <button type="button" class="pdog" id="idli" aria-label="Pet Idli, the dachshund"></button>
+  <svg class="bfly" id="bfly" viewBox="-15 -12 30 24" aria-hidden="true"><g id="wings"><path d="M0 0C-4 -10 -14 -11 -13 -3C-12 3 -5 3 0 0ZM0 0C-3 4 -10 9 -9 3" fill="#fffefb" stroke="#1d1c1a" stroke-width="1.5" stroke-linejoin="round"/><path d="M0 0C4 -10 14 -11 13 -3C12 3 5 3 0 0ZM0 0C3 4 10 9 9 3" fill="#fffefb" stroke="#1d1c1a" stroke-width="1.5" stroke-linejoin="round"/></g><path d="M0 -4V5" stroke="#1d1c1a" stroke-width="1.8" stroke-linecap="round"/></svg>
+  <div class="oops" id="oops" hidden role="status">
+    <p class="oops-h">Oh, sorry.</p>
+    <p class="oops-t">You came for Prem’s <span class="oops-u">work<svg viewBox="0 0 120 10" preserveAspectRatio="none" aria-hidden="true"><path d="M2 6C20 2 34 9 52 5S86 2 118 6" fill="none" stroke="#e5461f" stroke-width="2.4" stroke-linecap="round"/></svg></span>, not his dog.</p>
+    <p class="oops-s">He leads AI product bets in the AI CoE at Infosys BPM. Everything he has worked on is in the files below.</p>
+    <div class="oops-a"><a class="go" href="#work" id="goWork">Show me the work ↓</a><button type="button" class="stay" id="stay">I’ll watch Idli a bit</button></div>
+  </div>
+  <div class="bar bot">
+    <p class="treatline" id="treatLine" aria-live="polite"></p>
+    <button type="button" class="scrollcue" id="scrollCue">scroll for the work ↓</button>
+  </div>
+</section>
 <main class="room" id="room">
-  <nav class="nav" aria-label="Archive">
-    <span class="mono"><span class="seal">pr</span><span class="name">Premkumar R</span></span>
-    <span class="chips" role="group" aria-label="Show files">
-      <button type="button" class="chip" data-col="all" aria-pressed="true">All</button>
-      <button type="button" class="chip" data-col="work" aria-pressed="false">At work</button>
-      <button type="button" class="chip" data-col="home" aria-pressed="false">At home</button>
-      <button type="button" class="chip" data-col="ref" aria-pressed="false">Reference</button>
-    </span>
-  </nav>
-  <div class="hero">
-    <div class="hero-main">
-      <h1>Premkumar R</h1>
+  <section class="work" id="work" aria-label="The work">
+    <div class="intro">
+      <p class="crumb">The archive</p>
+      <h2 class="hey">Hi, I’m Prem.</h2>
       <p class="role">AI Product &amp; Strategy · Senior Consultant, AI CoE, Infosys BPM</p>
       <p class="bio">I’m a strategy person who builds. I studied engineering, did my MBA at IIM Sirmaur and spent four years in Corporate Strategy before moving to the AI CoE. I find where AI can change how a business runs, then shape it into a product: discovery, prototype, evaluation and the business case. My work goes to CXOs and client leaders. For 8 quarters I prepared the CEO’s briefers, and now I pitch AI bets to client heads. Operations teams in finance and HR use what we build in their daily work. <b>Four AI use cases are now live in client operations, aimed at 30–50% less manual effort.</b></p>
-      <div class="ctas"><a href="https://rpremkumar56.github.io/portfolio/work.html">Résumé →</a><button type="button" id="contactCta">Contact →</button></div>
-    </div>
-    <aside class="idli-col" aria-label="Idli the pixel dachshund">
-    <div class="rack" id="rack">
-      <div class="rack-back"></div><div class="cushion"></div>
-      <button type="button" class="idli" id="idli" aria-label="Pet Idli, the pixel dachshund"><canvas id="idliCanvas" width="16" height="10"></canvas></button>
-      <div class="bowls-slot"></div><div class="rail"></div><div class="rack-wall l"></div><div class="rack-wall r"></div><div class="rack-floor"></div>
-      <canvas class="bowl" id="bowlFood" width="12" height="6" aria-hidden="true"></canvas><canvas class="bowl" id="bowlWater" width="12" height="6" aria-hidden="true"></canvas><span class="bowltag" id="bowlTag"></span>
-      <span class="plate">IDLI'S RACK</span>
-    </div>
-    <div class="feed">
-      <p class="treatline" id="treatLine" aria-live="polite"></p>
-      <ol class="steps">
-        <li><span class="sn">1</span><span>Open any folder in the archive below.</span></li>
-        <li><span class="sn">2</span><span>Tap the <b>treat for Idli</b> tag at the top of the file.</span></li>
-        <li><span class="sn">3</span><span>Come back here. Idli eats it from her bowl.</span></li>
-      </ol>
-      <p class="feed-foot">One treat in every file · tap Idli to pet her</p>
-    </div>
-    </aside>
-  </div>
-      <div class="proof proof-row" aria-label="In numbers">
+      <div class="proof" aria-label="In numbers">
         <div class="pf"><span class="pf-num">25+</span><span class="pf-lbl">AI use cases taken to a decision</span></div>
         <div class="pf"><span class="pf-num">4</span><span class="pf-lbl">use cases live in client operations</span></div>
         <div class="pf"><span class="pf-num">8</span><span class="pf-lbl">quarters of CEO briefers</span></div>
       </div>
-
-  <div class="drawer-head"><div><div class="crumb" id="crumb">The archive · 16 files</div><h2 id="heroTitle">Open a file to see what I’ve been working on</h2><p class="drawer-line" id="heroText"></p></div></div>
-  <section class="drawer" id="drawer" aria-label="Files"></section>
-  <p class="hint" id="hint">open any folder · tap Idli to say hello</p>
+    </div>
+    <div class="drawer-head"><div><div class="crumb" id="crumb">The archive · 15 files</div><h2 id="heroTitle">Open a file to see what I’ve been working on</h2><p class="drawer-line" id="heroText"></p></div>
+      <span class="chips" role="group" aria-label="Show files">
+        <button type="button" class="chip" data-col="all" aria-pressed="true">All</button>
+        <button type="button" class="chip" data-col="work" aria-pressed="false">At work</button>
+        <button type="button" class="chip" data-col="home" aria-pressed="false">At home</button>
+        <button type="button" class="chip" data-col="ref" aria-pressed="false">Reference</button>
+      </span>
+    </div>
+    <section class="drawer" id="drawer" aria-label="Files"></section>
+    <p class="topark"><button type="button" id="toPark">Back to the park ↑</button></p>
+  </section>
   <footer class="site-foot" id="contact" aria-label="Contact">
     <div>
       <h2>Write to me</h2>
@@ -383,6 +384,7 @@ a{color:inherit}
 
 <noscript>
   <div class="nojs">
+    <p>This is Idli’s park. With JavaScript turned on, she walks around here. Prem’s work is below.</p>
     <h2>At work</h2><p>Senior Consultant, AI CoE at Infosys BPM (Feb 2026 – now). I lead an AI Squad: 9 accounts, 25+ use cases, 20 prototypes. Files: AI Reconciliation (live in 4 use cases), Marine Claims AI, Finance Ops AI-Assist, multilingual AI evaluation in 5 languages, Ramp-down Radar. Corporate Strategy (May 2022 – Jan 2026): CEO briefers for 8 quarters, $1.5B+ business planning, a market intelligence system for 20+ accounts, a $10M+ transformation programme.</p>
     <h2>At home</h2><p>Clinic appointment and rota web apps, two learning apps and a WhatsApp clinic assistant, built with Claude Code and hosted on GitHub.</p>
     <p><a href="https://rpremkumar56.github.io/portfolio/work.html">Read the résumé edition</a> · r.premkumar96@gmail.com</p>
@@ -394,7 +396,7 @@ a{color:inherit}
 "use strict";
 const REDUCED = matchMedia("(prefers-reduced-motion: reduce)").matches;
 const COARSE = matchMedia("(pointer: coarse)").matches;
-const INK = "#2b3a9e", GRAPHITE = "#3a3731";
+const INK = "#1d1c1a", GRAPHITE = "#2f2d29", ACC = "#e5461f";
 const RESUME = "https://rpremkumar56.github.io/portfolio/work.html";
 const $ = s => document.querySelector(s);
 
@@ -407,99 +409,109 @@ const COLS = {
 };
 const ALL_LINE = "Each folder is one piece of work: <b>the problem, what I did and what came of it.</b> Each one also hides a treat for Idli.";
 const F = [
- {col:"work", title:"AI Reconciliation", tab:"AI Reconciliation", one:"A reusable product that reconciles finance documents with AI and auditable rules.", when:"AI CoE · 2026", status:["Live","live"], c:"#d9dfe8", fg:"#1f2a44", pic:"recon", cap:"two ledgers, one rulebook",
+ {col:"work", title:"AI Reconciliation", tab:"AI Reconciliation", one:"A reusable product that reconciles finance documents with AI and auditable rules.", when:"AI CoE · 2026", status:["Live","live"], c:"#dfe5ec", fg:"#1d1c1a", pic:"recon", cap:"two ledgers, one rulebook",
   margin:[["Role","Co-creator"],["Team","AI CoE"],["Used in","Finance operations"]],
   body:["I co-created a reusable product for finance operations. AI extracts the data from documents. Configurable rules then reconcile it, and every decision leaves an audit trail.",
         "The same product now runs across many workflows. Each team changes the rules, not the code. Four use cases are live in client operations."],
   facts:[["4","use cases live in client operations"],["~16","workflows across 9 accounts"],["30–50%","target effort reduction"]], also:["6+ POCs delivered"]},
- {col:"work", title:"Marine Claims AI", tab:"Marine Claims AI", one:"Human-in-the-loop agents that calculate and explain contract deadlines.", when:"AI CoE · 2026", status:["Prototype","proto"], c:"#2b3a9e", fg:"#f3efe6", pic:"agents", cap:"the agent drafts, a person decides",
+ {col:"work", title:"Marine Claims AI", tab:"Marine Claims AI", one:"Human-in-the-loop agents that calculate and explain contract deadlines.", when:"AI CoE · 2026", status:["Prototype","proto"], c:"#cdd7e5", fg:"#1d1c1a", pic:"agents", cap:"the agent drafts, a person decides",
   margin:[["Role","Prototyped and pitched"],["Process","Marine claims"]],
   body:["A marine claims team handles more than 300 cases a month. Each case carries contract deadlines, and a missed deadline costs money.",
         "I prototyped and pitched human-in-the-loop AI agents. They calculate each contract deadline and explain how they got it. They also organise the correspondence for every case. A person reviews and decides."],
   facts:[["300+","claims cases a month"],["~$0.8M","annual time-bar exposure"]], note:"the agent drafts, a person decides"},
- {col:"work", title:"Finance Ops AI-Assist", tab:"Finance Ops AI", one:"Two AI-assist products for invoice processing and vendor queries.", when:"AI CoE · 2026", status:["Prototype","proto"], c:"#5c7fa8", fg:"#f6f3ec", pic:"recon", cap:"invoice in, answer out",
+ {col:"work", title:"Finance Ops AI-Assist", tab:"Finance Ops AI", one:"Two AI-assist products for invoice processing and vendor queries.", when:"AI CoE · 2026", status:["Prototype","proto"], c:"#e8dfcd", fg:"#1d1c1a", pic:"recon", cap:"invoice in, answer out",
   margin:[["Role","Defined and pitched"],["Process","Invoices, vendor queries"]],
   body:["I defined and pitched two AI-assist products: one for invoice processing and one for vendor queries.",
         "They validate documents, classify cases and rank them by SLA. They retrieve answers from the ERP and draft replies in several languages."],
   facts:[["~41%","projected time saving"],["~20","FTE of effort"]], also:["2 products: invoices and vendor queries"]},
- {col:"work", title:"Testing AI in five languages", tab:"AI Evaluation", one:"An evaluation design for a live HR AI solution across five European languages.", when:"AI CoE · 2026", status:["Live","live"], c:"#1f2a44", fg:"#e9e4da", pic:"langs", cap:"same question, five languages",
+ {col:"work", title:"Testing AI in five languages", tab:"AI Evaluation", one:"An evaluation design for a live HR AI solution across five European languages.", when:"AI CoE · 2026", status:["Live","live"], c:"#d6dfcd", fg:"#1d1c1a", pic:"langs", cap:"same question, five languages",
   margin:[["Role","Designed the evaluation"],["Channels","Email, documents, tickets, calls"]],
   body:["A live HR AI solution handled emails, documents, tickets and live calls in five European languages. I designed how we evaluate it.",
         "I built risk-based test sets and graded each error by severity. I added human-validation controls and rollout gates. Each gate links to a real operational decision: go, hold or roll back."],
   facts:[["5","European languages"],["4","channels: email, documents, tickets, calls"]], note:"a metric is only useful if it changes a decision"},
- {col:"work", title:"Ramp-down Radar", tab:"Ramp-down Radar", one:"An AI prototype that flags client accounts at risk of ramping down.", when:"AI CoE · 2026", status:["Pending sponsor","wait"], c:"#c9a84a", fg:"#2d2a25", pic:"radar", cap:"signals before the numbers move",
+ {col:"work", title:"Ramp-down Radar", tab:"Ramp-down Radar", one:"An AI prototype that flags client accounts at risk of ramping down.", when:"AI CoE · 2026", status:["Pending sponsor","wait"], c:"#efe3c4", fg:"#1d1c1a", pic:"radar", cap:"signals before the numbers move",
   margin:[["Role","Built the prototype"],["Data","Synthetic only, by design"],["Next","Real-data pilot"]],
   body:["Some client accounts ramp down even when delivery looks smooth. Leadership wanted to see this earlier.",
         "I built an AI prototype that flags accounts at risk. It combines account signals with an external-event monitor that watches public news about each client.",
         "I validated it on synthetic data. A pilot on real data waits for sponsor approval, because client data stays inside approved tools."],
   note:"built on synthetic data first, on purpose"},
- {col:"work", title:"CEO briefers", tab:"CEO briefers", one:"Quarterly CEO briefers, board decks and investor narratives.", when:"Corporate Strategy · 2022–26", status:["Done","idea"], c:"#6b2f4a", fg:"#f3e6ea", pic:"strategy", cap:"eight quarters in a row",
+ {col:"work", title:"CEO briefers", tab:"CEO briefers", one:"Quarterly CEO briefers, board decks and investor narratives.", when:"Corporate Strategy · 2022–26", status:["Done","idea"], c:"#e7d4d0", fg:"#1d1c1a", pic:"strategy", cap:"eight quarters in a row",
   margin:[["Role","Prepared the briefers"],["With","CXO office, business heads"]],
   body:["For eight quarters in a row, I worked with the CXO office and the business heads. Each quarter I prepared the CEO briefers, the board presentations and investor-ready narratives."],
   facts:[["8","consecutive quarters of CEO briefers"]]},
- {col:"work", title:"Business planning", tab:"Business planning", one:"Business planning and financial modelling for $1.5B+ of revenue.", when:"Corporate Strategy · 2022–26", status:["Done","idea"], c:"#3d4f7a", fg:"#efe9dc", pic:"strategy", cap:"the plan behind the plan",
+ {col:"work", title:"Business planning", tab:"Business planning", one:"Business planning and financial modelling for $1.5B+ of revenue.", when:"Corporate Strategy · 2022–26", status:["Done","idea"], c:"#d3dae6", fg:"#1d1c1a", pic:"strategy", cap:"the plan behind the plan",
   margin:[["Role","Led the planning"],["With","40+ global stakeholders"]],
   body:["I led business planning and financial modelling for revenue projections of more than $1.5B. The work involved more than 40 stakeholders across the globe."],
   facts:[["$1.5B+","in revenue projections"],["40+","global stakeholders"]]},
- {col:"work", title:"Market intelligence", tab:"Market intelligence", one:"An automated intelligence system that feeds CXO newsletters.", when:"Corporate Strategy · 2022–26", status:["Done","idea"], c:"#a9bcd3", fg:"#1f2a44", pic:"radar", cap:"accounts and industries, every day",
+ {col:"work", title:"Market intelligence", tab:"Market intelligence", one:"An automated intelligence system that feeds CXO newsletters.", when:"Corporate Strategy · 2022–26", status:["Done","idea"], c:"#e6e1d5", fg:"#1d1c1a", pic:"radar", cap:"accounts and industries, every day",
   margin:[["Role","Built the system"],["Readers","CXOs"]],
   body:["I built an automated intelligence system that covers more than 20 key accounts and their industries. It powers daily and monthly newsletters for the CXOs."],
   facts:[["20+","key accounts covered"]], also:["Daily and monthly CXO newsletters"]},
- {col:"work", title:"Enterprise transformation", tab:"Transformation", one:"A $10M+ cost programme and two organisational redesigns.", when:"Corporate Strategy · 2022–26", status:["Done","idea"], c:"#d24b3c", fg:"#fbeee8", pic:"strategy", cap:"cost down, margin up",
+ {col:"work", title:"Enterprise transformation", tab:"Transformation", one:"A $10M+ cost programme and two organisational redesigns.", when:"Corporate Strategy · 2022–26", status:["Done","idea"], c:"#f0dacb", fg:"#1d1c1a", pic:"strategy", cap:"cost down, margin up",
   margin:[["Role","Directed the programme"],["Scope","20,000+ employees"]],
   body:["I directed a cost optimisation programme of more than $10M and two organisational redesigns. Together they affected more than 20,000 employees.",
         "The results were about 16% savings year on year, faster financial reporting and a 100% margin improvement in the targeted units."],
   facts:[["$10M+","cost optimisation programme"],["20,000+","employees affected"],["~16%","savings year on year"]], also:["About $450K saved","100% margin improvement in targeted units"]},
- {col:"home", title:"The paper register", tab:"Clinic appointments", one:"A multi-user web app that replaces a dental clinic's paper register.", when:"Independent build", status:["Built","proto"], c:"#c4663f", fg:"#fbf1e6", pic:"calendar", cap:"two chairs, thirty-minute slots",
+ {col:"home", title:"The paper register", tab:"Clinic appointments", one:"A multi-user web app that replaces a dental clinic's paper register.", when:"Independent build", status:["Built","proto"], c:"#f2d8c6", fg:"#1d1c1a", pic:"calendar", cap:"two chairs, thirty-minute slots",
   margin:[["Users","Receptionist, assistants"],["Device","Phones"],["Built with","Claude Code"]],
   body:["The clinic booked every patient in a paper register. I built a multi-user web app to replace it.",
         "The receptionist and the assistants log in on their phones. They see booked and free slots for each chair, book specialists and mark shows and no-shows.",
         "The rules came from the front desk. Walk-ins go into a free gap or join the end of the queue. A late specialist shifts the next appointments. A no-show is marked after 15 minutes and can be undone."],
   facts:[["2","chairs, booked in 30-minute slots"]], also:["Open 10 AM to 9 PM","No-shows marked after 15 minutes"]},
- {col:"home", title:"The duty sheet", tab:"Duty rota", one:"A phone-first rota for the clinic's dental assistants.", when:"Independent build", status:["In use","live"], c:"#e8917a", fg:"#3a2018", pic:"rota", cap:"who is on which chair today",
+ {col:"home", title:"The duty sheet", tab:"Duty rota", one:"A phone-first rota for the clinic's dental assistants.", when:"Independent build", status:["In use","live"], c:"#e8cfc4", fg:"#1d1c1a", pic:"rota", cap:"who is on which chair today",
   margin:[["User","The person in charge"],["Hosted on","GitHub Pages"]],
   body:["The duty sheet for the assistants lived on paper. I built a phone-first rota app.",
         "The app suggests the rota. The person in charge changes any slot by hand. The data stays on her phone, with backup files."],
   note:"semi-automatic beats fully automatic when people know things the app does not"},
- {col:"home", title:"A 100-day study desk", tab:"100-day study desk", one:"The app I study AI and system architecture with, one hour a day.", when:"Independent build", status:["In use","live"], c:"#8e3b22", fg:"#f3e2d2", pic:"desk", cap:"one hour a day",
+ {col:"home", title:"A 100-day study desk", tab:"100-day study desk", one:"The app I study AI and system architecture with, one hour a day.", when:"Independent build", status:["In use","live"], c:"#efe4d2", fg:"#1d1c1a", pic:"desk", cap:"one hour a day",
   margin:[["User","Me"],["AI","Gemini API"],["Hosted on","GitHub Pages"]],
   body:["I wanted to get deep into AI and system architecture in 100 days, one hour a day. I built the app I study with.",
         "It has lessons, diagrams, quizzes, mock interviews and daily puzzles, and it tracks my progress. It is my start screen every morning."],
   facts:[["100","days, one hour a day"]]},
- {col:"home", title:"A study companion", tab:"Study companion", one:"A phone study site for a family member's entrance exam.", when:"Independent build", status:["Built","proto"], c:"#f0b48f", fg:"#3a2018", pic:"books", cap:"plan, notes, tests",
+ {col:"home", title:"A study companion", tab:"Study companion", one:"A phone study site for a family member's entrance exam.", when:"Independent build", status:["Built","proto"], c:"#e3dccd", fg:"#1d1c1a", pic:"books", cap:"plan, notes, tests",
   margin:[["Device","iPhone"]],
   body:["A family member is preparing for a competitive entrance exam, with study time in short blocks. I built a hosted study site for her phone with the plan, notes, mock tests and visual summaries."]},
- {col:"home", title:"On the workbench", tab:"WhatsApp assistant", one:"A WhatsApp assistant for clinic appointments and reminders, being rebuilt.", when:"Independent build", status:["In build","wait"], c:"#b5523a", fg:"#fbf1e6", pic:"phone", cap:"reminders where patients already are",
+ {col:"home", title:"On the workbench", tab:"WhatsApp assistant", one:"A WhatsApp assistant for clinic appointments and reminders, being rebuilt.", when:"Independent build", status:["In build","wait"], c:"#f3e0d2", fg:"#1d1c1a", pic:"phone", cap:"reminders where patients already are",
   margin:[["Stack","WhatsApp Cloud API, FastAPI"]],
   body:["My first version booked appointments and sent reminders. It stalled on business-profile verification.",
         "I am rebuilding it from scratch. This time I start with the approval path, not the code."],
   note:"the platform rules are part of the product"},
- {col:"ref", kind:"map", title:"Field notes", tab:"Field notes", one:"What I work with, drawn as rulers.", when:"Reference", status:["Draft","idea"], c:"#ece6dc", fg:"#2d2a25", margin:[["Read it as","one tick per level of hands-on depth"]]}
+ {col:"ref", kind:"map", title:"Field notes", tab:"Field notes", one:"What I work with, drawn as rulers.", when:"Reference", status:["Draft","idea"], c:"#e9e6df", fg:"#1d1c1a", margin:[["Read it as","one tick per level of hands-on depth"]]}
 ];
 F.forEach((f,i)=>{ f.i=i; f.no=String(i+1).padStart(2,"0"); f.id="f-"+f.no; });
 const SKILLS = [["Business planning & modelling",5],["CEO briefers & board decks",5],["Market intelligence",4],["AI product discovery",4],["Rapid prototyping",4],
   ["AI evaluation design",4],["Agentic workflows",3],["Claude Code & MCP",3],["Power BI & Excel",4],["Python",2]];
 
-/* ================= PIXEL ART ================= */
-const PIX = {
-  walkA:["................","..BKBB..........",".KBBBBBEE......T","BBBBBBBEE.....T.","....BBBEEBBBBBB.","....BBBEEBBBBBBB","....BBBBBBBBBBBB","....BB.......BB.","....BB.......BB.","................"],
-  walkB:["................","..BKBB..........",".KBBBBBEE......T","BBBBBBBEE.....T.","....BBBEEBBBBBB.","....BBBEEBBBBBBB","....BBBBBBBBBBBB",".....BB.....BB..","......B......B..","................"],
-  sleep:["................","................","................","................","..BBBB..........",".KBBBBBEE.......","BBBBBBBEEBBBBBBT","....BBBEEBBBBBBT","....BBBBBBBBBBBB","................"],
-  happyA:["...............T","..BBBB........T.",".KBBBBBEE.....T.","BBBBBBBEE.......","....BBBEEBBBBBB.","....BBBEEBBBBBBB","....BBBBBBBBBBBB","....BB.......BB.","....BB.......BB.","................"],
-  happyB:["................","..BBBB..........",".KBBBBBEE.......","BBBBBBBEE......T","....BBBEEBBBBBBT","....BBBEEBBBBBBB","....BBBBBBBBBBBB","....BB.......BB.","....BB.......BB.","................"],
-  eatA:["................","................","...............T","..BKBB........T.",".KBBBBBEEBBBBBB.","BBBBBBBEEBBBBBBB","....BBBBBBBBBBBB","....BB.......BB.","....BB.......BB.","................"],
-  eatB:["................","................","...............T","..BKBB........T.",".KBBBBBEEBBBBBB.","BB.BBBBEEBBBBBBB","....BBBBBBBBBBBB","....BB.......BB.","....BB.......BB.","................"],
-  heart:[".HH.HH.","HHHHHHH","HHHHHHH",".HHHHH.","..HHH..","...H..."],
-  bone:[".OO....OO.","OWWOOOOWWO",".OWWWWWWO.","OWWOOOOWWO",".OO....OO."]
+/* ================= PEN SKETCH ART ================= */
+const PEN="#1d1c1a";
+const DOG={ body:"M-60 -27C-60 -38 -52 -42 -40 -42L30 -43C44 -43 52 -37 52 -27C52 -18 46 -15 36 -15Q-5 -11 -46 -15C-56 -15 -60 -19 -60 -27Z",
+  head:"M0 0C1 -14 11 -23 22 -21C30 -20 34 -15 40 -14L50 -13C56 -12 57 -5 51 -3L38 -2C30 -1 26 4 17 6C7 8 0 6 0 0Z",
+  ear:"M13 -17C5 -17 1 -6 3 5C5 11 11 11 12 5C13 -1 17 -10 13 -17Z", tail:"M0 0C-8 -3 -14 -10 -17 -20" };
+const DOG_VB="-82 -72 190 84";
+function dogMarkup(p={}, ids=false){
+  const L=p.legs||[0,0,0,0], id=k=>ids?` id="${k}"`:"";
+  const SW=(w=2.4)=>`fill="none" stroke="${PEN}" stroke-width="${w}" stroke-linecap="round" stroke-linejoin="round"`, S=SW();
+  const FI=`fill="#fffefb" stroke="${PEN}" stroke-width="2.4" stroke-linejoin="round"`;
+  const leg=(x,a,far,k)=>`<g${id(k)} transform="translate(${x} -17) rotate(${a})"><path d="M0 0L1 15L8 15" ${S}${far?' stroke-opacity=".45"':''}/></g>`;
+  return `<g${id("dogAll")}>${leg(28,L[1],1,"lFF")}${leg(-50,L[3],1,"lBF")}`+
+   `<g${id("tailG")} transform="translate(-58 -33) rotate(${p.tail||0})"><path d="${DOG.tail}" ${S}/></g>`+
+   `<path d="${DOG.body}" ${FI}/><path d="M-30 -36c6 -2 12 -2 18 0M-6 -37c5 -1.5 9 -1.5 13 0" ${SW(1.3)} stroke-opacity=".45"/>`+
+   `${leg(36,L[0],0,"lFN")}${leg(-42,L[2],0,"lBN")}`+
+   `<g${id("headG")} transform="translate(44 -36) rotate(${p.head||0})"><path d="${DOG.head}" ${FI}/>`+
+   (p.sleep?`<path d="M24 -12q3 2.4 6 0" ${SW(1.8)}/>`:`<circle cx="27" cy="-12" r="2.1" fill="${PEN}"/>`)+
+   `<circle cx="51" cy="-8" r="2.6" fill="${PEN}"/><path d="M-1 -9C3 -4 4 2 3 8" fill="none" stroke="#e5461f" stroke-width="3.4" stroke-linecap="round"/><path d="${DOG.ear}" ${FI}/></g></g>`;
+}
+const svgURL=(vb,w,h,inner)=>"data:image/svg+xml,"+encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="${vb}" width="${w}" height="${h}">${inner}</svg>`);
+const BONE_IN=`<g fill="#fffefb" stroke="${PEN}" stroke-width="1.8"><circle cx="6" cy="6.5" r="4.4"/><circle cx="6" cy="13.5" r="4.4"/><circle cx="34" cy="6.5" r="4.4"/><circle cx="34" cy="13.5" r="4.4"/></g><rect x="6" y="6.6" width="28" height="6.8" fill="#fffefb"/><path d="M8 6.6H32M8 13.4H32" stroke="${PEN}" stroke-width="1.8" stroke-linecap="round"/>`;
+const HEART_IN=`<path d="M12 20C5 14.5 2 11 2 7a5 5 0 0 1 10-1.2A5 5 0 0 1 22 7c0 4-3 7.5-10 13z" fill="none" stroke="#e5461f" stroke-width="2.2" stroke-linejoin="round"/>`;
+const PURL={
+  walkA:svgURL(DOG_VB,190,84,dogMarkup({legs:[18,-18,-18,18],tail:-8})),
+  walkB:svgURL(DOG_VB,190,84,dogMarkup({legs:[-18,18,18,-18],tail:8})),
+  happyA:svgURL(DOG_VB,190,84,dogMarkup({tail:-28,head:-8})),
+  happyB:svgURL(DOG_VB,190,84,dogMarkup({tail:24,head:-8})),
+  sleep:svgURL(DOG_VB,190,84,dogMarkup({legs:[70,70,-70,-70],tail:40,head:14,sleep:true})),
+  bone:svgURL("-1 1 42 18",42,18,BONE_IN), heart:svgURL("0 0 24 22",24,22,HEART_IN)
 };
-const BOWL_FOOD = n => [ n>=3?"....CCCC....":"............", n>=1?("..CCCC"+(n>=2?".CCCC.":"......")):"............", ".RRRRRRRRRR.", ".RTTTTTTTTR.", "..RTTTTTTR..", "...RRRRRR..." ];
-const BOWL_WATER = [ "............", "............", ".rrrrrrrrrr.", ".rAAAAAAAAr.", "..rGGGGGGr..", "...rrrrrr..." ];
-const PCOL = {B:"#a85d42", K:"#1d1a18", E:"#2a2522", T:"#a85d42", H:"#e0584a", W:"#f3e7cc", O:"#4a4741"};
-const BCOL = {C:"#f3e7cc", R:"#9a4b2c", T:"#c4663f", r:"#6f7f8c", A:"#8cc4e6", G:"#56636d"};
-function pixCanvas(rows, sc=1, c, pal=PCOL){ const w=rows[0].length, h=rows.length; c=c||document.createElement("canvas"); c.width=w*sc; c.height=h*sc;
-  const g=c.getContext("2d"); if(!g) return c; g.clearRect(0,0,c.width,c.height);
-  rows.forEach((r,y)=>[...r].forEach((ch,x)=>{ if(pal[ch]){ g.fillStyle=pal[ch]; g.fillRect(x*sc,y*sc,sc,sc);} })); return c; }
-const PURL = {}; Object.keys(PIX).forEach(k=>{ try{ PURL[k]=pixCanvas(PIX[k],4).toDataURL(); }catch(e){ PURL[k]=""; } });
 
 /* ================= DOODLES ================= */
 function doodle(name, ink = INK){
@@ -591,61 +603,142 @@ drawer.addEventListener("click", e=>{ const t=e.target.closest("[data-open]"); i
 document.querySelectorAll(".chip").forEach(c=>c.addEventListener("click",()=>{ col=c.dataset.col; peekI=-1;
   document.querySelectorAll(".chip").forEach(x=>x.setAttribute("aria-pressed", x===c)); layoutDrawer(); }));
 
-/* ================= IDLI ================= */
-const rack=$("#rack"), idliBtn=$("#idli"), idliCv=$("#idliCanvas");
-const I={x:18,dir:1,state:"sleep",t:5,frame:"",heartT:0,hop:0};
-let idliScale=9;
-function idliSize(){ idliScale = innerWidth<=640 ? 6 : innerWidth<760 ? 7 : 9; idliBtn.style.width=16*idliScale+"px"; idliBtn.style.height=10*idliScale+"px"; }
-function drawIdli(f){ if(I.frame===f) return; I.frame=f; pixCanvas(PIX[f],1,idliCv); }
-const bowlFood=$("#bowlFood"), bowlWater=$("#bowlWater"), bowlTag=$("#bowlTag");
-let bowlScale=7, bowlLeft=0;
-function placeBowls(){
-  bowlScale = idliScale>=9 ? 7 : idliScale>=7 ? 5 : 4; const bw=12*bowlScale, w=rack.clientWidth;
-  [bowlWater,bowlFood].forEach((b,i)=>{ b.style.width=bw+"px"; b.style.height=6*bowlScale+"px"; b.style.left=(w-18-bw*(i+1)-6*i)+"px"; });
-  bowlLeft = w-18-bw*2-6; bowlTag.style.left=(bowlLeft+bw-8)+"px"; drawBowls();
+/* ================= THE PARK ================= */
+const park=$("#park"), scene=$("#scene"), idliBtn=$("#idli"), bfly=$("#bfly"), oops=$("#oops"), treatLine=$("#treatLine");
+idliBtn.innerHTML=`<svg viewBox="${DOG_VB}">${dogMarkup({},true)}</svg>`;
+const dsvg=idliBtn.firstChild, part=id=>dsvg.querySelector("#"+id);
+const P_={all:part("dogAll"),fn:part("lFN"),ff:part("lFF"),bn:part("lBN"),bf:part("lBF"),tail:part("tailG"),head:part("headG")};
+let W=0,H=0,GY=0,K=1,BOWL={x:0,y:0};
+let seed=11; const rr=()=>{ seed=(seed*16807)%2147483647; return seed/2147483647; };
+function wline(pts,j=1.3){
+  const p=pts.map(([x,y])=>[x+(rr()-.5)*j*2,y+(rr()-.5)*j*2]); let d=`M${p[0][0].toFixed(1)} ${p[0][1].toFixed(1)}`;
+  for(let i=0;i<p.length-1;i++){ const a=p[i-1]||p[i], b=p[i], c=p[i+1], e=p[i+2]||c;
+    d+=`C${(b[0]+(c[0]-a[0])/6).toFixed(1)} ${(b[1]+(c[1]-a[1])/6).toFixed(1)} ${(c[0]-(e[0]-b[0])/6).toFixed(1)} ${(c[1]-(e[1]-b[1])/6).toFixed(1)} ${c[0].toFixed(1)} ${c[1].toFixed(1)}`; }
+  return d; }
+const seg=(x1,y1,x2,y2,n=5,j=1.2)=>wline(Array.from({length:n+1},(_,i)=>[x1+(x2-x1)*i/n,y1+(y2-y1)*i/n]),j);
+const D={x:0,dir:1,state:"walk",t:4,tx:0,ph:0,hop:0,heartT:0,headA:0,minX:0,maxX:0};
+function drawScene(){
+  W=park.clientWidth; H=park.clientHeight; const phone=W<640;
+  GY=Math.round(H*(phone?.74:.79)); K=phone?1.05:Math.min(1.7,Math.max(1.3,W/950)); seed=11;
+  const S=(w=2,o=1)=>`fill="none" stroke="${PEN}" stroke-width="${w}" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="${o}"`;
+  let g="";
+  // ground: a broken pen line, drawn twice
+  for(let pass=0;pass<2;pass++){ let x=-20; while(x<W+20){ const L=120+rr()*300, gap=8+rr()*34;
+    g+=`<path d="${seg(x,GY+pass*2.5,Math.min(W+20,x+L),GY+pass*2.5+(rr()-.5)*2,Math.max(3,Math.round(L/60)))}" ${S(pass?1.2:2,pass?.35:1)}/>`; x+=L+gap; } }
+  // grass tufts
+  const tuft=(x,y,sc=1,o=1)=>{ let t=""; const n=3+Math.floor(rr()*3); for(let i=0;i<n;i++){ const bx=x+i*3.2*sc; t+=`<path d="${seg(bx,y,bx+(rr()-.45)*9*sc,y-(7+rr()*11)*sc,2,.6)}" ${S(1.5,o)}/>`; } return t; };
+  for(let x=10;x<W;x+=40+rr()*80) g+=tuft(x,GY,1);
+  for(let i=0;i<Math.round(W/160);i++) g+=tuft(rr()*W, GY+26+rr()*Math.max(10,H-GY-80), .8, .55);
+  // tree
+  const tx=phone?W*.86:W*.82, th=Math.min(H*.36,320)*(phone?.8:1), cr=Math.min(170,W*.13)*(phone?1.15:1);
+  g+=`<path d="${wline([[tx-14,GY],[tx-9,GY-th*.4],[tx-7,GY-th*.75],[tx-8,GY-th]],1)}" ${S(2.2)}/><path d="${wline([[tx+14,GY],[tx+9,GY-th*.4],[tx+7,GY-th*.75],[tx+9,GY-th]],1)}" ${S(2.2)}/>`;
+  g+=`<path d="${wline([[tx-2,GY-th*.7],[tx-cr*.35,GY-th*.95],[tx-cr*.55,GY-th*1.1]],1)}" ${S(1.8)}/><path d="${wline([[tx+3,GY-th*.62],[tx+cr*.4,GY-th*.9],[tx+cr*.6,GY-th*1.02]],1)}" ${S(1.8)}/>`;
+  for(let k=0;k<4;k++){ const yy=GY-th*(.15+k*.18), xx=tx-6+rr()*10; g+=`<path d="${seg(xx,yy,xx+rr()*3,yy-14,2,.5)}" ${S(1.1,.5)}/>`; }
+  const cy=GY-th-cr*.55, pts=[]; for(let a=0;a<=Math.PI*2+.01;a+=Math.PI/14){ const bump=1+.1*Math.sin(a*7)+.05*Math.sin(a*3); pts.push([tx+Math.cos(a)*cr*bump, cy+Math.sin(a)*cr*.78*bump]); }
+  g+=`<path d="${wline(pts,2.2)}" fill="#fffefb" ${S(2)}/>`;
+  for(let k=0;k<7;k++){ const ax=tx+(rr()-.5)*cr*1.1, ay=cy+(rr()-.5)*cr*.9; g+=`<path d="M${ax.toFixed(1)} ${ay.toFixed(1)}q5 -5 10 0" ${S(1.3,.5)}/>`; }
+  // bench
+  const bx=phone?W*.06:W*.13, bw=150*K, sh=30*K, bh=34*K;
+  g+=`<path d="${seg(bx,GY-sh,bx+bw,GY-sh-1,4)}" ${S(2.2)}/><path d="${seg(bx+2,GY-sh+5,bx+bw-2,GY-sh+4,4)}" ${S(1.3,.6)}/>`;
+  g+=`<path d="${seg(bx+4,GY-sh-bh,bx+bw-4,GY-sh-bh-1,4)}" ${S(2)}/><path d="${seg(bx+4,GY-sh-bh*.55,bx+bw-4,GY-sh-bh*.55,4)}" ${S(1.6)}/>`;
+  [[bx+10,GY-sh-bh,bx+12,GY-sh],[bx+bw-10,GY-sh-bh,bx+bw-12,GY-sh],[bx+12,GY-sh,bx+8,GY],[bx+bw-12,GY-sh,bx+bw-8,GY],[bx+30,GY-sh,bx+28,GY],[bx+bw-30,GY-sh,bx+bw-28,GY]]
+    .forEach(([a,b,c,d])=>g+=`<path d="${seg(a,b,c,d,2,.7)}" ${S(2)}/>`);
+  // Idli's bowl, with her name in the accent colour
+  BOWL={x:bx+bw+56*K, y:GY}; const ow=40*K, oh=18*K;
+  g+=`<path d="${wline([[BOWL.x-ow/2,GY-oh],[BOWL.x-ow*.42,GY-2],[BOWL.x+ow*.42,GY-2],[BOWL.x+ow/2,GY-oh]],.6)}" fill="#fffefb" ${S(2)}/><ellipse cx="${BOWL.x}" cy="${GY-oh}" rx="${ow/2}" ry="${4*K}" fill="#fffefb" ${S(1.8)}/>`;
+  g+=`<text x="${BOWL.x}" y="${GY-oh*.3}" text-anchor="middle" font-family="Caveat,cursive" font-size="${13*K}" fill="#e5461f">idli</text><g id="bowlTreats"></g>`;
+  // two birds
+  for(let k=0;k<2;k++){ const x=W*(.3+k*.18)+rr()*60, y=H*(.22+k*.07); g+=`<path d="M${x.toFixed(1)} ${y.toFixed(1)}q6 -7 12 0q6 -7 12 0" ${S(1.6,.8)}/>`; }
+  scene.setAttribute("viewBox",`0 0 ${W} ${H}`); scene.innerHTML=g;
+  dsvg.setAttribute("width",190*K); dsvg.setAttribute("height",84*K);
+  D.minX=82*K+10; D.maxX=W-108*K-10;   // her drawing spans 82 units behind and 108 ahead of her feet D.x=Math.max(D.minX,Math.min(D.maxX,D.x||W*.42)); D.tx=Math.max(D.minX,Math.min(D.maxX,D.tx||D.x));
+  drawBowl(); place(performance.now());
 }
-function drawBowls(){ const n=pending(); pixCanvas(BOWL_FOOD(n),1,bowlFood,BCOL); pixCanvas(BOWL_WATER,1,bowlWater,BCOL); bowlTag.textContent = n>3 ? "×"+n : ""; }
-function rackBounds(){ const bw=16*idliScale; return [18, Math.max(18,bowlLeft-bw+idliScale*2)]; }
-let zzEl=null;
-function setZZ(on){ if(on&&!zzEl){ zzEl=document.createElement("span"); zzEl.className="zz"; zzEl.textContent="z"; zzEl.setAttribute("aria-hidden","true"); rack.appendChild(zzEl); } if(!on&&zzEl){ zzEl.remove(); zzEl=null; } }
-function heart(){ if(!PURL.heart) return; const h=document.createElement("img"); h.className="heart"; h.src=PURL.heart; h.alt="";
-  h.style.left=(I.x+idliScale*4+Math.random()*idliScale*6)+"px"; h.style.bottom=(22+10*idliScale)+"px"; rack.appendChild(h); setTimeout(()=>h.remove(),1400); }
-idliBtn.addEventListener("click", ()=>{ I.state="happy"; I.t=2.2; I.hop=1; I.heartT=0; setZZ(false); say("Idli is very happy to see you",2600); });
-let lastT=performance.now();
-function idliTick(now){
+function drawBowl(){ const b=scene.querySelector("#bowlTreats"); if(!b) return; const n=Math.min(3,pending());
+  b.innerHTML=Array.from({length:n},(_,i)=>`<image href="${PURL.bone}" x="${(BOWL.x-15*K+i*6*K).toFixed(1)}" y="${(GY-26*K-i*3).toFixed(1)}" width="${(20*K).toFixed(1)}" height="${(9*K).toFixed(1)}"/>`).join(""); }
+/* Idli's behaviour */
+let parkOn=true, oopsShown=false, lastT=performance.now(), qEl=null;
+function setTarget(x){ D.tx=Math.max(D.minX,Math.min(D.maxX,x)); }
+function heart(){ const h=document.createElement("img"); h.className="pheart"; h.src=PURL.heart; h.alt="";
+  h.style.left=(D.x+(D.dir>0?60:-60)*K+(Math.random()-.5)*30)+"px"; h.style.top=(GY-84*K)+"px"; park.appendChild(h); setTimeout(()=>h.remove(),1500); }
+function pose(now,dt){
+  const st=D.state, moving=st==="walk"||st==="trot"||st==="toBowl";
+  if(moving) D.ph+=dt*(st==="trot"?17:st==="toBowl"?15:10);
+  const sw=moving?Math.sin(D.ph)*(st==="walk"?20:28):0;
+  let head=0, tail=Math.sin(now/180)*8;
+  if(st==="sniff") head=16+Math.sin(now/70)*3;
+  else if(st==="look"||st==="oops") head=-12;
+  else if(st==="eat") head=24+Math.abs(Math.sin(now/120))*6;
+  else if(st==="happy"){ head=-8; tail=Math.sin(now/55)*28; }
+  else if(st==="sit"){ head=-4; tail=Math.sin(now/260)*6; }
+  if(moving) tail=Math.sin(now/90)*14;
+  D.headA+=(head-D.headA)*Math.min(1,dt*10);
+  P_.fn.setAttribute("transform",`translate(36 -17) rotate(${sw.toFixed(1)})`); P_.bf.setAttribute("transform",`translate(-50 -17) rotate(${sw.toFixed(1)})`);
+  P_.ff.setAttribute("transform",`translate(28 -17) rotate(${(-sw).toFixed(1)})`); P_.bn.setAttribute("transform",`translate(-42 -17) rotate(${(-sw).toFixed(1)})`);
+  P_.tail.setAttribute("transform",`translate(-58 -33) rotate(${tail.toFixed(1)})`); P_.head.setAttribute("transform",`translate(44 -36) rotate(${D.headA.toFixed(1)})`);
+  P_.all.setAttribute("transform",`translate(0 ${(moving?-Math.abs(Math.sin(D.ph))*1.6:0).toFixed(2)})`);
+}
+function place(now){
+  const hop=REDUCED?0:Math.abs(Math.sin(now/70))*16*D.hop;
+  idliBtn.style.transform=`translate(${(D.x-82*K).toFixed(1)}px, ${(GY-72*K+1-hop).toFixed(1)}px)`;
+  dsvg.style.transform = D.dir<0 ? "scaleX(-1)" : "";
+  if(qEl){ qEl.style.left=(D.x+(D.dir>0?64:-84)*K)+"px"; qEl.style.top=(GY-116*K)+"px"; }
+}
+const B={x:0,y:0,t:0,vx:42};
+function flutter(now,dt){
+  B.t+=dt; B.x+=B.vx*dt; if(B.x<W*.08||B.x>W*.92){ B.vx*=-1; B.x=Math.max(W*.08,Math.min(W*.92,B.x)); }
+  B.y=GY-H*.26+Math.sin(B.t*1.3)*H*.07+Math.sin(B.t*3.1)*10;
+  bfly.style.transform=`translate(${B.x.toFixed(1)}px, ${B.y.toFixed(1)}px) scaleX(${B.vx<0?-1:1})`;
+  bfly.querySelector("#wings").setAttribute("transform",Math.sin(now/55)>0?"scale(1 1)":"scale(.35 1)");
+}
+function tick(now){
   const dt=Math.min(.05,(now-lastT)/1000); lastT=now;
-  if(!document.hidden && !document.body.classList.contains("viewing")){
-    const [lo,hi]=rackBounds();
-    if(REDUCED && I.state!=="happy") I.state="sleep";
-    if(pending()>0 && ["walk","sit","sleep","toBed"].includes(I.state) && !REDUCED){ I.state="toFood"; setZZ(false); }
-    if(REDUCED && pending()>0){ EATEN=FOUND.size; saveTreats(); drawBowls(); updateTreatUI(); }
-    if(I.state==="walk"){ I.x+=I.dir*42*dt; if(I.x<=lo){I.x=lo;I.dir=1;} if(I.x>=hi){I.x=hi;I.dir=-1;}
-      drawIdli(Math.floor(now/180)%2?"walkA":"walkB"); I.t-=dt; if(I.t<=0){ const r=Math.random(); if(r<.25) I.state="toBed"; else if(r<.4) I.state="toWater"; else { I.state="sit"; I.t=1.5+Math.random()*2; } } }
-    else if(I.state==="toBed"){ I.dir=-1; I.x=Math.max(lo,I.x-42*dt); drawIdli(Math.floor(now/180)%2?"walkA":"walkB"); if(I.x<=lo+.5){ I.state="sleep"; I.t=7+Math.random()*6; I.dir=1; } }
-    else if(I.state==="happy"){ drawIdli(Math.floor(now/110)%2?"happyA":"happyB"); I.heartT-=dt; if(I.heartT<=0){ heart(); I.heartT=.38; } I.t-=dt; if(I.t<=0){ I.state=REDUCED?"sleep":"sit"; I.t=1.2; } }
-    else if(I.state==="toFood"||I.state==="toWater"){ I.dir=1; I.x=Math.min(hi,I.x+60*dt); drawIdli(Math.floor(now/140)%2?"walkA":"walkB");
-      if(I.x>=hi-.5){ I.x=hi; if(I.state==="toFood"){ I.state="eat"; I.t=1.2+Math.min(3,pending()*.5); } else { I.state="drink"; I.t=2.2; } } }
-    else if(I.state==="eat"||I.state==="drink"){ drawIdli(Math.floor(now/150)%2?"eatA":"eatB"); I.t-=dt;
-      if(I.t<=0){ if(I.state==="eat"){ const n=pending(); EATEN=FOUND.size; saveTreats(); drawBowls(); updateTreatUI(); I.state="happy"; I.t=2.2; I.hop=1; I.heartT=0;
-          say(FOUND.size>=F.length ? "Idli ate the last treat. She is very full now." : `Idli ate ${n} treat${n>1?"s":""}. Open more files to find more.`, 3600); }
-        else { I.state="sit"; I.t=1.2; } } }
-    else if(I.state==="sit"){ drawIdli("walkA"); I.t-=dt; if(I.t<=0){ I.state="walk"; I.t=3+Math.random()*4; if(Math.random()<.5) I.dir*=-1; } }
-    else { drawIdli("sleep"); I.t-=dt; if(I.t<=0&&!REDUCED){ I.state="walk"; I.t=3+Math.random()*3; } }
-    I.x=Math.max(lo,Math.min(hi,I.x)); setZZ(I.state==="sleep");
-    if(zzEl){ zzEl.style.left=(I.x+12*idliScale)+"px"; zzEl.style.bottom=(22+8*idliScale)+"px"; }
-    I.hop=Math.max(0,I.hop-dt*2.4);
-    const y=REDUCED?0:Math.abs(Math.sin(now/70))*14*I.hop;
-    idliBtn.style.transform=`translate(${I.x}px, ${-y}px) scaleX(${I.dir>0?-1:1})`;
+  if(parkOn && !document.hidden && !document.body.classList.contains("viewing") && W){
+    if(REDUCED && D.state!=="happy") D.state="sit";
+    if(pending()>0 && !REDUCED && !["toBowl","eat","happy","oops"].includes(D.state)){ D.state="toBowl"; setTarget(BOWL.x-(D.x<BOWL.x?118:-118)*K); }
+    if(REDUCED && pending()>0){ EATEN=FOUND.size; saveTreats(); drawBowl(); updateTreatUI(); }
+    const st=D.state;
+    if(st==="walk"||st==="trot"||st==="toBowl"){
+      const sp=(st==="trot"?190:st==="toBowl"?150:62)*K, dx=D.tx-D.x;
+      if(Math.abs(dx)<3){ D.x=D.tx;
+        if(st==="toBowl"){ D.state="eat"; D.t=1.4+Math.min(2,pending()*.5); D.dir = BOWL.x>D.x?1:-1; }
+        else { const r=Math.random(); D.state = r<.4?"sniff":r<.75?"sit":"look"; D.t=1.4+Math.random()*2.2; } }
+      else { D.dir=Math.sign(dx); D.x+=D.dir*Math.min(Math.abs(dx),sp*dt); }
+      if(st==="trot" && Math.random()<dt*.6) setTarget(B.x-40);
+    } else if(st==="eat"){ D.t-=dt; if(D.t<=0){ const n=pending(); EATEN=FOUND.size; saveTreats(); drawBowl(); updateTreatUI(); D.state="happy"; D.t=2.4; D.hop=1; D.heartT=0;
+        say(FOUND.size>=F.length?"Idli ate the last treat. She is very full now.":`Idli ate ${n} treat${n>1?"s":""}. There are more in the files.`,3800); } }
+    else if(st==="happy"){ D.heartT-=dt; if(D.heartT<=0){ heart(); D.heartT=.36; } D.t-=dt; if(D.t<=0){ D.state=REDUCED?"sit":"look"; D.t=1.2; } }
+    else if(st==="oops"){ D.t-=dt; if(D.t<=0){ if(qEl){ qEl.remove(); qEl=null; } D.state="sit"; D.t=3; } }
+    else { D.t-=dt; if(D.t<=0 && !REDUCED){ if(Math.random()<.22){ D.state="trot"; setTarget(B.x); } else { D.state="walk"; setTarget(D.minX+Math.random()*(D.maxX-D.minX)); } } }
+    D.hop=Math.max(0,D.hop-dt*2.2);
+    pose(now,dt); place(now); if(!REDUCED) flutter(now,dt);
   }
-  requestAnimationFrame(idliTick);
+  requestAnimationFrame(tick);
 }
-let hintT=0; const hintEl=$("#hint"), treatLine=$("#treatLine");
-function baseHint(){ return FOUND.size>=F.length ? "you found every treat · Idli is very full" : "open any folder · each one hides a treat for Idli"; }
+idliBtn.addEventListener("click", e=>{ e.stopPropagation(); D.state="happy"; D.t=2.2; D.hop=1; D.heartT=0; say("Idli is very happy to see you",2600); });
+/* the "oops" moment */
+let oopsT=0;
+function showOops(){
+  if(oopsShown) return; oopsShown=true; clearTimeout(oopsT);
+  oops.hidden=false; if(!REDUCED) oops.classList.add("in");
+  if(!REDUCED && !["eat","toBowl"].includes(D.state)){ D.state="oops"; D.t=2.2; D.dir = D.x>W/2?-1:1;
+    qEl=document.createElement("span"); qEl.className="qmark"; qEl.textContent="?"; qEl.setAttribute("aria-hidden","true"); park.appendChild(qEl); }
+}
+oopsT=setTimeout(showOops, 3000);
+["wheel","touchstart","keydown"].forEach(ev=>addEventListener(ev,()=>{ if(!document.body.classList.contains("viewing")) showOops(); },{passive:true,once:true}));
+park.addEventListener("pointerdown", e=>{ if(!e.target.closest("#idli,a,button")) showOops(); });
+function goWork(e){ if(e) e.preventDefault(); showOops(); $("#work").scrollIntoView({behavior:REDUCED?"auto":"smooth"}); }
+$("#goWork").addEventListener("click",goWork); $("#skipWork").addEventListener("click",goWork); $("#scrollCue").addEventListener("click",goWork);
+$("#stay").addEventListener("click",()=>{ oops.hidden=true; say("Idli is glad you stayed. Tap her to say hello.",3200); });
+$("#toPark").addEventListener("click",()=>{ park.scrollIntoView({behavior:REDUCED?"auto":"smooth"}); });
+try{ new IntersectionObserver(es=>es.forEach(e=>{ parkOn=e.isIntersecting; }),{threshold:.15}).observe(park); }catch(e){}
+/* messages */
+let hintT=0;
 function say(m,ms){ treatLine.textContent=m; clearTimeout(hintT); hintT=setTimeout(updateTreatUI, ms||3000); }
 function updateTreatUI(){
-  const n=FOUND.size, all=F.length;
-  treatLine.innerHTML = n>=all ? `Idli is full · <b>all ${all} treats</b> found` : `Idli is hungry · <b>${n} of ${all}</b> treats found`;
-  hintEl.textContent = baseHint();
+  const n=FOUND.size, all=F.length, p=pending();
+  treatLine.innerHTML = n>=all ? `Idli is full · <b>all ${all} treats</b> found` : n===0 ? `This is Idli · <b>each file</b> below hides a treat for her` : `Idli · <b>${n} of ${all}</b> treats found`;
+  $("#toPark").innerHTML = p>0 ? `Take <b>${p} treat${p>1?"s":""}</b> back to Idli ↑` : n>0 ? `Back to the park ↑ · <b>${n} of ${all}</b> treats found` : "Back to the park ↑";
   F.forEach(f=>{ const g=f.el.querySelector(".tb"); if(g) g.hidden=FOUND.has(f.id); });
 }
 
@@ -660,9 +753,9 @@ function skillMap(){
     for(let k=1;k<=d;k++){ const t=16+k*(L-16)/(d+.6), tx=cx+ux*t, ty=cy+uy*t; g+=`<path d="M${tx-nx*4} ${ty-ny*4} L${tx+nx*4} ${ty+ny*4}" stroke="${GRAPHITE}" stroke-width="1"/>`; }
     const lx=cx+ux*(L+30), ly=cy+uy*(L+22), w0=name.split(" "), mid=Math.ceil(w0.length/2), l1=w0.slice(0,mid).join(" "), l2=w0.slice(mid).join(" ");
     const w=Math.max(l1.length,l2.length)*7.4+14, bx=Math.max(4,Math.min(496-w,lx-w/2)), by=ly-17;
-    g+=`<rect x="${bx}" y="${by}" width="${w}" height="36" fill="#7f8c62" fill-opacity=".2"/><text x="${bx+w/2}" y="${by+15}" font-size="15.5" text-anchor="middle">${esc(l1)}</text><text x="${bx+w/2}" y="${by+30}" font-size="15.5" text-anchor="middle">${esc(l2)}</text>`;
+    g+=`<rect x="${bx}" y="${by}" width="${w}" height="36" fill="#e5461f" fill-opacity=".1"/><text x="${bx+w/2}" y="${by+15}" font-size="15.5" text-anchor="middle">${esc(l1)}</text><text x="${bx+w/2}" y="${by+30}" font-size="15.5" text-anchor="middle">${esc(l2)}</text>`;
   });
-  g+=`<circle cx="${cx}" cy="${cy}" r="15" fill="#f8f5ee" stroke="${INK}" stroke-width="1.6"/><text x="${cx}" y="${cy+5}" font-size="16" text-anchor="middle" style="fill:${INK}">me</text>`;
+  g+=`<circle cx="${cx}" cy="${cy}" r="15" fill="#ffffff" stroke="${ACC}" stroke-width="1.6"/><text x="${cx}" y="${cy+5}" font-size="16" text-anchor="middle" style="fill:${ACC}">me</text>`;
   return `<svg viewBox="0 0 500 510" role="img" aria-label="Skills map: ${SKILLS.map(s=>s[0]+" depth "+s[1]+" of 5").join(", ")}">${g}</svg>`;
 }
 function docHTML(f){
@@ -724,7 +817,7 @@ function showTreat(f){
 }
 treatBtn.addEventListener("click", ()=>{
   const f=cur; if(!f||FOUND.has(f.id)) return;
-  FOUND.add(f.id); saveTreats(); showTreat(f); updateTreatUI(); drawBowls();
+  FOUND.add(f.id); saveTreats(); showTreat(f); updateTreatUI(); drawBowl();
   const left=F.length-FOUND.size;
   const msg = left ? `+1 treat · ${left} more to find` : "that was the last treat!";
   const go=()=>{ const b=$("#tbub"); b.textContent=msg; b.classList.add("show"); clearTimeout(b._t); b._t=setTimeout(()=>b.classList.remove("show"),2200);
@@ -804,7 +897,7 @@ function closeFile(fromHistory){
   a.onfinish=()=>{ fl.remove(); fv.getAnimations().forEach(x=>x.cancel()); fv.classList.remove("show"); finish(); }; a.oncancel=a.onfinish;
 }
 $("#closeBtn").onclick=()=>closeFile();
-$("#contactCta").onclick=()=>{ document.getElementById("contact").scrollIntoView({behavior:REDUCED?"auto":"smooth"}); };
+$("#contactCta").onclick=()=>{ showOops(); document.getElementById("contact").scrollIntoView({behavior:REDUCED?"auto":"smooth"}); };
 $("#copyMail").onclick=e=>{ const b=e.currentTarget, t="r.premkumar96@gmail.com";
   const ok=()=>{ b.textContent="Copied"; setTimeout(()=>b.textContent="Copy",1600); };
   if(navigator.clipboard&&navigator.clipboard.writeText) navigator.clipboard.writeText(t).then(ok,()=>{ selectMail(); b.textContent="Selected"; });
@@ -819,13 +912,13 @@ addEventListener("keydown", e=>{
 });
 
 /* resize, deep links, start */
-let rT=0; addEventListener("resize",()=>{ clearTimeout(rT); rT=setTimeout(()=>{ idliSize(); placeBowls(); layoutDrawer(); if(!fv.hidden) fitSideTabs(); },120); });
+let rT=0; addEventListener("resize",()=>{ clearTimeout(rT); rT=setTimeout(()=>{ drawScene(); layoutDrawer(); if(!fv.hidden) fitSideTabs(); },120); });
 function route(){ const h=location.hash.slice(1);
   if(/^f-\d\d$/.test(h) && fv.hidden){ const f=F.find(x=>x.id===h); if(f) openFile(f.id, f.el); }
   else if(COLS[h]){ const c=document.querySelector(`.chip[data-col="${h}"]`); if(c) c.click(); } }
 addEventListener("hashchange", route);
 addEventListener("popstate", ()=>{ if(!fv.hidden && !/^#f-\d\d$/.test(location.hash)) closeFile(true); });
-idliSize(); placeBowls(); updateTreatUI(); drawIdli("sleep"); requestAnimationFrame(idliTick);
+drawScene(); B.x=W*.3; updateTreatUI(); setTarget(W*.55); requestAnimationFrame(tick); if(document.fonts&&document.fonts.ready) document.fonts.ready.then(()=>{ drawScene(); });
 layoutDrawer(); if(document.fonts&&document.fonts.ready) document.fonts.ready.then(fitTabs);
 route();
 })();

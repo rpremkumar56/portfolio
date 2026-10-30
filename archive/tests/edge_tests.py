@@ -71,9 +71,10 @@ with sync_playwright() as p:
     # treats: one per file, collected in the file, eaten from the bowl on the rack
     ctx,pg,errs=page(b,1440,900); pg.goto(URL); pg.wait_for_timeout(500)
     check("every folder tab shows a treat at the start", pg.evaluate("()=>[...document.querySelectorAll('.tab .tb')].filter(g=>!g.hidden).length")==15)
-    check("the rack says Idli is hungry", "hungry" in pg.inner_text('#treatLine'))
+    check("the park says each file hides a treat", "each file" in pg.inner_text('#treatLine'))
     pg.goto(URL+'#f-05'); pg.wait_for_timeout(1100)
     check("deep link #f-05 opens Ramp-down Radar", pg.inner_text('#fvTitle')=="Ramp-down Radar")
+    check("the trail dog image loads", pg.evaluate("()=>document.getElementById('tdogImg').naturalWidth")>0)
     check("the file offers a treat", pg.is_visible('#treatBtn') and "tap to keep" in pg.inner_text('#treatBtn'))
     pg.click('#treatBtn'); pg.wait_for_timeout(1200)
     check("keeping the treat counts it (1 of 15)", "1 of 15" in pg.inner_text('#tip') and pg.evaluate("()=>document.getElementById('treatBtn').disabled"), pg.inner_text('#tip'))
@@ -81,17 +82,21 @@ with sync_playwright() as p:
     check("a second tap does not count twice", "1 of 15" in pg.inner_text('#tip'))
     pg.click('#nextBtn'); pg.wait_for_timeout(500); pg.click('#treatBtn'); pg.wait_for_timeout(1000)
     pg.click('#closeBtn'); pg.wait_for_timeout(900)
+    check("the archive offers to take the treats to Idli", "Take 2 treats back to Idli" in pg.inner_text('#toPark'), pg.inner_text('#toPark'))
+    pg.click('#toPark'); pg.wait_for_timeout(300)
     check("those two folders no longer show a treat", pg.evaluate("()=>[...document.querySelectorAll('.tab .tb')].filter(g=>!g.hidden).length")==13)
     eaten=False
     for _ in range(40):
         pg.wait_for_timeout(250)
         if pg.evaluate("()=>localStorage.getItem('prfiles.v1.eaten')")=="2": eaten=True; break
-    check("Idli walks to her bowl and eats the treats", eaten)
+    check("in the park, Idli walks to her bowl and eats the treats", eaten)
     pg.reload(); pg.wait_for_timeout(600)
+    pg.wait_for_timeout(3000)
     check("found treats survive a reload", "2 of 15" in pg.inner_text('#treatLine'), pg.inner_text('#treatLine'))
     pg.evaluate("()=>{ localStorage.setItem('prfiles.v1.treats', JSON.stringify(Array.from({length:15},(_,i)=>'f-'+String(i+1).padStart(2,'0')))); localStorage.setItem('prfiles.v1.eaten','15'); }")
     pg.reload(); pg.wait_for_timeout(600)
-    check("all 15 found: the rack says so", "all" in pg.inner_text('#treatLine'))
+    pg.wait_for_timeout(3000)
+    check("all 15 found: the park says so", "all" in pg.inner_text('#treatLine'))
     check("the For Fun drawer is gone", pg.evaluate("()=>!document.querySelector('.chip[data-col=fun]') && document.querySelectorAll('.folder').length===15"))
     pg.click('#contactCta'); pg.wait_for_timeout(1200)
     check("Contact scrolls to the footer", pg.evaluate("()=>{const r=document.getElementById('contact').getBoundingClientRect(); return r.top<innerHeight && r.bottom>0}") and pg.evaluate("()=>document.getElementById('fv').hidden"))
@@ -117,16 +122,27 @@ with sync_playwright() as p:
     pg.click('.folder[data-id="f-07"] .tab'); pg.wait_for_timeout(200)
     check("reduced motion: file opens at once", not pg.evaluate("()=>document.getElementById('fv').hidden") and not errs); ctx.close()
 
+    # the park: Idli, the oops note, the way to the work
     for (w,h) in [(1440,900),(390,844)]:
-        ctx,pg,errs=page(b,w,h); pg.goto(URL); pg.wait_for_timeout(200); pg.click('#idli'); pg.wait_for_timeout(500)
-        hearts=pg.evaluate("()=>document.querySelectorAll('#rack .heart').length"); out=[]
-        for i in range(40):
+        ctx,pg,errs=page(b,w,h); pg.goto(URL); pg.wait_for_timeout(600)
+        first=pg.evaluate("()=>{const n=document.querySelector('.pname').getBoundingClientRect(), s=document.getElementById('skipWork').getBoundingClientRect(); return n.top>=0&&n.bottom<innerHeight&&s.top>=0&&s.bottom<innerHeight}")
+        check(f"[{w}] name and the skip link show on the first screen", first)
+        check(f"[{w}] the oops note waits at first", pg.evaluate("()=>document.getElementById('oops').hidden"))
+        pg.wait_for_timeout(3000)
+        check(f"[{w}] the oops note appears after about 3 s", not pg.evaluate("()=>document.getElementById('oops').hidden"))
+        pg.click('#idli'); pg.wait_for_timeout(500)
+        check(f"[{w}] tapping Idli makes hearts", pg.evaluate("()=>document.querySelectorAll('#park .pheart').length")>0)
+        out=[]
+        for i in range(30):
             pg.wait_for_timeout(250)
-            r=pg.evaluate("()=>{const a=document.getElementById('rack').getBoundingClientRect(), d=document.getElementById('idli').getBoundingClientRect(), w=document.getElementById('bowlFood').getBoundingClientRect(); return [d.left-a.left, a.right-d.right, w.left-(d.right-d.width*0.16)]}")
-            if r[0]<12 or r[1]<12 or r[2]<-2: out.append(r)
-        check(f"[{w}] Idli stays inside her rack and out of the bowls for 10 s", not out, out[:3]); check(f"[{w}] tapping Idli makes hearts", hearts>0)
-        ctx.close()
-
+            r=pg.evaluate("()=>{const p=document.getElementById('park').getBoundingClientRect(), d=document.querySelector('#idli svg').getBoundingClientRect(); return [d.left-p.left, p.right-d.right, p.bottom-d.bottom]}")
+            if r[0]<-2 or r[1]<-2 or r[2]<0: out.append(r)
+        check(f"[{w}] Idli stays inside the park for 7 s", not out, out[:3])
+        pg.click('#goWork'); pg.wait_for_timeout(1500)
+        check(f"[{w}] 'Show me the work' scrolls to the archive", pg.evaluate("()=>{const r=document.getElementById('work').getBoundingClientRect(); return r.top<innerHeight*.4 && r.bottom>0}"))
+        check(f"[{w}] no script errors (park)", not errs, errs[:3]); ctx.close()
+    ctx,pg,errs=page(b,1280,800); pg.goto(URL); pg.wait_for_timeout(400); pg.mouse.wheel(0,40); pg.wait_for_timeout(400)
+    check("the first scroll brings the oops note at once", not pg.evaluate("()=>document.getElementById('oops').hidden")); ctx.close()
 
     # back navigation and big numbers
     ctx,pg,errs=page(b,1440,900); pg.goto(URL); pg.wait_for_timeout(400)
