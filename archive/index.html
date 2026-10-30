@@ -630,7 +630,11 @@ function drawScene(){
   for(let x=10;x<W;x+=40+rr()*80) g+=tuft(x,GY,1);
   for(let i=0;i<Math.round(W/160);i++) g+=tuft(rr()*W, GY+26+rr()*Math.max(10,H-GY-80), .8, .55);
   // tree
-  const tx=phone?W*.86:W*.82, th=Math.min(H*.36,320)*(phone?.8:1), cr=Math.min(170,W*.13)*(phone?1.15:1);
+  const tx=phone?W*.79:W*.82; let th=Math.min(H*.36,320)*(phone?.8:1), cr=Math.min(170,W*.13)*(phone?1.15:1);
+  // keep the canopy clear of the name and links at the top
+  const pr=park.getBoundingClientRect(), topLimit=$(".bar.top").getBoundingClientRect().bottom-pr.top+28, canopyTop=()=>GY-th-cr*.55-cr*.78*1.16;
+  if(canopyTop()<topLimit){ const f=Math.max(.45,(GY-topLimit)/(GY-canopyTop())); th*=f; cr*=f; }
+  scene.dataset.treeTop=Math.round(canopyTop()); scene.dataset.barBottom=Math.round(topLimit-28);
   g+=`<path d="${wline([[tx-14,GY],[tx-9,GY-th*.4],[tx-7,GY-th*.75],[tx-8,GY-th]],1)}" ${S(2.2)}/><path d="${wline([[tx+14,GY],[tx+9,GY-th*.4],[tx+7,GY-th*.75],[tx+9,GY-th]],1)}" ${S(2.2)}/>`;
   g+=`<path d="${wline([[tx-2,GY-th*.7],[tx-cr*.35,GY-th*.95],[tx-cr*.55,GY-th*1.1]],1)}" ${S(1.8)}/><path d="${wline([[tx+3,GY-th*.62],[tx+cr*.4,GY-th*.9],[tx+cr*.6,GY-th*1.02]],1)}" ${S(1.8)}/>`;
   for(let k=0;k<4;k++){ const yy=GY-th*(.15+k*.18), xx=tx-6+rr()*10; g+=`<path d="${seg(xx,yy,xx+rr()*3,yy-14,2,.5)}" ${S(1.1,.5)}/>`; }

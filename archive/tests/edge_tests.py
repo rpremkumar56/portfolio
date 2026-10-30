@@ -123,10 +123,12 @@ with sync_playwright() as p:
     check("reduced motion: file opens at once", not pg.evaluate("()=>document.getElementById('fv').hidden") and not errs); ctx.close()
 
     # the park: Idli, the oops note, the way to the work
-    for (w,h) in [(1440,900),(390,844)]:
+    for (w,h) in [(1440,900),(1280,720),(390,844),(360,640),(844,390)]:
         ctx,pg,errs=page(b,w,h); pg.goto(URL); pg.wait_for_timeout(600)
         first=pg.evaluate("()=>{const n=document.querySelector('.pname').getBoundingClientRect(), s=document.getElementById('skipWork').getBoundingClientRect(); return n.top>=0&&n.bottom<innerHeight&&s.top>=0&&s.bottom<innerHeight}")
         check(f"[{w}] name and the skip link show on the first screen", first)
+        tt=pg.evaluate("()=>[+document.getElementById('scene').dataset.treeTop, +document.getElementById('scene').dataset.barBottom]")
+        check(f"[{w}] the tree stays below the name and links ({tt[0]} vs {tt[1]})", tt[0]>tt[1]+10)
         check(f"[{w}] the oops note waits at first", pg.evaluate("()=>document.getElementById('oops').hidden"))
         pg.wait_for_timeout(3000)
         check(f"[{w}] the oops note appears after about 3 s", not pg.evaluate("()=>document.getElementById('oops').hidden"))
