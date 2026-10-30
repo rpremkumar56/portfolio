@@ -41,6 +41,8 @@ with sync_playwright() as p:
             if d['wide'] or d['sw']: bad.append((fid,d['wide']))
             if d['pc']!=fc: colour.append((fid,fc,d['pc']))
             if d['covered']: bad.append((fid,'drawer shows through the file'))
+            cutl=pg.evaluate("()=>innerWidth>820?[...document.querySelectorAll('#sidetabs .stab:not([hidden])')].filter(t=>t.scrollHeight>t.clientHeight+1).map(t=>t.textContent):[]")
+            if cutl: bad.append((fid,'side-tab labels cut: '+', '.join(cutl)))
             if d['pastPanel'] and w>820: bad.append((fid,'side tabs run past the folder'))
             if not d['cur'] and w>820: bad.append((fid,'this file has no side tab'))
             nb=pg.evaluate("()=>{const b=document.getElementById('nextBtn'); if(b.disabled) return true; const fv=document.getElementById('fv'); b.scrollIntoView({block:'center'}); const r=b.getBoundingClientRect(); const e=document.elementFromPoint(r.left+r.width/2, r.top+r.height/2); return !!(e && b.contains(e));}")

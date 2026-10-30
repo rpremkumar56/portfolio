@@ -217,7 +217,7 @@ a{color:inherit}
   background-image:repeating-linear-gradient(transparent 0 25px,rgba(43,58,158,.2) 25px 26px);background-position:0 12px}
 .sidetabs{position:absolute;top:28px;right:0;width:48px;display:flex;flex-direction:column;gap:6px;overflow:hidden}
 .stab{writing-mode:vertical-rl;height:150px;width:44px;border:0;cursor:pointer;background:var(--c);color:var(--fg);font-family:var(--display);font-size:14.5px;
-  border-radius:0 10px 10px 0;padding:10px 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;opacity:.92;transition:transform .2s}
+  border-radius:0 10px 10px 0;padding:8px 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;opacity:.92;transition:transform .2s}
 .stab:hover{transform:translateX(3px);opacity:1}
 .stab[aria-current="true"]{opacity:1;box-shadow:inset 3px 0 0 rgba(0,0,0,.2)}
 .fv-nav{display:flex;justify-content:space-between;gap:12px;margin-top:34px;font-family:var(--type);font-size:12.5px}
@@ -417,7 +417,7 @@ const F = [
   body:["A marine claims team handles more than 300 cases a month. Each case carries contract deadlines, and a missed deadline costs money.",
         "I prototyped and pitched human-in-the-loop AI agents. They calculate each contract deadline and explain how they got it. They also organise the correspondence for every case. A person reviews and decides."],
   facts:[["300+","claims cases a month"],["~$0.8M","annual time-bar exposure"]], note:"the agent drafts, a person decides"},
- {col:"work", title:"Finance Ops AI-Assist", tab:"Finance Ops AI-Assist", one:"Two AI-assist products for invoice processing and vendor queries.", when:"AI CoE · 2026", status:["Prototype","proto"], c:"#5c7fa8", fg:"#f6f3ec", pic:"recon", cap:"invoice in, answer out",
+ {col:"work", title:"Finance Ops AI-Assist", tab:"Finance Ops AI", one:"Two AI-assist products for invoice processing and vendor queries.", when:"AI CoE · 2026", status:["Prototype","proto"], c:"#5c7fa8", fg:"#f6f3ec", pic:"recon", cap:"invoice in, answer out",
   margin:[["Role","Defined and pitched"],["Process","Invoices, vendor queries"]],
   body:["I defined and pitched two AI-assist products: one for invoice processing and one for vendor queries.",
         "They validate documents, classify cases and rank them by SLA. They retrieve answers from the ERP and draft replies in several languages."],
@@ -689,7 +689,8 @@ function fitSideTabs(){
   const fit=Math.max(1, Math.floor((avail+gap)/(per+gap)));
   const k=tabs.findIndex(t=>t.dataset.go===st.dataset.cur);
   let a=Math.max(0, Math.min(k-Math.floor((fit-1)/2), n-fit)), b=a+fit;
-  tabs.forEach((t,i)=>{ t.style.height=per+"px"; t.hidden = i<a || i>=b; });
+  tabs.forEach((t,i)=>{ t.style.height=per+"px"; t.hidden = i<a || i>=b; t.style.fontSize="";
+    if(!t.hidden){ let fs=parseFloat(getComputedStyle(t).fontSize), g=0; while(t.scrollHeight>t.clientHeight+1 && fs>11 && g++<16){ fs-=.5; t.style.fontSize=fs+"px"; } } });
   st.style.maxHeight=avail+"px";
 }
 function renderFile(f){
