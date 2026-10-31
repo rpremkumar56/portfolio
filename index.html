@@ -87,7 +87,7 @@ a{color:inherit}
 .meta .open{font-family:var(--hand);font-size:19px;white-space:nowrap}
 .folder .stamp{color:var(--fg);border-color:currentColor}
 .drawer.filtered .folder.out{opacity:0;pointer-events:none}
-.site-foot{margin-top:80px;border-top:1px solid var(--line);padding-top:34px;display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr) minmax(0,1.2fr);gap:28px 40px}
+.site-foot{margin-top:80px;border-top:1px solid var(--line);padding-top:34px;display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:28px 40px}
 .site-foot h2{font-family:var(--type);font-weight:700;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin:0 0 12px}
 .site-foot p{margin:0 0 6px;font-size:15.5px;line-height:1.45;color:#3a3731}
 .site-foot a{color:var(--ink-on-dark);text-decoration-color:var(--receipt);text-underline-offset:3px}
@@ -322,7 +322,7 @@ a{color:inherit}
       <p class="crumb">The archive</p>
       <h2 class="hey">Hi, I’m Prem.</h2>
       <p class="role">AI Product &amp; Strategy · Senior Consultant, AI CoE, Infosys BPM</p>
-      <p class="bio">I’m a strategy person who builds. I studied engineering, did my MBA at IIM Sirmaur and spent four years in Corporate Strategy before moving to the AI CoE. I find where AI can change how a business runs, then shape it into a product: discovery, prototype, evaluation and the business case. My work goes to CXOs and client leaders. For 8 quarters I prepared the CEO’s briefers, and now I pitch AI bets to client heads. Operations teams in finance and HR use what we build in their daily work. <b>Four AI use cases are now live in client operations, aimed at 30–50% less manual effort.</b></p>
+      <p class="bio">I’m a strategy person who builds. I studied engineering, did my MBA at IIM Sirmaur and spent four years in Corporate Strategy before moving to the AI CoE. I find where AI can change how a business runs, then shape it into a product: discovery, prototype, evaluation and the business case. My work goes to CXOs and client leaders. For 8 quarters I prepared the CEO’s briefers, and now I pitch AI bets to client heads. Finance operations teams use what we build in their daily work. <b>Four AI use cases are now live in client operations, aimed at 30–50% less manual effort.</b></p>
       <div class="proof" aria-label="In numbers">
         <div class="pf"><span class="pf-num">25+</span><span class="pf-lbl">AI use cases taken to a decision</span></div>
         <div class="pf"><span class="pf-num">4</span><span class="pf-lbl">use cases live in client operations</span></div>
@@ -353,12 +353,6 @@ a{color:inherit}
         <a href="https://github.com/rpremkumar56" target="_blank" rel="noopener">GitHub →</a>
         <a href="https://rpremkumar56.github.io/portfolio/resume/Premkumar-R-CV.pdf" target="_blank" rel="noopener">Résumé (PDF) →</a>
       </div>
-    </div>
-    <div>
-      <h2>On record</h2>
-      <p>Top Gun Award, Infosys BPM: Best Quarterly Performer, four times.</p>
-      <p>CEO High Performer Award, Infosys BPM, Q2’25.</p>
-      <p>MBA, Marketing &amp; HR, IIM Sirmaur. B.E., Electrical &amp; Electronics Engineering, St. Joseph’s Institute of Technology, Chennai.</p>
     </div>
     <div class="foot-line"><span>Premkumar R · 2026</span><span>Built with Claude Code · hosted on GitHub Pages</span></div>
   </footer>
@@ -655,7 +649,7 @@ function drawScene(){
   for(let k=0;k<2;k++){ const x=W*(.3+k*.18)+rr()*60, y=H*(.22+k*.07); g+=`<path d="M${x.toFixed(1)} ${y.toFixed(1)}q6 -7 12 0q6 -7 12 0" ${S(1.6,.8)}/>`; }
   scene.setAttribute("viewBox",`0 0 ${W} ${H}`); scene.innerHTML=g;
   dsvg.setAttribute("width",190*K); dsvg.setAttribute("height",84*K);
-  D.minX=82*K+10; D.maxX=W-108*K-10;   // her drawing spans 82 units behind and 108 ahead of her feet D.x=Math.max(D.minX,Math.min(D.maxX,D.x||W*.42)); D.tx=Math.max(D.minX,Math.min(D.maxX,D.tx||D.x));
+  D.minX=108*K+10; D.maxX=W-108*K-10;   // her head reaches 108 units ahead of her feet, in either direction D.x=Math.max(D.minX,Math.min(D.maxX,D.x||W*.42)); D.tx=Math.max(D.minX,Math.min(D.maxX,D.tx||D.x));
   drawBowl(); place(performance.now());
 }
 function drawBowl(){ const b=scene.querySelector("#bowlTreats"); if(!b) return; const n=Math.min(3,pending());
