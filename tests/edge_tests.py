@@ -102,6 +102,7 @@ with sync_playwright() as p:
     check("Contact scrolls to the footer", pg.evaluate("()=>{const r=document.getElementById('contact').getBoundingClientRect(); return r.top<innerHeight && r.bottom>0}") and pg.evaluate("()=>document.getElementById('fv').hidden"))
     check("the footer shows the email as text", "r.premkumar96@gmail.com" in pg.inner_text('#contact'))
     check("no Contact file is left", pg.evaluate("()=>![...document.querySelectorAll('.tab')].some(t=>/Contact/.test(t.textContent))"))
+    check("the résumé link points to the PDF", pg.evaluate("()=>document.getElementById('cvLink').href.endsWith('/resume/Premkumar-R-CV.pdf')"))
     check("no marking tools are left", pg.evaluate("()=>!document.querySelector('.tools,#markChip')"))
     check("no script errors (treats)", not errs, errs[:3]); ctx.close()
 

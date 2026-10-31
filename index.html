@@ -301,7 +301,7 @@ a{color:inherit}
   <svg class="scene" id="scene" aria-hidden="true"></svg>
   <div class="bar top">
     <div><p class="pname">Premkumar R</p><p class="prole">AI Product &amp; Strategy · AI CoE, Infosys BPM</p></div>
-    <nav class="plinks" aria-label="Site"><a href="#work" id="skipWork">The work ↓</a><button type="button" id="contactCta">Contact ↓</button></nav>
+    <nav class="plinks" aria-label="Site"><a href="#work" id="skipWork">The work ↓</a><a href="https://rpremkumar56.github.io/portfolio/resume/Premkumar-R-CV.pdf" target="_blank" rel="noopener" id="cvLink">Résumé ↗</a><button type="button" id="contactCta">Contact ↓</button></nav>
   </div>
   <button type="button" class="pdog" id="idli" aria-label="Pet Idli, the dachshund"></button>
   <svg class="bfly" id="bfly" viewBox="-15 -12 30 24" aria-hidden="true"><g id="wings"><path d="M0 0C-4 -10 -14 -11 -13 -3C-12 3 -5 3 0 0ZM0 0C-3 4 -10 9 -9 3" fill="#fffefb" stroke="#1d1c1a" stroke-width="1.5" stroke-linejoin="round"/><path d="M0 0C4 -10 14 -11 13 -3C12 3 5 3 0 0ZM0 0C3 4 10 9 9 3" fill="#fffefb" stroke="#1d1c1a" stroke-width="1.5" stroke-linejoin="round"/></g><path d="M0 -4V5" stroke="#1d1c1a" stroke-width="1.8" stroke-linecap="round"/></svg>
@@ -351,6 +351,7 @@ a{color:inherit}
       <div class="links">
         <a href="https://www.linkedin.com/in/premkumar-r-" target="_blank" rel="noopener">LinkedIn →</a>
         <a href="https://github.com/rpremkumar56" target="_blank" rel="noopener">GitHub →</a>
+        <a href="https://rpremkumar56.github.io/portfolio/resume/Premkumar-R-CV.pdf" target="_blank" rel="noopener">Résumé (PDF) →</a>
       </div>
     </div>
     <div>
@@ -384,9 +385,9 @@ a{color:inherit}
 <noscript>
   <div class="nojs">
     <p>This is Idli’s park. With JavaScript turned on, she walks around here. Prem’s work is below.</p>
-    <h2>At work</h2><p>Senior Consultant, AI CoE at Infosys BPM (Feb 2026 – now). I lead an AI Squad: 9 accounts, 25+ use cases, 20 prototypes. Files: AI Reconciliation (live in 4 use cases), Marine Claims AI, Finance Ops AI-Assist, multilingual AI evaluation in 5 languages, Ramp-down Radar. Corporate Strategy (May 2022 – Jan 2026): CEO briefers for 8 quarters, $1.5B+ business planning, a market intelligence system for 20+ accounts, a $10M+ transformation programme.</p>
+    <h2>At work</h2><p>Senior Consultant, AI CoE at Infosys BPM (Feb 2026 – now). I lead an AI Squad: 9 accounts, 25+ use cases, 20 prototypes. Files: AI Reconciliation (live in 4 use cases), Marine Claims AI, Finance Ops AI-Assist, an AI-led plan to consolidate HR operations from three countries into India, Ramp-down Radar. Corporate Strategy (May 2022 – Jan 2026): CEO briefers for 8 quarters, $1.5B+ business planning, a market intelligence system for 20+ accounts, a $10M+ transformation programme.</p>
     <h2>At home</h2><p>Clinic appointment and rota web apps, two learning apps and a WhatsApp clinic assistant, built with Claude Code and hosted on GitHub.</p>
-    <p>r.premkumar96@gmail.com</p>
+    <p><a href="https://rpremkumar56.github.io/portfolio/resume/Premkumar-R-CV.pdf">Résumé (PDF)</a> · r.premkumar96@gmail.com</p>
   </div>
 </noscript>
 
@@ -422,11 +423,12 @@ const F = [
   body:["I defined and pitched two AI-assist products: one for invoice processing and one for vendor queries.",
         "They validate documents, classify cases and rank them by SLA. They retrieve answers from the ERP and draft replies in several languages."],
   facts:[["~41%","projected time saving"],["~20","FTE of effort"]], also:["2 products: invoices and vendor queries"]},
- {col:"work", title:"Testing AI in five languages", tab:"AI Evaluation", one:"An evaluation design for a live HR AI solution across five European languages.", when:"AI CoE · 2026", status:["Live","live"], c:"#d6dfcd", fg:"#1d1c1a", pic:"langs", cap:"same question, five languages",
-  margin:[["Role","Designed the evaluation"],["Channels","Email, documents, tickets, calls"]],
-  body:["A live HR AI solution handled emails, documents, tickets and live calls in five European languages. I designed how we evaluate it.",
-        "I built risk-based test sets and graded each error by severity. I added human-validation controls and rollout gates. Each gate links to a real operational decision: go, hold or roll back."],
-  facts:[["5","European languages"],["4","channels: email, documents, tickets, calls"]], note:"a metric is only useful if it changes a decision"},
+ {col:"work", title:"AI for HR operations", tab:"HR Ops AI", one:"Two AI solutions for HR operations, and a pilot plan to move the work from three countries to India.", when:"AI CoE · 2026", status:["Proposed","wait"], c:"#d6dfcd", fg:"#1d1c1a", pic:"langs", cap:"voice and non-voice, one pilot plan",
+  margin:[["Role","Discovery, solution design, pilot plan"],["Process","HR operations: voice and non-voice"],["With","Client and internal stakeholders"]],
+  body:["I studied how the client’s HR operations team works across voice and non-voice activities. Then I proposed two AI solutions: one for voice work, such as calls, and one for non-voice work, such as emails and tickets.",
+        "I designed the pilot. It sets out how the work moves from onsite teams to India, which process goes first and how we judge the pilot’s performance before the work scales.",
+        "I ran workshops with the client, with a demo of both solutions, and answered the questions of the client and our internal stakeholders."],
+  facts:[["~40%","projected cut in operations cost"],["3","countries’ work consolidated into India"]], also:["2 solutions: voice and non-voice"], note:"agree how to judge a pilot before it starts"},
  {col:"work", title:"Ramp-down Radar", tab:"Ramp-down Radar", one:"An AI prototype that flags client accounts at risk of ramping down.", when:"AI CoE · 2026", status:["Pending sponsor","wait"], c:"#efe3c4", fg:"#1d1c1a", pic:"radar", cap:"signals before the numbers move",
   margin:[["Role","Built the prototype"],["Data","Synthetic only, by design"],["Next","Real-data pilot"]],
   body:["Some client accounts ramp down even when delivery looks smooth. Leadership wanted to see this earlier.",
